@@ -1,24 +1,30 @@
 {
-  "name": "@repo/ui",
-  "type": "module",
-  "version": "0.0.0",
-  "exports": {
-    ".": {
-      "types": "./index.ts",
-      "svelte": "./index.ts"
+    "name": "@repo/ui",
+    "type": "module",
+    "version": "0.0.0",
+    "exports": {
+        ".": {
+            "types": "./index.ts",
+            "svelte": "./index.ts"
+        }
+    },
+    "main": "index.ts",
+    "module": "index.ts",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+    },
+    "dependencies": {
+        "bits-ui": "^0.21.13",
+        "clsx": "^2.1.1",
+        "tailwind-merge": "^2.4.0",
+        "tailwind-variants": "^0.2.1"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^2.24.1",
+        "eslint": "9.5.0",
+        "eslint-plugin-svelte": "^2.43.0",
+        "svelte": "^4.2.12",
+        "svelte-eslint-parser": "^0.41.0"
     }
-  },
-  "main": "index.ts",
-  "module": "index.ts",
-  "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^2.24.1",
-    "eslint": "9.5.0",
-    "eslint-plugin-svelte": "^2.43.0",
-    "svelte": "^4.2.12",
-    "svelte-eslint-parser": "^0.41.0"
-  }
 }
