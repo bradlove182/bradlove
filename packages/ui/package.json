@@ -1,20 +1,24 @@
 {
   "name": "@repo/ui",
-  "version": "0.0.0",
   "type": "module",
-  "module": "index.ts",
-  "main": "index.ts",
+  "version": "0.0.0",
   "exports": {
     ".": {
       "types": "./index.ts",
       "svelte": "./index.ts"
     }
   },
+  "main": "index.ts",
+  "module": "index.ts",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "svelte": "^4.2.12"
+    "@antfu/eslint-config": "^2.24.1",
+    "eslint": "9.5.0",
+    "eslint-plugin-svelte": "^2.43.0",
+    "svelte": "^4.2.12",
+    "svelte-eslint-parser": "^0.41.0"
   }
 }

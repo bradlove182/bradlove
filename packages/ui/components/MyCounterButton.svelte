@@ -1,8 +1,8 @@
-<script lang="ts">
-  let count = 0;
+<script lang='ts'>
+  let count = 0
 
   function handleClick() {
-    count += 1;
+    count += 1
   }
 </script>
 
