@@ -8,14 +8,6 @@
         ],
         "module": "esnext",
         "moduleResolution": "bundler",
-        "paths": {
-            "$util": [
-                "./util"
-            ],
-            "$util/*": [
-                "./util/*"
-            ]
-        },
         "resolveJsonModule": true,
         "allowJs": true,
         "checkJs": true,
