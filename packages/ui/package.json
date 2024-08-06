@@ -21,10 +21,6 @@
         "tailwind-variants": "^0.2.1"
     },
     "devDependencies": {
-        "@antfu/eslint-config": "^2.24.1",
-        "eslint": "9.5.0",
-        "eslint-plugin-svelte": "^2.43.0",
-        "svelte": "^4.2.12",
-        "svelte-eslint-parser": "^0.41.0"
+        "svelte": "^4.2.12"
     }
 }

@@ -1,17 +1,21 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix"
-  },
-  "devDependencies": {
-    "turbo": "^2.0.11"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "engines": {
-    "node": ">=18"
-  },
-  "name": "bradlove-dev"
+    "name": "bradlove-dev",
+    "private": true,
+    "packageManager": "pnpm@8.15.6",
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^2.24.1",
+        "eslint": "9.5.0",
+        "eslint-plugin-svelte": "^2.43.0",
+        "svelte-eslint-parser": "^0.41.0",
+        "turbo": "^2.0.11"
+    }
 }
