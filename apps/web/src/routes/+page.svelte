@@ -1,8 +1,16 @@
 <script lang="ts">
     import "../app.pcss"
-    import { Button } from "@repo/ui"
+    import { Button, Card } from "@repo/ui"
 </script>
 
-<h1>Web</h1>
-<Button>Hello</Button>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<Card>
+    <Card.Header>
+        <Card.Title>Hello</Card.Title>
+    </Card.Header>
+    <Card.Content>
+        <Card.Description>This is a description</Card.Description>
+    </Card.Content>
+    <Card.Footer>
+        <Button>Hello</Button>
+    </Card.Footer>
+</Card>
