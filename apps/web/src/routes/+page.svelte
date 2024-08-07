@@ -1,5 +1,4 @@
 <script lang="ts">
-    import "../app.pcss"
     import { Button, Card } from "@repo/ui"
 </script>
 

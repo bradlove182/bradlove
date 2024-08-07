@@ -4,6 +4,7 @@
       "mode": "auto"
     }
   ],
+  "eslint.useFlatConfig": true,
   // Disable the default formatter, use eslint instead
   "prettier.enable": false,
   "editor.formatOnSave": false,
@@ -51,5 +52,10 @@
     "pcss",
     "postcss",
     "svelte"
-  ]
+  ],
+
+  // Associate CSS files with PostCSS
+  "files.associations": {
+    "*.css": "postcss"
+  }
 }
