@@ -1,0 +1,21 @@
+{
+    "name": "@repo/eslint-config",
+    "type": "module",
+    "private": true,
+    "packageManager": "pnpm@8.15.6",
+    "exports": {
+        "types": "./index.d.ts",
+        "default": "./index.mjs"
+    },
+    "main": "index.mjs",
+    "module": "index.mjs",
+    "engines": {
+        "node": ">=18"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^2.24.1",
+        "eslint": "9.5.0",
+        "eslint-plugin-svelte": "^2.43.0",
+        "svelte-eslint-parser": "^0.41.0"
+    }
+}

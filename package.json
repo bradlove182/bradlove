@@ -13,6 +13,7 @@
     },
     "devDependencies": {
         "@antfu/eslint-config": "^2.24.1",
+        "@repo/eslint-config": "workspace:*",
         "eslint": "9.5.0",
         "eslint-plugin-svelte": "^2.43.0",
         "svelte-eslint-parser": "^0.41.0",
