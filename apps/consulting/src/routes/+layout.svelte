@@ -1,7 +1,7 @@
 <script lang="ts">
     import "../app.css"
     import { ModeWatcher as ThemeWatcher } from "mode-watcher"
-    import Navigation from "$lib/navigation/Navigation.svelte"
+    import { Navigation } from "$lib/components/navigation"
 </script>
 
 <ThemeWatcher />

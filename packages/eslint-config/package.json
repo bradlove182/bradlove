@@ -1,7 +1,6 @@
 {
     "name": "@repo/eslint-config",
     "type": "module",
-    "private": true,
     "packageManager": "pnpm@8.15.6",
     "exports": {
         "types": "./index.d.ts",

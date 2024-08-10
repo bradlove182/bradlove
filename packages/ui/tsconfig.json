@@ -23,6 +23,8 @@
     "include": [
         "./index.ts",
         "./components/**/*.ts",
+        "./themes/**/*.ts",
+        "./icons/**/*.ts",
         "./utils/**/*.ts"
     ],
     "exclude": [

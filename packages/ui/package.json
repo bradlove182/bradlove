@@ -10,7 +10,8 @@
             "types": "./index.ts",
             "svelte": "./index.ts"
         },
-        "./themes/*": "./themes/*"
+        "./themes/*": "./themes/*",
+        "./icons": "./icons/index.ts"
     },
     "main": "index.ts",
     "module": "index.ts",
