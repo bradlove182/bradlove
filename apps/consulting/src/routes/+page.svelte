@@ -1,15 +1,5 @@
 <script lang="ts">
-    import { Button, Card } from "@repo/ui"
+    import { Header } from "$lib/components/header"
 </script>
 
-<Card>
-    <Card.Header>
-        <Card.Title>Hello</Card.Title>
-    </Card.Header>
-    <Card.Content>
-        <Card.Description>This is a description</Card.Description>
-    </Card.Content>
-    <Card.Footer>
-        <Button>Hello</Button>
-    </Card.Footer>
-</Card>
+<Header />
