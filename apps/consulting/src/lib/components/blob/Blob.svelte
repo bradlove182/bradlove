@@ -1,14 +1,16 @@
 <script lang="ts">
     import { T, useTask } from "@threlte/core"
-    import { Clock, type Mesh, type MeshPhysicalMaterial, type SphereGeometry, Vector3 } from "three"
+    import { Clock, Group, Mesh, MeshStandardMaterial, type SphereGeometry, Vector3 } from "three"
     import { makeNoise3D } from "fast-simplex-noise"
+    import { Float } from "@threlte/extras"
 
-    let mesh: Mesh<SphereGeometry, MeshPhysicalMaterial>
+    let group: Group
+    let blob: Mesh<SphereGeometry, MeshStandardMaterial>
 
     const BLOB_SIZE = 2
-    const BLOB_INITIAL_SIZE = [BLOB_SIZE, 64, 64]
+    const BLOB_INITIAL_SIZE = [BLOB_SIZE, 128, 128]
     const BLOB_INITIAL_SCALE = new Vector3(0, 0, 0)
-    const BLOB_INITIAL_POSITION = new Vector3(0, 0, -10)
+    const BLOB_INITIAL_POSITION = new Vector3(0, 20, 0)
 
     const clock = new Clock()
     const positionVector = new Vector3(0, 0, 0)
@@ -16,15 +18,16 @@
     const noise = makeNoise3D()
 
     useTask((delta) => {
-        const speed = delta * 2
-        const numberOfSpikes = Math.cos(2)
-        const spikeSize = Math.sin(2)
-        const time = clock.getElapsedTime() * 0.05
+        const speed = delta * 1.5
+        const numberOfSpikes = Math.cos(1.25)
+        const spikeSize = Math.sin(4)
+        const time = clock.getElapsedTime() * 0.025
 
-        mesh.scale.lerp(scaleVector, speed)
-        mesh.position.lerp(positionVector.setScalar(0), speed)
+        group.scale.lerp(scaleVector, speed)
+        positionVector.setScalar(0).setX(3)
+        group.position.lerp(positionVector, speed)
 
-        const position = mesh.geometry.getAttribute("position")
+        const position = blob.geometry.getAttribute("position")
 
         for (let index = 0; index < position.count; index++) {
             positionVector.fromBufferAttribute(position, index)
@@ -46,18 +49,24 @@
             )
         }
 
-        mesh.geometry.computeVertexNormals()
+        blob.geometry.computeVertexNormals()
         position.needsUpdate = true
     })
 </script>
 
-<T.PointLight color="white" intensity={1} position={[0, 0, 100]} />
-<T.DirectionalLight color="white" position={[-1, 1, 1]} />
-<T.AmbientLight color="white" />
+<T.DirectionalLight position={[30, 30, 20]} intensity={1} />
+<T.AmbientLight intensity={0.5} />
+<T.PointLight position={[0, 50, 10]} intensity={1} />
 
-<T.Group>
-    <T.Mesh bind:ref={mesh} position={BLOB_INITIAL_POSITION.toArray()} scale={BLOB_INITIAL_SCALE.toArray()}>
-        <T.SphereGeometry args={BLOB_INITIAL_SIZE} />
-        <T.MeshPhysicalMaterial />
-    </T.Mesh>
-</T.Group>
+<Float
+    renderOrder={1}
+    floatIntensity={5}
+    rotationIntensity={2}
+    rotationSpeed={[1, 0.5, 0.2]}>
+    <T.Group bind:ref={group} position={BLOB_INITIAL_POSITION.toArray()} scale={BLOB_INITIAL_SCALE.toArray()}>
+        <T.Mesh bind:ref={blob} renderOrder={1}>
+            <T.SphereGeometry args={BLOB_INITIAL_SIZE} />
+            <T.MeshStandardMaterial color="red" metalness={0} roughness={0} depthTest={false} />
+        </T.Mesh>
+    </T.Group>
+</Float>

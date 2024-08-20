@@ -13,7 +13,7 @@ export default {
             center: true,
             padding: "2rem",
             screens: {
-                "2xl": "100%",
+                "2xl": "1280px",
             },
         },
         extend: {
@@ -58,7 +58,7 @@ export default {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: [...fontFamily.sans],
+                sans: ["Geist", ...fontFamily.sans],
             },
         },
     },
