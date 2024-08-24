@@ -20,3 +20,4 @@ export {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
 } from "./components/dropdown-menu"
+export { default as Tabs } from "./components/tabs"

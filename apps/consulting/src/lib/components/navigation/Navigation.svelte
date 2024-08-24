@@ -11,7 +11,7 @@
 
 <header class="sticky top-0 left-0 w-full h-fit flex items-center py-2 z-50 justify-between container">
     <div class="w-full flex items-center justify-start">
-        <a href="/" class="font-bold text-xl tracking-wide">Driven</a>
+        <a href="/" class="font-bold text-xl tracking-wide">DVLP</a>
     </div>
     <div class="w-full flex items-center justify-center">
         <nav class="bg-card rounded-lg border border-border p-1">

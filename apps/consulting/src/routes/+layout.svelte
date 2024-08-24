@@ -6,6 +6,6 @@
 
 <ThemeWatcher />
 <Navigation />
-<main class="container grid gap-2">
+<main class="grid">
     <slot />
 </main>
