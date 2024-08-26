@@ -6,6 +6,6 @@
 
 <ThemeWatcher />
 <Navigation />
-<main class="grid">
+<main class="grid space-y-16">
     <slot />
 </main>

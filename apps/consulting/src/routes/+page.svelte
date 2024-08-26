@@ -1,29 +1,29 @@
 <script lang="ts">
-    import { Button, Card } from "@repo/ui"
+    import { AnimatePresence, Button, Card } from "@repo/ui"
 </script>
 
 <svelte:head>
     <title>DRVN</title>
 </svelte:head>
 
-<section class="container rounded-2xl min-h-[75vh] w-full grid grid-cols-2 items-center justify-center px-16">
+<section class="animate-slide-up container rounded-2xl min-h-[calc(80vh-62px)] w-full grid grid-cols-2 items-center justify-center px-16">
     <div class="grid gap-6 max-w-2xl">
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
             Sprint driven development
         </h1>
-        <p class="text-muted-foreground text-lg max-w-96">Our sprint-based approach offers adaptability with predictable results.</p>
+        <p class="text-muted-foreground text-lg max-w-96">Our sprint-based approach offers adaptability with predictable results and no long term contracts.</p>
         <div class="flex gap-4">
             <Button>Start your first sprint</Button>
             <Button variant="outline">Book a call</Button>
         </div>
     </div>
 </section>
-<section class="container grid">
+<AnimatePresence tag="section" class="container grid" animations="animate-slide-up">
     <Card>
-        <Card.Header>
+        <Card.Header class="p-12">
             <Card.Title class="text-4xl">How does it work?</Card.Title>
         </Card.Header>
-        <Card.Content class="grid grid-cols-3 gap-12 md:gap-20">
+        <Card.Content class="grid grid-cols-3 gap-12 md:gap-20 p-12 pt-0">
             <div class="flex flex-col space-y-1.5">
                 <Card.Title>No long term contracts</Card.Title>
                 <Card.Description>
@@ -62,8 +62,8 @@
             </div>
         </Card.Content>
     </Card>
-</section>
-<section class="container grid grid-cols-1 md:grid-cols-2 gap-4">
+</AnimatePresence>
+<AnimatePresence tag="section" class="container grid grid-cols-1 md:grid-cols-2 gap-4" animations="animate-slide-up">
     <Card class="grid grid-rows-[min-content_1fr_min-content]">
         <Card.Header>
             <Card.Title>Sprint-Based Development</Card.Title>
@@ -93,4 +93,4 @@
             <Button variant="ghost">Explore options</Button>
         </Card.Footer>
     </Card>
-</section>
+</AnimatePresence>

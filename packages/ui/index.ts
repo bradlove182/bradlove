@@ -21,3 +21,4 @@ export {
     DropdownMenuSubTrigger,
 } from "./components/dropdown-menu"
 export { default as Tabs } from "./components/tabs"
+export { AnimatePresence } from "./components/animate-presence"
