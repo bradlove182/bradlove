@@ -1,24 +1,47 @@
 <script lang="ts">
-    import { AnimatePresence, Button, Card } from "@repo/ui"
+    import { AnimatePresence, Button, Card, Pill } from "@repo/ui"
 </script>
 
 <svelte:head>
     <title>DRVN</title>
 </svelte:head>
 
-<section class="animate-slide-up container rounded-2xl min-h-[calc(80vh-62px)] w-full grid grid-cols-2 items-center justify-center px-16">
+<section class="animate-slide-up container rounded-2xl min-h-[calc(100vh-124px)] w-full grid grid-cols-2 items-center justify-center px-16">
     <div class="grid gap-6 max-w-2xl">
+        <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
             Sprint driven development
         </h1>
-        <p class="text-muted-foreground text-lg max-w-96">Our sprint-based approach offers adaptability with predictable results and no long term contracts.</p>
+        <p class="text-muted-foreground text-lg max-w-96">Our sprint-based approach offers adaptability with predictable results.</p>
         <div class="flex gap-4">
             <Button>Start your first sprint</Button>
             <Button variant="outline">Book a call</Button>
         </div>
     </div>
 </section>
-<AnimatePresence tag="section" class="container grid" animations="animate-slide-up">
+<AnimatePresence tag="section" class="container grid grid-cols-1 md:grid-cols-2 gap-4" animations="animate-slide-up">
+    <Card>
+        <Card.Header>
+            <Card.Title class="text-4xl">No Long Term Contracts</Card.Title>
+        </Card.Header>
+        <Card.Content>
+            <Card.Description class="text-base">
+                Try us out for a sprint without risk. Not feeling we're a good fit? No hard feelings if you need to cancel.
+            </Card.Description>
+        </Card.Content>
+    </Card>
+    <Card>
+        <Card.Header>
+            <Card.Title class="text-4xl">Accelerated development</Card.Title>
+        </Card.Header>
+        <Card.Content>
+            <Card.Description class="text-base">
+                Sprints foster accountability, focus, and fast iterations. You get working software delivered on a regular cadence.
+            </Card.Description>
+        </Card.Content>
+    </Card>
+</AnimatePresence>
+<section class="container grid">
     <Card>
         <Card.Header class="p-12">
             <Card.Title class="text-4xl">How does it work?</Card.Title>
@@ -62,7 +85,7 @@
             </div>
         </Card.Content>
     </Card>
-</AnimatePresence>
+</section>
 <AnimatePresence tag="section" class="container grid grid-cols-1 md:grid-cols-2 gap-4" animations="animate-slide-up">
     <Card class="grid grid-rows-[min-content_1fr_min-content]">
         <Card.Header>

@@ -52,6 +52,6 @@
 
 </script>
 
-<svelte:element this={tag} bind:this={element} class={cn(className)}>
+<svelte:element this={tag} bind:this={element} class={cn(className)} {...$$restProps}>
     <slot />
 </svelte:element>
