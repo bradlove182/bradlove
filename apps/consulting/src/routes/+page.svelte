@@ -10,9 +10,9 @@
     <div class="grid gap-6 max-w-2xl">
         <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
-            Sprint driven development
+            Elevate Your Web Experience with <a href="https://svelte.dev/" target="_blank" class="underline decoration-primary underline-offset-8">Svelte</a>
         </h1>
-        <p class="text-muted-foreground text-lg max-w-96">Our sprint-based approach offers adaptability with predictable results.</p>
+        <p class="text-muted-foreground text-lg">Crafting high-performance, scalable web applications with the power of Svelte and SvelteKit. Your vision, our expertise.</p>
         <div class="flex gap-4">
             <Button>Start your first sprint</Button>
             <Button variant="outline">Book a call</Button>

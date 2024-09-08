@@ -12,7 +12,7 @@
 <svelte:element
     this={tag}
     class={cn(
-        "rounded-full px-3 py-1 text-sm bg-card inline-flex border shadow w-fit items-center gap-1",
+        "rounded-full px-3 py-1 text-sm bg-card inline-flex border shadow-sm w-fit items-center gap-1",
         className,
     )}
     {...$$restProps}
