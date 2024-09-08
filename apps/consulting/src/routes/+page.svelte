@@ -19,28 +19,6 @@
         </div>
     </div>
 </section>
-<AnimatePresence tag="section" class="container grid grid-cols-1 md:grid-cols-2 gap-4" animations="animate-slide-up">
-    <Card>
-        <Card.Header>
-            <Card.Title class="text-4xl">No Long Term Contracts</Card.Title>
-        </Card.Header>
-        <Card.Content>
-            <Card.Description class="text-base">
-                Try us out for a sprint without risk. Not feeling we're a good fit? No hard feelings if you need to cancel.
-            </Card.Description>
-        </Card.Content>
-    </Card>
-    <Card>
-        <Card.Header>
-            <Card.Title class="text-4xl">Accelerated development</Card.Title>
-        </Card.Header>
-        <Card.Content>
-            <Card.Description class="text-base">
-                Sprints foster accountability, focus, and fast iterations. You get working software delivered on a regular cadence.
-            </Card.Description>
-        </Card.Content>
-    </Card>
-</AnimatePresence>
 <section class="container grid">
     <Card>
         <Card.Header class="p-12">
