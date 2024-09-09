@@ -19,7 +19,7 @@
         </div>
     </div>
 </section>
-<AnimatePresence class="container grid" animations="animate-slide-up">
+<AnimatePresence tag="section" class="container grid" animations="animate-slide-up">
     <h2 class="text-5xl tracking-tight font-semibold mb-3 leading-tight">
         Sprint-Driven <br />Svelte Development
     </h2>
