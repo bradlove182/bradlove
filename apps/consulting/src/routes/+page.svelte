@@ -27,7 +27,7 @@
         Harness the power of focused, time-boxed sprints to rapidly build and iterate on your Svelte projects.
     </p>
     <div class="grid grid-cols-2 gap-12">
-        <Card>
+        <Card class="grid grid-rows-[min-content_1fr_min-content]">
             <Card.Header>
                 <Card.Title class="text-xl">
                     2-Week Sprints
@@ -39,50 +39,27 @@
                     Each sprint delivers a set of completed features, ensuring your project moves forward at an impressive pace.
                 </Card.Description>
             </Card.Content>
+            <Card.Footer class="gap-2">
+                <Button>Book your first sprint</Button>
+                <Button variant="ghost">What's a sprint?</Button>
+            </Card.Footer>
         </Card>
-        <Card>
+        <Card class="grid grid-rows-[min-content_1fr_min-content]">
             <Card.Header>
                 <Card.Title class="text-xl">
-                    Continuous Delivery
+                    Consulting Services
                 </Card.Title>
             </Card.Header>
             <Card.Content>
                 <Card.Description>
-                    With our sprint-based approach, you'll see tangible results every two weeks.
-                    This continuous delivery model allows for early testing, quick iterations, and the flexibility to adapt to changing requirements throughout the development process.
+                    Our expert Svelte consultants are available to guide you through complex challenges, provide code reviews, and offer strategic advice.
+                    With our consulting services, you'll have on-demand access to deep Svelte expertise throughout your development process.
                 </Card.Description>
             </Card.Content>
+            <Card.Footer class="gap-2">
+                <Button>Book a call</Button>
+                <Button variant="ghost">Explore options</Button>
+            </Card.Footer>
         </Card>
     </div>
-</AnimatePresence>
-<AnimatePresence tag="section" class="container grid grid-cols-1 md:grid-cols-2 gap-4" animations="animate-slide-up">
-    <Card class="grid grid-rows-[min-content_1fr_min-content]">
-        <Card.Header>
-            <Card.Title>Sprint-Based Development</Card.Title>
-        </Card.Header>
-        <Card.Content class="flex flex-col space-y-1.5">
-            <Card.Description class="max-w-96">
-                A nimble web development service employing two-week sprints to deliver top-notch websites and apps using Svelte and SvelteKit
-            </Card.Description>
-        </Card.Content>
-        <Card.Footer class="gap-2">
-            <Button>Book your first sprint</Button>
-            <Button variant="ghost">What's a sprint?</Button>
-        </Card.Footer>
-    </Card>
-    <Card class="grid grid-rows-[min-content_1fr_min-content]">
-        <Card.Header>
-            <Card.Title>Consulting Services</Card.Title>
-        </Card.Header>
-        <Card.Content class="flex flex-col space-y-1.5">
-            <Card.Description class="max-w-96">
-                Choose Asynchronous Consulting for ongoing support, 1-Hour Real-Time Consulting for
-                immediate problem-solving.
-            </Card.Description>
-        </Card.Content>
-        <Card.Footer class="gap-2">
-            <Button>Book a call</Button>
-            <Button variant="ghost">Explore options</Button>
-        </Card.Footer>
-    </Card>
 </AnimatePresence>
