@@ -16,5 +16,8 @@
         "eslint": "9.5.0",
         "eslint-plugin-svelte": "^2.43.0",
         "svelte-eslint-parser": "^0.41.0"
+    },
+    "dependencies": {
+        "eslint-plugin-tailwindcss": "^3.17.4"
     }
 }

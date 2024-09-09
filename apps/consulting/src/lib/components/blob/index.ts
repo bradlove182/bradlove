@@ -1,3 +1,3 @@
-import Blob from "./Blob.svelte";
+import Blob from "./Blob.svelte"
 
 export { Blob }

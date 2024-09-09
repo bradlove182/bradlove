@@ -29,6 +29,8 @@
                         observables.get(entry.target)?.(entry.target)
                     }
                 })
+            }, {
+                rootMargin: "-10%",
             })
         }
 
@@ -52,6 +54,6 @@
 
 </script>
 
-<svelte:element this={tag} bind:this={element} class={cn(className)} {...$$restProps}>
+<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} {...$$restProps}>
     <slot />
 </svelte:element>

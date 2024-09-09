@@ -61,8 +61,8 @@ export default {
                 sans: ["Geist", ...fontFamily.sans],
             },
             animation: {
-                "slide-up": "slide-up 1s ease-in-out",
-                "slide-down": "slide-down 1s ease-in-out",
+                "slide-up": "slide-up 1s ease-in-out forwards",
+                "slide-down": "slide-down 1s ease-in-out forwards",
             },
             keyframes: {
                 "slide-up": {
