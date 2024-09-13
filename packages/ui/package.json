@@ -8,7 +8,8 @@
     "exports": {
         ".": {
             "types": "./index.ts",
-            "svelte": "./index.ts"
+            "svelte": "./index.ts",
+            "default": "./index.ts"
         },
         "./themes/*": "./themes/*",
         "./icons": "./icons/index.ts",
