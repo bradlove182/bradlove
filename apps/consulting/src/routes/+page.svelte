@@ -10,7 +10,7 @@
     <div class="grid gap-6 max-w-2xl">
         <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
-            Accelerate Your <a href="https://svelte.dev/" target="_blank" class="underline decoration-primary underline-offset-8">Svelte</a> Development
+            Accelerate Your <a href="https://svelte.dev/" target="_blank">Svelte</a> Development
         </h1>
         <p class="text-muted-foreground text-lg">Experience the power of sprint-driven development and real-time expert consulting for your Svelte and SvelteKit projects.</p>
         <div class="flex gap-4">
@@ -26,7 +26,7 @@
     <p class="mb-12 text-muted-foreground max-w-lg text-lg">
         Harness the power of focused, time-boxed sprints to rapidly build and iterate on your Svelte projects.
     </p>
-    <div class="grid grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
         <Card class="grid grid-rows-[min-content_1fr_min-content]">
             <Card.Header>
                 <Card.Title class="text-xl">
@@ -62,4 +62,12 @@
             </Card.Footer>
         </Card>
     </div>
+</AnimatePresence>
+<AnimatePresence tag="section" class="container grid" animations="animate-slide-up">
+    <h2 class="text-5xl tracking-tight font-semibold mb-3 leading-tight text-center">
+        Comprehensive <br />Svelte & SvelteKit Consulting
+    </h2>
+    <p class="mb-12 text-muted-foreground max-w-lg mx-auto text-lg text-center">
+        Expert guidance and support for your projects, available in real-time and asynchronously to fit your needs.
+    </p>
 </AnimatePresence>
