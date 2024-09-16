@@ -12,12 +12,12 @@
 <svelte:element
     this={tag}
     class={cn(
-        "bg-card relative inline-flex w-fit items-center gap-1 overflow-hidden rounded-full text-sm shadow-sm",
+        "relative inline-flex w-fit items-center gap-1 overflow-hidden rounded-full bg-card text-sm shadow-sm",
         className,
     )}
     {...$$restProps}
 >
-    <span class="inset-px z-20 grid place-items-center rounded-full bg-card px-3 py-1 m-px">
+    <span class={cn("inset-px z-20 m-px grid place-items-center rounded-full bg-card px-3 py-1", className)}>
         <slot />
     </span>
     <span aria-hidden="true" class="absolute inset-0 z-0 bg-border pointer-events-none"></span>

@@ -63,6 +63,7 @@ export default {
                 "slide-up": "slide-up 1s ease-in-out forwards",
                 "slide-down": "slide-down 1s ease-in-out forwards",
                 "disco-border": "disco 6s linear infinite",
+                "spin-slow": "spin 60s linear infinite",
             },
             keyframes: {
                 "slide-up": {
