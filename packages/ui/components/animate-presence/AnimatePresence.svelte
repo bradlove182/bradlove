@@ -15,6 +15,7 @@
 
     export let tag: $$Props["tag"] = "div"
     export let animations: $$Props["animations"] = ""
+    export let delay: $$Props["delay"] = ""
     let className: $$Props["class"] = undefined
     export { className as class }
 
@@ -54,6 +55,6 @@
 
 </script>
 
-<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} {...$$restProps}>
+<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} style="animation-delay: {delay}" {...$$restProps}>
     <slot />
 </svelte:element>
