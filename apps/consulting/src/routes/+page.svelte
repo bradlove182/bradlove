@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { AnimatePresence, Button, Card, Pill } from "@repo/ui"
+    import { AnimatePresence, Box, Button, Card, Pill } from "@repo/ui"
 </script>
 
 <svelte:head>
     <title>DRVN</title>
 </svelte:head>
 
-<section class="animate-slide-up container rounded-2xl min-h-[calc(100vh-106px)] w-full grid items-center px-16 relative    ">
-    <div class="grid gap-6 max-w-2xl">
+<Box tag="section" class="min-h-[calc(100vh-106px)] w-full items-center relative">
+    <AnimatePresence animations="animate-slide-up" class="grid gap-6 max-w-2xl pl-16">
         <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
-            Accelerate Your <a href="https://svelte.dev/" target="_blank">Svelte</a> Development
+            Crafting Exceptional Experiences
         </h1>
         <p class="text-muted-foreground text-lg max-w-xl">
             Experience the power of sprint-driven development and expert consulting for your Svelte and SvelteKit projects.
@@ -19,8 +19,8 @@
             <Button>Start your first sprint</Button>
             <Button variant="outline">Book a call</Button>
         </div>
-    </div>
-    <div class="h-[80vh] w-[80vh] rounded-full grid items-center absolute right-16 md:right-0 -z-10 top-1/2 -translate-y-1/2">
+    </AnimatePresence>
+    <div class="h-[80vh] w-[80vh] rounded-full grid items-center absolute right-0 -z-10 top-1/2 -translate-y-1/2">
         <AnimatePresence animations="animate-slide-up" class="grid h-[80vh] w-[80vh] items-center rounded-full">
             <Pill class="row-start-1 col-start-1 justify-self-center px-0 py-0 bg-gradient-to-br from-transparent to-secondary shadow-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-[20vh] h-[20vh] p-[4vh]">
@@ -38,7 +38,7 @@
             {/each}
         </AnimatePresence>
     </div>
-</section>
+</Box>
 <AnimatePresence tag="section" class="container grid" animations="animate-slide-up">
     <h2 class="text-5xl tracking-tight font-semibold mb-3 leading-tight">
         Sprint-Driven <br />Svelte Development
