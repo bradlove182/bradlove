@@ -12,7 +12,7 @@
 <svelte:element
     this={tag}
     class={cn(
-        "relative inline-flex w-fit items-center gap-1 overflow-hidden rounded-full bg-card text-sm shadow-sm",
+        "relative inline-flex size-fit items-center gap-1 overflow-hidden rounded-full bg-card text-sm shadow-sm",
         className,
     )}
     {...$$restProps}
