@@ -23,4 +23,3 @@ export {
 export { default as Tabs } from "./components/tabs"
 export { AnimatePresence } from "./components/animate-presence"
 export { Pill } from "./components/pill"
-export { Box } from "./components/box"

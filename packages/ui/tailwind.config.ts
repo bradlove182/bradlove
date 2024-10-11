@@ -79,12 +79,6 @@ export default {
                     "100%": { transform: "translateY(-50%) rotate(1turn)" },
                 },
             },
-            gridTemplateColumns: {
-                xs: "max(.875rem) minmax(0,1fr) max(.875rem)",
-                sm: "max(1.75rem) minmax(0,1fr) max(1.75rem)",
-                lg: "max(4rem) minmax(0,1fr) max(4rem)",
-                xl: "1fr min(84rem,100% - 7rem) 1fr",
-            },
         },
     },
 } satisfies Partial<Config>
