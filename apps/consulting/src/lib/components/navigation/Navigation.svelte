@@ -19,7 +19,7 @@
     "sticky left-0 top-0 z-50 flex h-fit w-full items-center justify-between border-border bg-background",
 )}>
     <Box>
-        <div class="flex items-center px-8 p-2">
+        <div class="flex items-center container py-2">
             <div class="w-full flex items-center justify-start">
                 <a href="/" class="font-bold text-xl tracking-wide">DRVN</a>
             </div>
