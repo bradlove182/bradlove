@@ -9,7 +9,7 @@
     } from "@repo/ui"
     import { ModeSwitcher } from "$lib/components/mode-switcher"
 
-    let scrollY = 0
+    let scrollY = $state(0)
 </script>
 
 <svelte:window bind:scrollY />
@@ -33,9 +33,11 @@
                     </li>
                     <li>
                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild let:builder>
-                                <Button builders={[builder]} variant="ghost">Services</Button>
-                            </DropdownMenuTrigger>
+                            <DropdownMenuTrigger asChild >
+                                {#snippet children({ builder })}
+                                                                <Button builders={[builder]} variant="ghost">Services</Button>
+                                                                                            {/snippet}
+                                                        </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuItem>Consulting</DropdownMenuItem>
                                 <DropdownMenuItem>Design</DropdownMenuItem>

@@ -4,8 +4,8 @@
     import { makeNoise3D } from "fast-simplex-noise"
     import { Float } from "@threlte/extras"
 
-    let group: Group
-    let blob: Mesh<SphereGeometry, MeshStandardMaterial>
+    let group: Group = $state()
+    let blob: Mesh<SphereGeometry, MeshStandardMaterial> = $state()
 
     const BLOB_SIZE = 2
     const BLOB_INITIAL_SIZE = [BLOB_SIZE, 128, 128]
