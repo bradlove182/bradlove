@@ -8,8 +8,8 @@
 <script lang="ts">
 
     import { onMount } from "svelte"
-    import { cn } from "../../utils"
     import { type Props } from "."
+    import { cn } from "../../utils"
 
     type $$Props = Props
 
