@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 
     let observer: IntersectionObserver
     const observables = new Map<Element, (target: Element) => void>()
@@ -13,13 +13,26 @@
 
     type $$Props = Props
 
-    export let tag: $$Props["tag"] = "div"
-    export let animations: $$Props["animations"] = ""
-    export let delay: $$Props["delay"] = ""
-    let className: $$Props["class"] = undefined
-    export { className as class }
+    interface Props_1 {
+        tag?: $$Props["tag"];
+        animations?: $$Props["animations"];
+        delay?: $$Props["delay"];
+        class?: $$Props["class"];
+        children?: import('svelte').Snippet;
+        [key: string]: any
+    }
 
-    let element: HTMLElement
+    let {
+        tag = "div",
+        animations = "",
+        delay = "",
+        class: className = undefined,
+        children,
+        ...rest
+    }: Props_1 = $props();
+    
+
+    let element: HTMLElement = $state()
 
     onMount(() => {
         if (!observer) {
@@ -55,6 +68,6 @@
 
 </script>
 
-<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} style="animation-delay: {delay}" {...$$restProps}>
-    <slot />
+<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} style="animation-delay: {delay}" {...rest}>
+    {@render children?.()}
 </svelte:element>
