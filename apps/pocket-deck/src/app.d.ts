@@ -1,6 +1,6 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 
-import type { Card } from "$lib/types/Card"
+import type { Card } from "$lib/types/card"
 
 // for information about these interfaces
 declare global {

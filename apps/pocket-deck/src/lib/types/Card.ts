@@ -1,8 +1,8 @@
 export type Category = "Pokemon" | "Trainer"
 
-export type Evolution = "Basic" | "Stage 1" | "Stage 2" | [("Stage 1" | "Stage 2"), "ex"] | ["Basic", "ex"]
+export type Evolution = "Basic" | "Stage 1" | "Stage 2" | ["Stage 1" | "Stage 2" | "Basic", "ex"]
 
-export type PokemonType = "Grass" | "Fire" | "Water" | "Lightning" | "Psychic" | "Fighting" | "Colorless" | "Metal" | "Dragon"
+export type PokemonType = "Grass" | "Fire" | "Water" | "Lightning" | "Psychic" | "Fighting" | "Colorless" | "Metal" | "Dragon" | "Darkness"
 
 export type Rarity = "◇" | "◇◇" | "◇◇◇" | "◇◇◇◇" | "☆" | "☆☆" | "☆☆☆" | "♛" | "Promo"
 
@@ -14,6 +14,7 @@ export type Set = "Genetic Apex (A1)" | "Promo"
 
 export interface Card {
     id: string
+    cardNumber: string
     name: string
     category: Category
     evolution?: Evolution
@@ -24,6 +25,10 @@ export interface Card {
     subSet: SubSet
     imageUrl: string
     thumbnailUrl: string
-    hp?: number
+    hp?: string
     relatedCards?: string
+}
+
+export function toUrlSafeId(id: string): string {
+    return id.toLowerCase().replace(/\s+/g, "-")
 }
