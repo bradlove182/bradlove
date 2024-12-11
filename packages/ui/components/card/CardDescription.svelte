@@ -2,18 +2,14 @@
     import type { HTMLAttributes } from "svelte/elements"
     import { cn } from "../../utils"
 
-    type $$Props = HTMLAttributes<HTMLParagraphElement>
+    const {
+        class: className = undefined,
+        children,
+        ...rest
+    }: HTMLAttributes<HTMLParagraphElement> = $props()
 
-    interface Props {
-        class?: $$Props["class"];
-        children?: import('svelte').Snippet;
-        [key: string]: any
-    }
-
-    let { class: className = undefined, children, ...rest }: Props = $props();
-    
 </script>
 
-<p class={cn("text-muted-foreground text-sm", className)} {...rest}>
+<p class={cn("text-sm text-muted-foreground", className)} {...rest}>
     {@render children?.()}
 </p>

@@ -5,4 +5,4 @@ type Props = HTMLAttributes<HTMLSpanElement | HTMLAnchorElement> & {
     tag?: Extract<keyof HTMLElementTagNameMap, "span" | "a">
 }
 
-export { type Props, Pill }
+export { Pill, type Props }

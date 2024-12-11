@@ -1,18 +1,14 @@
 <script lang="ts">
-    import { cn } from "../../utils"
     import { type Props } from "."
+    import { cn } from "../../utils"
 
-    type $$Props = Props
+    const {
+        tag = "span",
+        class: className = undefined,
+        children,
+        ...rest
+    }: Props = $props()
 
-    interface Props_1 {
-        tag?: $$Props["tag"];
-        class?: $$Props["class"];
-        children?: import('svelte').Snippet;
-        [key: string]: any
-    }
-
-    let { tag = "span", class: className = undefined, children, ...rest }: Props_1 = $props();
-    
 </script>
 
 <svelte:element

@@ -2,16 +2,12 @@
     import type { HTMLAttributes } from "svelte/elements"
     import { cn } from "../../utils"
 
-    type $$Props = HTMLAttributes<HTMLDivElement>
+    const {
+        class: className = undefined,
+        children,
+        ...rest
+    }: HTMLAttributes<HTMLDivElement> = $props()
 
-    interface Props {
-        class?: $$Props["class"];
-        children?: import('svelte').Snippet;
-        [key: string]: any
-    }
-
-    let { class: className = undefined, children, ...rest }: Props = $props();
-    
 </script>
 
 <div class={cn("flex flex-col space-y-1.5 p-6", className)} {...rest}>

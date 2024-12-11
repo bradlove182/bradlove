@@ -2,21 +2,17 @@
     import { Tabs as TabsPrimitive } from "bits-ui"
     import { cn } from "../../utils"
 
-    type $$Props = TabsPrimitive.ListProps
+    const {
+        class: className = undefined,
+        children,
+        ...rest
+    }: TabsPrimitive.ListProps = $props()
 
-    interface Props {
-        class?: $$Props["class"];
-        children?: import('svelte').Snippet;
-        [key: string]: any
-    }
-
-    let { class: className = undefined, children, ...rest }: Props = $props();
-    
 </script>
 
 <TabsPrimitive.List
     class={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 items-center justify-center rounded-lg p-1",
+        "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
         className,
     )}
     {...rest}

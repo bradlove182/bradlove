@@ -1,14 +1,7 @@
 <script lang="ts">
     import { type IconProps } from "."
 
-    type $$Props = IconProps
-
-    interface Props {
-        size?: $$Props["size"];
-        [key: string]: any
-    }
-
-    let { size = 15, ...rest }: Props = $props();
+    const { size = 15, ...rest }: IconProps = $props()
 </script>
 
 <svg {...rest} width={size} height={size} viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">

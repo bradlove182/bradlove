@@ -29,7 +29,7 @@
                 </svg>
             </Pill>
             <div class="h-full w-full bg-gradient-conic absolute from-background via-transparent to-background from-0% to-60%"></div>
-            {#each Array(3) as _, index}
+            {#each Array.from({ length: 3 }) as _, index}
                 {@const size = `calc(90% - ${index * 24}%)`}
                 <div style="height: {size}; width: {size};" class="row-start-1 col-start-1 justify-self-center -z-20">
                     <Pill class="size-full px-0 py-0 bg-gradient-to-br from-transparent to-secondary shadow-xl">

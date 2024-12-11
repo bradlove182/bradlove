@@ -14,18 +14,18 @@ const Card = Object.assign(Root, {
 })
 
 export {
-    Root,
     Content,
+    Content as CardContent,
     Description,
+    Description as CardDescription,
     Footer,
+    Footer as CardFooter,
     Header,
-    Title,
+    Header as CardHeader,
+    Root,
     //
     Root as Card,
-    Content as CardContent,
-    Description as CardDescription,
-    Footer as CardFooter,
-    Header as CardHeader,
+    Title,
     Title as CardTitle,
 }
 

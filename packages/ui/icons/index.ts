@@ -1,8 +1,8 @@
 import type { SVGAttributes } from "svelte/elements"
 import IconCheck from "./IconCheck.svelte"
 import IconDotFilled from "./IconDotFilled.svelte"
-import IconSun from "./IconSun.svelte"
 import IconMoon from "./IconMoon.svelte"
+import IconSun from "./IconSun.svelte"
 
 interface IconProps extends SVGAttributes<SVGSVGElement> {
     color?: string
@@ -11,4 +11,4 @@ interface IconProps extends SVGAttributes<SVGSVGElement> {
     class?: string
 }
 
-export { type IconProps, IconCheck, IconDotFilled, IconSun, IconMoon }
+export { IconCheck, IconDotFilled, IconMoon, type IconProps, IconSun }

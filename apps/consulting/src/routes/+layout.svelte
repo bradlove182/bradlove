@@ -1,12 +1,9 @@
 <script lang="ts">
-    import "../app.css"
-    import { ModeWatcher as ThemeWatcher } from "mode-watcher"
     import { Navigation } from "$lib/components/navigation"
-    interface Props {
-        children?: import('svelte').Snippet;
-    }
+    import { ModeWatcher as ThemeWatcher } from "mode-watcher"
+    import "../app.css"
 
-    let { children }: Props = $props();
+    const { children } = $props()
 </script>
 
 <ThemeWatcher />

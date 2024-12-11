@@ -1,13 +1,9 @@
 <script lang="ts">
+    import { ModeSwitcher } from "$lib/components/mode-switcher"
     import {
         Button,
-        DropdownMenu,
-        DropdownMenuContent,
-        DropdownMenuItem,
-        DropdownMenuTrigger,
         cn,
     } from "@repo/ui"
-    import { ModeSwitcher } from "$lib/components/mode-switcher"
 
     let scrollY = $state(0)
 </script>
@@ -15,7 +11,7 @@
 <svelte:window bind:scrollY />
 
 <header class={cn(
-    "sticky left-0 top-0 z-50 flex h-fit w-full animate-slide-down items-center justify-between border-b border-transparent bg-background/50 py-2 backdrop-blur-md transition duration-200 ease-in-out",
+    "animate-slide-down bg-background/50 sticky left-0 top-0 z-50 flex h-fit w-full items-center justify-between border-b border-transparent py-2 backdrop-blur-md transition duration-200 ease-in-out",
     scrollY > 5 ? "border-border" : "",
 )}>
     <div class="flex items-center container">
@@ -32,18 +28,7 @@
                         <Button variant="ghost">Pricing</Button>
                     </li>
                     <li>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild >
-                                {#snippet children({ builder })}
-                                                                <Button builders={[builder]} variant="ghost">Services</Button>
-                                                                                            {/snippet}
-                                                        </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem>Consulting</DropdownMenuItem>
-                                <DropdownMenuItem>Design</DropdownMenuItem>
-                                <DropdownMenuItem>Development</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button variant="ghost">Services</Button>
                     </li>
                     <li>
                         <Button variant="ghost">Contact</Button>

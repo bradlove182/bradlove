@@ -12,14 +12,14 @@ const Tabs = Object.assign(Root, {
 })
 
 export {
-    Root,
     Content,
+    Content as TabsContent,
     List,
-    Trigger,
+    List as TabsList,
+    Root,
     //
     Root as Tabs,
-    Content as TabsContent,
-    List as TabsList,
+    Trigger,
     Trigger as TabsTrigger,
 }
 

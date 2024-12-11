@@ -1,38 +1,23 @@
 <script lang="ts" module>
-
     let observer: IntersectionObserver
     const observables = new Map<Element, (target: Element) => void>()
-
 </script>
 
 <script lang="ts">
-
     import { onMount } from "svelte"
     import { type Props } from "."
     import { cn } from "../../utils"
 
-    type $$Props = Props
-
-    interface Props_1 {
-        tag?: $$Props["tag"];
-        animations?: $$Props["animations"];
-        delay?: $$Props["delay"];
-        class?: $$Props["class"];
-        children?: import('svelte').Snippet;
-        [key: string]: any
-    }
-
-    let {
+    const {
         tag = "div",
         animations = "",
         delay = "",
         class: className = undefined,
         children,
         ...rest
-    }: Props_1 = $props();
-    
+    }: Props = $props()
 
-    let element: HTMLElement = $state()
+    let element: HTMLElement | undefined = $state()
 
     onMount(() => {
         if (!observer) {
@@ -48,18 +33,23 @@
             })
         }
 
-        // Add the relevant elements animations to the observables map
-        observables.set(element, (element: Element) => {
-            if (animations) {
-                element.classList.add(animations)
-            }
-        })
+        if (element) {
+            // Add the relevant elements animations to the observables map
+            observables.set(element, (element: Element) => {
+                if (animations) {
+                    element.classList.add(animations)
+                }
+            })
 
-        observer.observe(element)
+            observer.observe(element)
+        }
 
         return () => {
-            observer.unobserve(element)
-            observables.delete(element)
+            if (element) {
+                observer.unobserve(element)
+                observables.delete(element)
+            }
+
             if (observables.size === 0) {
                 observer.disconnect()
             }
