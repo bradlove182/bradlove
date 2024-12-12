@@ -1,5 +1,5 @@
-import type { Card } from "./card"
+import type { CardInterface } from "./card"
 
 export interface Deck {
-    cards: Card[]
+    cards: CardInterface[]
 }

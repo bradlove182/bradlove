@@ -3,13 +3,18 @@
 
     const {
         card,
+        onclick,
     }: Props = $props()
 
 </script>
 
-<article class="space-y-4 bg-muted">
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<article
+    class="h-min"
+    onclick={() => onclick?.(card)}
+    onkeypress={() => onclick?.(card)}
+>
     <div class="aspect-[63/88]">
         <img class="size-full" src={card.imageUrl} alt={card.name} loading="lazy" />
     </div>
-    <h3>{card.name}</h3>
 </article>

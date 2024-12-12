@@ -12,7 +12,7 @@ export type TrainerSubcategory = "Supporter" | "Item"
 
 export type Set = "Genetic Apex (A1)" | "Promo"
 
-export interface Card {
+export interface CardInterface {
     id: string
     cardNumber: string
     name: string
