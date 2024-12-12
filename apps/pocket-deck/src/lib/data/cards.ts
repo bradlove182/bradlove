@@ -1,6 +1,6 @@
-import type { Card } from "$lib/types/card"
+import type { CardInterface } from "$lib/types/card"
 
-const cards: Card[] = [
+const cards: CardInterface[] = [
     {
         id: "A1 001".toLowerCase().replace(/\s+/g, "-"),
         cardNumber: "A1 001",

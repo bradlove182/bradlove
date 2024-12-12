@@ -1,12 +1,44 @@
-<script lang="ts">
+<script lang="ts" module>
     import type { CardInterface } from "$lib/types/card"
+
+    interface CardWithIdentifier extends CardInterface {
+        selectedId: string
+    }
+</script>
+
+<script lang="ts">
     import { Card } from "$lib/components/card"
     import { Button } from "@repo/ui"
-    import { type Props } from "."
+    import Fuse from "fuse.js"
+    import { onMount, tick } from "svelte"
+    import { flip } from "svelte/animate"
+    import { scale } from "svelte/transition"
+    import { addCardToSelected, type Props, updateUrlCardState } from "."
 
     const { cards }: Props = $props()
 
-    const selectedCards = $state<Props["cards"]>([])
+    const selectedCards = $state<CardWithIdentifier[]>([])
+    const selectedCardIds = $derived(selectedCards.map(selected => selected.id))
+
+    let searchValue = $state<string>("")
+
+    const fuse = new Fuse(cards, { keys: [{
+        name: "name",
+        weight: 0.9,
+    }, {
+        name: "relatedCards",
+        weight: 0.7,
+    }] })
+
+    const filteredCards = $derived.by(() => {
+        const results = fuse.search(searchValue).map(item => item.item)
+
+        if (results.length === 0 && !searchValue) {
+            return cards
+        }
+
+        return results
+    })
 
     const countCards = (card: CardInterface): number => {
         let cardCount = 0
@@ -28,7 +60,7 @@
         return countCards(card) === 0
     }
 
-    const handleOnCardAdded = (card: CardInterface) => {
+    const handleOnCardAdded = async (card: CardInterface) => {
         if (selectedCards.length === 20) {
             return
         }
@@ -37,55 +69,80 @@
             return
         }
 
-        selectedCards.push(card)
+        addCardToSelected(card, selectedCards)
+        await tick()
+        updateUrlCardState(selectedCardIds)
     }
 
-    const handleOnCardRemoved = (card: CardInterface) => {
+    const handleOnCardRemoved = async (card: CardInterface) => {
         const index = selectedCards.findIndex(selected => selected.id === card.id)
 
         if (index > -1) {
             selectedCards.splice(index, 1)
+            await tick()
+            updateUrlCardState(selectedCardIds)
         }
     }
+
+    onMount(() => {
+        const url = new URL(window.location.toString())
+        const queryCards = url.searchParams.get("cards")
+
+        if (queryCards) {
+            const cardArray = queryCards.split(",")
+
+            cardArray.forEach((id) => {
+                const currentCard = cards.find(item => item.id === id)
+
+                if (currentCard) {
+                    addCardToSelected(currentCard, selectedCards)
+                }
+            })
+        }
+    })
 
 </script>
 
 <div class="grid grid-cols-2 gap-4">
-    <div class="grid grid-cols-1 grid-rows-1 h-fit">
-        <div class="grid grid-flow-row grid-cols-6 gap-2 col-start-1 row-start-1 -z-10 h-fit pointer-events-none">
+    <div class="grid grid-cols-1 grid-rows-1 h-fit sticky top-8">
+        <div class="grid grid-flow-row grid-cols-10 gap-2 col-start-1 row-start-1 -z-10 h-fit pointer-events-none">
             {#each Array.from({ length: 20 }) as _}
                 <div class="aspect-[63/88] rounded flex items-center justify-center border bg-muted text-muted-foreground">
                     +
                 </div>
             {/each}
         </div>
-        <div class="grid grid-flow-row grid-cols-6 gap-2 col-start-1 row-start-1 z-10 h-fit">
-            {#each selectedCards as selectedCard}
-                <Card card={selectedCard} onclick={() => handleOnCardRemoved(selectedCard)} />
+        <div class="grid grid-flow-row grid-cols-10 gap-2 col-start-1 row-start-1 z-10 h-fit">
+            {#each selectedCards as selectedCard(selectedCard.selectedId)}
+                <div in:scale={{ start: 1.1 }} animate:flip={{ duration: 300 }}>
+                    <Card card={selectedCard} onclick={() => handleOnCardRemoved(selectedCard)} />
+                </div>
             {/each}
         </div>
     </div>
-    <div class="grid grid-flow-row grid-cols-6 gap-2">
-        {#each cards as card}
-            <div class="relative">
-                <Card {card} />
-                <div class="flex w-fit absolute bottom-0 right-0 bg-secondary p-1">
-                    <Button
-                        size="icon"
-                        onclick={() => handleOnCardAdded(card)}
-                        disabled={isMaximumCardsPresent(card)}
-                    >
-                        +
-                    </Button>
-                    <Button
-                        size="icon"
-                        onclick={() => handleOnCardRemoved(card)}
-                        disabled={isNoCardsPresent(card)}
-                    >
-                        -
-                    </Button>
+    <div class="space-y-4">
+        <div class="flex gap-2">
+            <input class="border" bind:value={searchValue} placeholder="search" />
+        </div>
+        <div class="grid grid-flow-row grid-cols-6 gap-2 h-fit">
+            {#each filteredCards as card}
+                <div class="relative h-min">
+                    <Card {card} onclick={card => handleOnCardAdded(card)} />
+                    {#if !isNoCardsPresent(card)}
+                        <div class="p-1 inset-0 absolute flex items-center justify-center bg-foreground/60 pointer-events-none text-background text-2xl">
+                            {countCards(card)} / 2
+                        </div>
+                        <Button
+                            class="absolute -top-[1rem] -left-[1rem] rounded-full size-8"
+                            size="icon"
+                            onclick={() => handleOnCardRemoved(card)}
+                            disabled={isNoCardsPresent(card)}
+                        >
+                            -
+                        </Button>
+                    {/if}
                 </div>
-            </div>
-        {/each}
+            {/each}
+        </div>
     </div>
 </div>

@@ -14,7 +14,7 @@
     onclick={() => onclick?.(card)}
     onkeypress={() => onclick?.(card)}
 >
-    <div class="aspect-[63/88]">
+    <div class="aspect-[63/88] active:scale-[0.95] transition-transform">
         <img class="size-full" src={card.imageUrl} alt={card.name} loading="lazy" />
     </div>
 </article>

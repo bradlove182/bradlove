@@ -1,9 +1,8 @@
 <script lang="ts">
-    import { DeckBuilder } from "$lib/components/deck-builder"
-    import { type PageData } from "./$types"
-
-    export let data: PageData
-
+    import { goto } from "$app/navigation"
+    import { Button } from "@repo/ui"
 </script>
 
-<DeckBuilder cards={data.cards} />
+<Button onclick={() => goto("/build")}>
+    Build Deck
+</Button>
