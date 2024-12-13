@@ -16,7 +16,7 @@ interface CardWithIdentifier extends CardInterface {
 
 function updateUrlCardState(ids: string[]) {
     const url = new URL(window.location.toString())
-    url.pathname = url.pathname.replace(/(\w)\/?([\w=-]*)$/, `$1/${encodeBase64url(ids.toString())}`)
+    url.pathname = url.pathname.replace(/(build)\/?([\w=-]*)$/, `$1/${encodeBase64url(ids.toString())}`)
     replaceState(url, {})
 }
 
