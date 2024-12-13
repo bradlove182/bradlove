@@ -1,9 +1,14 @@
 import type { CardInterface } from "$lib/types/card"
 import type { Deck } from "$lib/types/deck"
 import { replaceState } from "$app/navigation"
+import { encodeBase64url } from "$lib/crypto"
 import DeckBuilder from "./DeckBuilder.svelte"
 
-export interface Props extends Deck {}
+type SortFunction = (cards: CardWithIdentifier[]) => CardWithIdentifier[]
+
+export interface Props extends Deck {
+    initialCards?: string[]
+}
 
 interface CardWithIdentifier extends CardInterface {
     selectedId: string
@@ -11,22 +16,60 @@ interface CardWithIdentifier extends CardInterface {
 
 function updateUrlCardState(ids: string[]) {
     const url = new URL(window.location.toString())
-    url.searchParams.set("cards", ids.toString())
+    url.pathname = url.pathname.replace(/(\w)\/?([\w=-]*)$/, `$1/${encodeBase64url(ids.toString())}`)
     replaceState(url, {})
 }
 
-function addCardIdentierProperty(card: CardInterface): CardWithIdentifier {
+function addCardIdentifierProperty(card: CardInterface): CardWithIdentifier {
     const copy = structuredClone(card)
     return { ...copy, selectedId: crypto.randomUUID() }
 }
 
 function addCardToSelected(card: CardInterface, selectedCards: CardWithIdentifier[]) {
-    selectedCards.push(addCardIdentierProperty(card))
+    selectedCards.push(addCardIdentifierProperty(card))
+}
+
+function sortCards(sorts: SortFunction[], cards: CardWithIdentifier[]) {
+    sorts.forEach((sort) => {
+        sort(cards)
+    })
+}
+
+function sortByEvolution(cards: CardWithIdentifier[]) {
+    return cards.sort((a, b) => a.evolution && b.evolution ? a.evolution.localeCompare(b.evolution) : 0)
+}
+
+function sortByEx(cards: CardWithIdentifier[]) {
+    return cards.sort((a, b) => (a.ex === b.ex) ? 0 : a.ex ? 1 : -1)
+}
+
+function sortByType(cards: CardWithIdentifier[]) {
+    return cards.sort((a, b) => a.type && b.type ? a.type.localeCompare(b.type) : 0)
+}
+
+function sortByCategory(cards: CardWithIdentifier[]) {
+    return cards.sort((a, b) => a.category.localeCompare(b.category))
+}
+
+function sortByTrainerCategory(cards: CardWithIdentifier[]) {
+    return cards.sort(
+        (a, b) => (a.trainerSubcategory === b.trainerSubcategory)
+            ? 0
+            : a.trainerSubcategory && b.trainerSubcategory
+                ? a.trainerSubcategory.localeCompare(b.trainerSubcategory)
+                : 0,
+    )
 }
 
 export {
-    addCardIdentierProperty,
+    addCardIdentifierProperty,
     addCardToSelected,
     DeckBuilder,
+    sortByCategory,
+    sortByEvolution,
+    sortByEx,
+    sortByTrainerCategory,
+    sortByType,
+    sortCards,
     updateUrlCardState,
 }

@@ -13,22 +13,37 @@
     import { onMount, tick } from "svelte"
     import { flip } from "svelte/animate"
     import { scale } from "svelte/transition"
-    import { addCardToSelected, type Props, updateUrlCardState } from "."
+    import {
+        addCardToSelected,
+        type Props,
+        sortByCategory,
+        sortByEvolution,
+        sortByEx,
+        sortByTrainerCategory,
+        sortByType,
+        sortCards,
+        updateUrlCardState,
+    } from "."
 
-    const { cards }: Props = $props()
+    const { cards, initialCards = [] }: Props = $props()
 
-    const selectedCards = $state<CardWithIdentifier[]>([])
+    let selectedCards = $state<CardWithIdentifier[]>([])
     const selectedCardIds = $derived(selectedCards.map(selected => selected.id))
 
     let searchValue = $state<string>("")
 
-    const fuse = new Fuse(cards, { keys: [{
-        name: "name",
-        weight: 0.9,
-    }, {
-        name: "relatedCards",
-        weight: 0.7,
-    }] })
+    const sortOrder = [sortByEvolution, sortByEx, sortByCategory, sortByTrainerCategory, sortByType]
+
+    const fuse = new Fuse(cards, { keys: [
+        {
+            name: "name",
+            weight: 0.9,
+        },
+        {
+            name: "relatedCards",
+            weight: 0.7,
+        },
+    ] })
 
     const filteredCards = $derived.by(() => {
         const results = fuse.search(searchValue).map(item => item.item)
@@ -38,6 +53,16 @@
         }
 
         return results
+    })
+
+    onMount(() => {
+        initialCards.forEach((id) => {
+            const currentCard = cards.find(item => item.id === id)
+
+            if (currentCard) {
+                addCardToSelected(currentCard, selectedCards)
+            }
+        })
     })
 
     const countCards = (card: CardInterface): number => {
@@ -71,6 +96,7 @@
 
         addCardToSelected(card, selectedCards)
         await tick()
+        sortCards(sortOrder, selectedCards)
         updateUrlCardState(selectedCardIds)
     }
 
@@ -80,26 +106,10 @@
         if (index > -1) {
             selectedCards.splice(index, 1)
             await tick()
+            sortCards(sortOrder, selectedCards)
             updateUrlCardState(selectedCardIds)
         }
     }
-
-    onMount(() => {
-        const url = new URL(window.location.toString())
-        const queryCards = url.searchParams.get("cards")
-
-        if (queryCards) {
-            const cardArray = queryCards.split(",")
-
-            cardArray.forEach((id) => {
-                const currentCard = cards.find(item => item.id === id)
-
-                if (currentCard) {
-                    addCardToSelected(currentCard, selectedCards)
-                }
-            })
-        }
-    })
 
 </script>
 
@@ -113,7 +123,7 @@
             {/each}
         </div>
         <div class="grid grid-flow-row grid-cols-10 gap-2 col-start-1 row-start-1 z-10 h-fit">
-            {#each selectedCards as selectedCard(selectedCard.selectedId)}
+            {#each selectedCards as selectedCard (selectedCard.selectedId)}
                 <div in:scale={{ start: 1.1 }} animate:flip={{ duration: 300 }}>
                     <Card card={selectedCard} onclick={() => handleOnCardRemoved(selectedCard)} />
                 </div>
@@ -123,10 +133,14 @@
     <div class="space-y-4">
         <div class="flex gap-2">
             <input class="border" bind:value={searchValue} placeholder="search" />
+            <Button onclick={() => {
+                selectedCards = []
+                updateUrlCardState(selectedCardIds)
+            }}>Clear Selection</Button>
         </div>
         <div class="grid grid-flow-row grid-cols-6 gap-2 h-fit">
-            {#each filteredCards as card}
-                <div class="relative h-min">
+            {#each filteredCards as card (card.id)}
+                <div class="relative h-min" animate:flip={{ duration: 300 }}>
                     <Card {card} onclick={card => handleOnCardAdded(card)} />
                     {#if !isNoCardsPresent(card)}
                         <div class="p-1 inset-0 absolute flex items-center justify-center bg-foreground/60 pointer-events-none text-background text-2xl">

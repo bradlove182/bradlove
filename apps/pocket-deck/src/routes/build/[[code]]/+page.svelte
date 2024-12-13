@@ -2,8 +2,8 @@
     import { DeckBuilder } from "$lib/components/deck-builder"
     import { type PageData } from "./$types"
 
-    export let data: PageData
+    const { data }: { data: PageData } = $props()
 
 </script>
 
-<DeckBuilder cards={data.cards} />
+<DeckBuilder cards={data.cards} initialCards={data.initialCards} />

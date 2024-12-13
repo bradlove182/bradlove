@@ -1,6 +1,6 @@
 export type Category = "Pokemon" | "Trainer"
 
-export type Evolution = "Basic" | "Stage 1" | "Stage 2" | ["Stage 1" | "Stage 2" | "Basic", "ex"]
+export type Evolution = "Basic" | "Stage 1" | "Stage 2"
 
 export type PokemonType = "Grass" | "Fire" | "Water" | "Lightning" | "Psychic" | "Fighting" | "Colorless" | "Metal" | "Dragon" | "Darkness"
 
@@ -18,6 +18,7 @@ export interface CardInterface {
     name: string
     category: Category
     evolution?: Evolution
+    ex?: boolean
     type?: PokemonType
     trainerSubcategory?: TrainerSubcategory
     rarity: Rarity
