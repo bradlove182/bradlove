@@ -4,6 +4,6 @@
     const { children } = $props()
 </script>
 
-<main class="p-8">
+<main class="grid space-y-16">
     {@render children()}
 </main>
