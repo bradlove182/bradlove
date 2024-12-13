@@ -100,7 +100,7 @@
         updateUrlCardState(selectedCardIds)
     }
 
-    const handleOnCardRemoved = async (card: CardInterface) => {
+    const handleOnCardRemoved = async (card: CardInterface, all: boolean = false) => {
         const index = selectedCards.findIndex(selected => selected.id === card.id)
 
         if (index > -1) {
@@ -108,6 +108,10 @@
             await tick()
             sortCards(sortOrder, selectedCards)
             updateUrlCardState(selectedCardIds)
+        }
+
+        if (all) {
+            handleOnCardRemoved(card)
         }
     }
 
@@ -136,7 +140,9 @@
             <Button onclick={() => {
                 selectedCards = []
                 updateUrlCardState(selectedCardIds)
-            }}>Clear Selection</Button>
+            }}>
+                Clear Selection
+            </Button>
         </div>
         <div class="grid grid-flow-row grid-cols-6 gap-2 h-fit">
             {#each filteredCards as card (card.id)}
@@ -149,7 +155,7 @@
                         <Button
                             class="absolute -top-[1rem] -left-[1rem] rounded-full size-8"
                             size="icon"
-                            onclick={() => handleOnCardRemoved(card)}
+                            onclick={() => handleOnCardRemoved(card, true)}
                             disabled={isNoCardsPresent(card)}
                         >
                             -
