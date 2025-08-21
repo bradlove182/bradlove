@@ -27,7 +27,6 @@
         "./icons/**/*.ts",
         "./icons/**/*.svelte",
         "./utils/**/*.ts",
-        "tailwind.config.ts"
     ],
     "exclude": [
         "node_modules",

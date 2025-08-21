@@ -22,7 +22,7 @@
         "lint:fix": "eslint . --fix"
     },
     "dependencies": {
-        "bits-ui": "^2.9.3",
+        "bits-ui": "^2.9.4",
         "clsx": "^2.1.1",
         "tailwind-merge": "^3.3.1",
         "tailwind-variants": "^2.1.0",
@@ -30,12 +30,13 @@
     },
     "devDependencies": {
         "@antfu/eslint-config": "^5.2.1",
-        "@typescript-eslint/eslint-plugin": "^8.39.1",
-        "@typescript-eslint/parser": "^8.39.1",
+        "@typescript-eslint/eslint-plugin": "^8.40.0",
+        "@typescript-eslint/parser": "^8.40.0",
         "eslint": "9.33.0",
         "eslint-plugin-svelte": "^3.11.0",
-        "svelte": "^5.38.1",
+        "svelte": "^5.38.2",
         "svelte-eslint-parser": "^1.3.1",
+        "tw-animate-css": "^1.3.7",
         "typescript": "^5.9.2"
     }
 }

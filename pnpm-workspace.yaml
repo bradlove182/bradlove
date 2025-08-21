@@ -4,3 +4,5 @@ packages:
 
 onlyBuiltDependencies:
   - '@sveltejs/kit'
+  - esbuild
+  - unrs-resolver

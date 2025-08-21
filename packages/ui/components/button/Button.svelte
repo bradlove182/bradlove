@@ -14,7 +14,7 @@
 </script>
 
 <ButtonPrimitive.Root
-    class={cn(buttonVariants({ variant, size, className }))}
+    class={cn(buttonVariants({ variant, size }), className)}
     {...rest}
 >
     {@render children?.()}
