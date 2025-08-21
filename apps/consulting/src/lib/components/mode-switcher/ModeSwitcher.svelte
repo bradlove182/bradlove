@@ -23,9 +23,9 @@
 </script>
 
 <Button variant="ghost" size="icon" onclick={() => toggleMode()} class="overflow-hidden">
-    {#key $mode}
-        <span in:fly={flyAnimation($mode)} out:fly={{ duration: 0 }} class="absolute">
-            {#if $mode === "dark"}
+    {#key mode.current}
+        <span in:fly={flyAnimation(mode.current)} out:fly={{ duration: 0 }} class="absolute">
+            {#if mode.current === "dark"}
                 <IconMoon />
             {:else}
                 <IconSun />

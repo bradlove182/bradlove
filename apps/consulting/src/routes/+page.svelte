@@ -6,7 +6,7 @@
     <title>DRVN</title>
 </svelte:head>
 
-<section class="animate-slide-up container rounded-2xl min-h-[calc(100vh-106px)] w-full grid items-center px-16 relative    ">
+<section class="animate-slide-up container rounded-2xl min-h-[calc(100vh-106px)] w-full grid items-center px-16 relative">
     <div class="grid gap-6 max-w-2xl">
         <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">

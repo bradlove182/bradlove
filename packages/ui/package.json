@@ -12,8 +12,7 @@
             "default": "./index.ts"
         },
         "./themes/*": "./themes/*",
-        "./icons": "./icons/index.ts",
-        "./tailwind": "./tailwind.config.ts"
+        "./icons": "./icons/index.ts"
     },
     "main": "index.ts",
     "module": "index.ts",

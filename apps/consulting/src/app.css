@@ -1,4 +1,5 @@
-@import "@repo/ui/themes/slate.css";
+@import "tailwindcss";
+@import "@repo/ui/themes/rose.css";
 
 @font-face {
     font-family: "Geist";
