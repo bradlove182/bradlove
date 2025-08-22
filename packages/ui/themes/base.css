@@ -2,6 +2,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility animate-disco-border {
+    animation: disco-border 6s linear infinite;
+}
+
+@keyframes disco-border {
+    0% { transform: translateY(-50%) rotate(0deg) }
+    100% { transform: translateY(-50%) rotate(1turn) }
+}
+
 @theme inline {
     /* Radius (for rounded-*) */
     --radius-sm: calc(var(--radius) - 4px);

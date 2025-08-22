@@ -6,7 +6,7 @@
     <title>DRVN</title>
 </svelte:head>
 
-<section class="animate-slide-up container rounded-2xl min-h-[calc(100vh-106px)] w-full grid items-center px-16 relative">
+<section class="animate-in slide-in-from-bottom-5 fade-in duration-1000 container rounded-2xl min-h-[calc(100vh-106px)] w-full grid items-center px-16 relative">
     <div class="grid gap-6 max-w-2xl">
         <Pill>Limited Availability</Pill>
         <h1 class="text-7xl font-semibold leading-none tracking-tight">
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="h-[80vh] w-[80vh] rounded-full grid items-center absolute right-16 md:right-0 -z-10 top-1/2 -translate-y-1/2">
-        <AnimatePresence animations="animate-slide-up" class="grid h-[80vh] w-[80vh] items-center rounded-full">
+        <AnimatePresence animations="animate-in slide-in-from-bottom-5 fade-in" class="grid h-[80vh] w-[80vh] items-center rounded-full">
             <Pill class="row-start-1 col-start-1 justify-self-center px-0 py-0 bg-gradient-to-br from-transparent to-secondary shadow-2xl">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-[20vh] h-[20vh] p-[4vh]">
                     <path d="M416.9 93.1c-41.1-58.9-122.4-76.3-181.2-38.9L132.5 120c-28.2 17.7-47.6 46.5-53.5 79.3-4.9 27.3-.6 55.5 12.3 80-8.8 13.4-14.9 28.5-17.7 44.2-5.9 33.4 1.8 67.8 21.6 95.4 41.2 58.9 122.4 76.3 181.2 38.9L379.6 392c28.2-17.7 47.6-46.5 53.5-79.3 4.9-27.3.6-55.5-12.3-80 8.8-13.4 14.9-28.4 17.7-44.2 5.8-33.4-1.9-67.8-21.6-95.4" style="fill:#ff3e00" />

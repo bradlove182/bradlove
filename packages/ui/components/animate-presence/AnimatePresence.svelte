@@ -11,7 +11,6 @@
     const {
         tag = "div",
         animations = "",
-        delay = "",
         class: className = undefined,
         children,
         ...rest
@@ -37,7 +36,7 @@
             // Add the relevant elements animations to the observables map
             observables.set(element, (element: Element) => {
                 if (animations) {
-                    element.classList.add(animations)
+                    element.classList.add(...animations.split(" "))
                 }
             })
 
@@ -58,6 +57,6 @@
 
 </script>
 
-<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} style="animation-delay: {delay}" {...rest}>
+<svelte:element this={tag} bind:this={element} class={cn("opacity-0", className)} {...rest}>
     {@render children?.()}
 </svelte:element>

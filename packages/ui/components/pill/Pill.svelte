@@ -23,5 +23,5 @@
         {@render children?.()}
     </span>
     <span aria-hidden="true" class="absolute inset-0 z-0 bg-border pointer-events-none"></span>
-    <span aria-hidden="true" class="absolute inset-0 z-10 scale-x-[1.5] blur before:absolute before:inset-0 before:top-1/2 before:animate-disco-border before:bg-gradient-conic before:from-primary before:via-transparent before:to-transparent pointer-events-none"></span>
+    <span aria-hidden="true" class="absolute inset-0 z-10 scale-x-[1.5] blur before:absolute before:inset-0 before:top-1/2 before:animate-disco-border before:bg-conic before:from-primary before:via-transparent before:to-transparent pointer-events-none"></span>
 </svelte:element>
