@@ -11,7 +11,7 @@
 <svelte:window bind:scrollY />
 
 <header class={cn(
-    "animate-slide-down bg-background/50 sticky left-0 top-0 z-50 flex h-fit w-full items-center justify-between border-b border-transparent py-2 backdrop-blur-md transition duration-200 ease-in-out",
+    "animate-slide-down bg-background/50 sticky left-0 top-0 z-50 flex h-fit w-full items-center justify-center border-b border-transparent py-2 backdrop-blur-md transition duration-200 ease-in-out",
     scrollY > 5 ? "border-border" : "",
 )}>
     <div class="flex items-center container">

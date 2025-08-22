@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@import "@repo/ui/themes/rose.css";
+@import "@repo/ui/themes/neutral.css";
+
+@source "../node_modules/@repo/ui";
 
 @font-face {
     font-family: "Geist";

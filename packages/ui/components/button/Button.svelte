@@ -71,6 +71,5 @@
       {...restProps}
     >
       {@render children?.()}
-      ok
     </button>
   {/if}
