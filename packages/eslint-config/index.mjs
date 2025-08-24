@@ -1,5 +1,5 @@
 import antfu from "@antfu/eslint-config"
-import tailwind from "eslint-plugin-tailwindcss"
+import eslintPluginBetterTailwindcss from "eslint-plugin-better-tailwindcss"
 
 export default antfu(
     {
@@ -13,23 +13,15 @@ export default antfu(
         },
         ignores: ["node_modules", ".svelte-kit", ".turbo", "dist", "build"],
     },
-    ...tailwind.configs["flat/recommended"],
     {
-        settings: {
-            tailwindcss: {
-                callees: ["classnames", "clsx", "ctl", "cn"],
-                cssFiles: [
-                    "**/*.css",
-                    "**/*.svelte",
-                    "!**/node_modules",
-                    "!**/.*",
-                    "!**/dist",
-                    "!**/build",
-                ],
-            },
+        plugins: {
+            "better-tailwindcss": eslintPluginBetterTailwindcss,
         },
         rules: {
-            "tailwindcss/no-custom-classname": "off",
+            // enable all recommended rules to report a warning
+            ...eslintPluginBetterTailwindcss.configs["recommended-warn"].rules,
+            // enable all recommended rules to report an error
+            ...eslintPluginBetterTailwindcss.configs["recommended-error"].rules,
         },
     },
 )
