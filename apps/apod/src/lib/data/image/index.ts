@@ -1,4 +1,5 @@
 import { query } from "$app/server"
+import { env } from "$env/dynamic/private"
 import { queryRequest } from ".."
 
 export interface Image {
@@ -14,13 +15,12 @@ export interface ImageQueryParams {
     end_date: DateString
     count: number
     thumbs: boolean
-    api_key: string
 }
 
 const API_URL = "https://api.nasa.gov/planetary/apod"
 
 export function createImageQueryParams(params: ImageQueryParams) {
-    const { date, start_date, end_date, count, thumbs, api_key } = params
+    const { date, start_date, end_date, count, thumbs } = params
 
     const queryParams = new URLSearchParams()
 
@@ -34,8 +34,6 @@ export function createImageQueryParams(params: ImageQueryParams) {
         queryParams.set("count", count.toString())
     if (thumbs)
         queryParams.set("thumbs", "true")
-    if (api_key)
-        queryParams.set("api_key", api_key)
 
     return queryParams.toString()
 }
@@ -43,7 +41,7 @@ export function createImageQueryParams(params: ImageQueryParams) {
 export const getImage = query("unchecked", async (params: ImageQueryParams) => {
     const queryParams = createImageQueryParams(params)
 
-    const url = `${API_URL}?${queryParams}`
+    const url = `${API_URL}?${queryParams}&api_key=${env.NASA_API_KEY}`
 
     return queryRequest<Image>(url)
 })
