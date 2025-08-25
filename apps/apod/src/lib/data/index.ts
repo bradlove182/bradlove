@@ -29,8 +29,6 @@ export async function queryRequest<T>(url: string, options?: RequestInit): Promi
             }
         }
 
-        console.log(data)
-
         return {
             status: "error",
             error: { code: response.status, message: response.statusText },
