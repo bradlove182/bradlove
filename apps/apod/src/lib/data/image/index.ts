@@ -11,16 +11,15 @@ type DateString = `${string}-${string}-${string}`
 
 export interface ImageQueryParams {
     date: DateString
-    start_date: DateString
-    end_date: DateString
-    count: number
-    thumbs: boolean
+    start_date?: DateString
+    end_date?: DateString
+    thumbs?: boolean
 }
 
 const API_URL = "https://api.nasa.gov/planetary/apod"
 
 export function createImageQueryParams(params: ImageQueryParams) {
-    const { date, start_date, end_date, count, thumbs } = params
+    const { date, start_date, end_date, thumbs } = params
 
     const queryParams = new URLSearchParams()
 
@@ -30,8 +29,6 @@ export function createImageQueryParams(params: ImageQueryParams) {
         queryParams.set("start_date", start_date)
     if (end_date)
         queryParams.set("end_date", end_date)
-    if (count)
-        queryParams.set("count", count.toString())
     if (thumbs)
         queryParams.set("thumbs", "true")
 

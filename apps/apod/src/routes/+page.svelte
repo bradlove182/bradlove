@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+
+    const { data } = $props()
+</script>
+
+{#await data.image}
+    <p>Loading...</p>
+{:then { data: image, error }}
+    {#if image}
+        <img src={image.url} alt={image.title} />
+    {:else if error}
+        <p>Error: {error.message}</p>
+    {/if}
+{/await}
