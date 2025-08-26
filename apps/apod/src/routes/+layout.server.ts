@@ -1,10 +1,12 @@
 import type { LayoutServerLoad } from "./$types"
-import { getImage } from "$lib/data/image"
+import { createDateString, getImage } from "$lib/data/image"
 
 export const load: LayoutServerLoad = () => {
+    const date = createDateString(new Date())
+
     return {
         image: getImage({
-            date: "2025-08-24",
+            date,
             thumbs: true,
         }),
     }
