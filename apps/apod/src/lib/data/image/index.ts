@@ -96,8 +96,8 @@ export function createImageQueryParams(params: ImageQueryParams) {
         queryParams.set("end_date", params.end_date)
     }
 
-    if ("thumbs" in params) {
-        queryParams.set("thumbs", params.thumbs ? "true" : "false")
+    if ("thumbs" in params && params.thumbs) {
+        queryParams.set("thumbs", "true")
     }
 
     // Defensive check for unexpected fields in case callers widen the type
