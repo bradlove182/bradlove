@@ -6,6 +6,7 @@ export default antfu(
         svelte: true,
         rules: {
             "no-undef-init": "off",
+            "antfu/no-top-level-await": "off",
         },
         stylistic: {
             quotes: "double",
@@ -22,6 +23,8 @@ export default antfu(
             ...eslintPluginBetterTailwindcss.configs["recommended-warn"].rules,
             // enable all recommended rules to report an error
             ...eslintPluginBetterTailwindcss.configs["recommended-error"].rules,
+            // Overides
+            "better-tailwindcss/enforce-consistent-line-wrapping": ["error", { indent: 4 }],
         },
     },
 )

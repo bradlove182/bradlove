@@ -1,5 +1,6 @@
 <script lang="ts">
     import favicon from "$lib/assets/favicon.svg"
+    import { Navigation } from "$lib/components/navigation"
     import "../app.css"
 
     const { children } = $props()
@@ -9,4 +10,7 @@
     <link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children?.()}
+<main class="grid h-dvh w-full grid-rows-[auto_1fr] overflow-hidden">
+    <Navigation />
+    {@render children?.()}
+</main>
