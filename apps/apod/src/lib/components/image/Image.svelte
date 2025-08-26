@@ -1,34 +1,46 @@
 <script lang="ts" module>
-    import { createDateString } from "$lib/data/image/index"
-    import { getImageWithFallback } from "$lib/data/image/methods.remote"
+    import type { Image } from "$lib/data/image"
 
     export interface ImageProps {
-        date: Date
+        image: Image
     }
 
 </script>
 
 <script lang="ts">
-    const { date }: ImageProps = $props()
+    const { image }: ImageProps = $props()
 
     let ref: HTMLImageElement | null = $state(null)
+    let loading = $state(true)
+
+    $inspect(image)
+
+    const loadImage = async () => {
+        const img = new Image()
+        img.src = image.url ?? ""
+        img.onload = () => {
+            if (ref) {
+                ref.src = img.src
+                ref.alt = image.title
+                ref.classList.remove("hidden")
+            }
+            loading = false
+        }
+
+        img.onerror = () => {
+            ref?.classList.add("hidden")
+        }
+    }
+
+    $effect(() => {
+        loadImage()
+    })
 
 </script>
 
 <div class="grid size-full place-items-center">
-    {#await getImageWithFallback({ date: createDateString(date) })}
-        <p>Loading...</p>
-    {:then { data: image, error }}
-        {#if error}
-            <p>Error: {error.message}</p>
-        {:else}
-            <img
-                bind:this={ref}
-                src={image?.url}
-                class="h-full w-auto object-contain"
-                alt={image?.title}
-                loading="lazy"
-            />
-        {/if}
-    {/await}
+    {#if loading}
+        <p>Loading image...</p>
+    {/if}
+    <img bind:this={ref} class="h-full w-auto object-contain" alt="" loading="lazy" />
 </div>

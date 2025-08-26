@@ -1,4 +1,10 @@
-import type { z } from "zod"
+import { z } from "zod"
+
+export interface ErrorDetails {
+    code: number
+    message: string
+    details?: Record<string, string[] | undefined>
+}
 
 export interface SuccessResponse<T> {
     status: "success"
@@ -8,14 +14,19 @@ export interface SuccessResponse<T> {
 
 export interface ErrorResponse {
     status: "error"
-    error: {
-        code: number
-        message: string
-    }
+    error: ErrorDetails
     data: undefined
 }
 
 export type QueryResponse<T> = SuccessResponse<T> | ErrorResponse
+
+export function isErrorResponse(error: unknown): error is ErrorResponse {
+    return typeof error === "object" && error !== null && "status" in error && error.status === "error"
+}
+
+export function isErrorDetails(error: unknown): error is ErrorDetails {
+    return typeof error === "object" && error !== null && "code" in error && "message" in error
+}
 
 export async function queryRequest<T>(url: string, options?: RequestInit): Promise<QueryResponse<T>> {
     try {
@@ -60,11 +71,30 @@ export async function queryAndValidate<T>(
     options?: RequestInit,
 ): Promise<QueryResponse<T>> {
     const res = await queryRequest<unknown>(url, options)
+
     if (res.status === "success") {
         const parsed = schema.safeParse(res.data)
-        if (parsed.success)
-            return { status: "success", data: parsed.data, error: undefined }
-        return { status: "error", error: { code: 502, message: "Upstream schema mismatch" }, data: undefined }
+
+        if (parsed.success) {
+            return {
+                status: "success",
+                data: parsed.data,
+                error: undefined,
+            }
+        }
+
+        const formatted = z.flattenError(parsed.error)
+
+        return {
+            status: "error",
+            error: {
+                code: 502,
+                message: "Upstream schema mismatch",
+                details: formatted.fieldErrors,
+            },
+            data: undefined,
+        }
     }
+
     return res as QueryResponse<T>
 }

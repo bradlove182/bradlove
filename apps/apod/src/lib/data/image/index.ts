@@ -38,7 +38,7 @@ export type DateString = z.infer<typeof DateStringSchema>
 
 export const ImageSchema = z.object({
     title: z.string().min(1),
-    url: z.url().optional(), // image or video URL
+    url: z.url(), // image or video URL
     media_type: z.enum(["image", "video", "other"]),
     hdurl: z.url().optional(), // present for images
     thumbnail_url: z.url().optional(), // present when thumbs=true & media_type=video
