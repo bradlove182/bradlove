@@ -1,7 +1,5 @@
-import { query } from "$app/server"
 import { env } from "$env/dynamic/public"
 import { z } from "zod"
-import { queryAndValidate } from ".."
 
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 const MIN_APOD_DATE = "1995-06-16" // first APOD: June 16, 1995
@@ -39,14 +37,14 @@ export const DateStringSchema = z
 export type DateString = z.infer<typeof DateStringSchema>
 
 export const ImageSchema = z.object({
-    date: DateStringSchema,
     title: z.string().min(1),
-    url: z.url(), // image or video URL
-    media_type: z.enum(["image", "video"]),
+    url: z.url().optional(), // image or video URL
+    media_type: z.enum(["image", "video", "other"]),
     hdurl: z.url().optional(), // present for images
     thumbnail_url: z.url().optional(), // present when thumbs=true & media_type=video
     explanation: z.string().optional(), // don’t force consumers, but keep it available
     service_version: z.string().optional(),
+    copyright: z.string().optional(),
 })
 
 export type Image = z.infer<typeof ImageSchema>
@@ -110,18 +108,10 @@ export function createImageQueryParams(params: ImageQueryParams) {
     return queryParams.toString()
 }
 
-function createImageUrl(params: ImageQueryParams) {
+export function createImageUrl(params: ImageQueryParams) {
     const key = env.PUBLIC_NASA_API_KEY ?? "DEMO_KEY"
     const url = new URL(API_URL)
     url.search = createImageQueryParams(params)
     url.searchParams.set("api_key", key)
     return url.toString()
 }
-
-export const getImage = query(ImageSingleQueryParamsSchema, async (params: ImageSingleQueryParams) => {
-    return queryAndValidate<Image>(createImageUrl(params), ImageSchema)
-})
-
-export const getImages = query(ImageRangeQueryParamsSchema, async (params: ImageRangeQueryParams) => {
-    return queryAndValidate<Images>(createImageUrl(params), ImagesSchema)
-})
