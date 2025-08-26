@@ -1,3 +1,5 @@
+import type { z } from "zod"
+
 export interface SuccessResponse<T> {
     status: "success"
     data: T
@@ -50,4 +52,19 @@ export async function queryRequest<T>(url: string, options?: RequestInit): Promi
             data: undefined,
         }
     }
+}
+
+export async function queryAndValidate<T>(
+    url: string,
+    schema: z.ZodSchema<T>,
+    options?: RequestInit,
+): Promise<QueryResponse<T>> {
+    const res = await queryRequest<T>(url, options)
+    if (res.status === "success") {
+        const parsed = schema.safeParse(res.data)
+        if (parsed.success)
+            return { status: "success", data: parsed.data, error: undefined }
+        return { status: "error", error: { code: 502, message: "Upstream schema mismatch" }, data: undefined }
+    }
+    return res as QueryResponse<T>
 }

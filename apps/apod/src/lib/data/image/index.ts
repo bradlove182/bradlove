@@ -1,7 +1,7 @@
 import { query } from "$app/server"
 import { env } from "$env/dynamic/public"
 import { z } from "zod"
-import { queryRequest } from ".."
+import { queryAndValidate } from ".."
 
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
 const MIN_APOD_DATE = "1995-06-16" // first APOD: June 16, 1995
@@ -119,9 +119,9 @@ function createImageUrl(params: ImageQueryParams) {
 }
 
 export const getImage = query(ImageSingleQueryParamsSchema, async (params: ImageSingleQueryParams) => {
-    return queryRequest<Image>(createImageUrl(params))
+    return queryAndValidate<Image>(createImageUrl(params), ImageSchema)
 })
 
 export const getImages = query(ImageRangeQueryParamsSchema, async (params: ImageRangeQueryParams) => {
-    return queryRequest<Images>(createImageUrl(params))
+    return queryAndValidate<Images>(createImageUrl(params), ImagesSchema)
 })
