@@ -59,7 +59,7 @@ export async function queryAndValidate<T>(
     schema: z.ZodSchema<T>,
     options?: RequestInit,
 ): Promise<QueryResponse<T>> {
-    const res = await queryRequest<T>(url, options)
+    const res = await queryRequest<unknown>(url, options)
     if (res.status === "success") {
         const parsed = schema.safeParse(res.data)
         if (parsed.success)

@@ -1,23 +1,23 @@
 import type { LayoutServerLoad } from "./$types"
 import { createDateString, getImage } from "$lib/data/image"
 
-async function getImageWithFallback(date: string, thumbs: boolean) {
-    return getImage({ date, thumbs }).then(async (result) => {
-        // If today's image fails with 404, try yesterday
-        if (result.status === "error" && result.error?.code === 404) {
-            const yesterday = new Date()
-            yesterday.setUTCDate(yesterday.getUTCDate() - 1)
-            const fallbackDate = createDateString(yesterday)
-            return getImage({ date: fallbackDate, thumbs })
-        }
-        return result
-    })
+async function getTodaysImageWithFallback() {
+    const today = new Date()
+    const date = createDateString(today)
+
+    const todaysImage = await getImage({ date, thumbs: true })
+
+    if (todaysImage.status === "error" && todaysImage.error?.code === 404) {
+        const yesterday = new Date()
+        yesterday.setUTCDate(today.getUTCDate() - 1)
+        const fallbackDate = createDateString(yesterday)
+        return getImage({ date: fallbackDate, thumbs: true })
+    }
+    return todaysImage
 }
 
 export const load: LayoutServerLoad = () => {
-    const date = createDateString(new Date())
-
     return {
-        image: getImageWithFallback(date, true),
+        image: getTodaysImageWithFallback(),
     }
 }
