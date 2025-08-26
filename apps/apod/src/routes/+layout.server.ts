@@ -1,7 +1,9 @@
+import type { QueryResponse } from "$lib/data"
+import type { Image } from "$lib/data/image"
 import type { LayoutServerLoad } from "./$types"
 import { createDateString, getImage } from "$lib/data/image"
 
-async function getTodaysImageWithFallback() {
+async function getTodaysImageWithFallback(): Promise<QueryResponse<Image>> {
     const today = new Date()
     const date = createDateString(today)
 

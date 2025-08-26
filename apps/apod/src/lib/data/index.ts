@@ -56,7 +56,7 @@ export async function queryRequest<T>(url: string, options?: RequestInit): Promi
 
 export async function queryAndValidate<T>(
     url: string,
-    schema: z.ZodSchema<T>,
+    schema: z.ZodType<T>,
     options?: RequestInit,
 ): Promise<QueryResponse<T>> {
     const res = await queryRequest<unknown>(url, options)
