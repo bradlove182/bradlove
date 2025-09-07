@@ -1,8 +1,8 @@
 <script lang="ts" module>
-    import type { Image } from "$lib/data/image"
+    import type { APODImage } from "$lib/data/image"
 
     export interface ImageProps {
-        image: Image
+        image: APODImage
     }
 
 </script>
@@ -13,15 +13,13 @@
     let ref: HTMLImageElement | null = $state(null)
     let loading = $state(true)
 
-    $inspect(image)
-
-    const loadImage = async () => {
+    const loadImage = async (image: APODImage) => {
         const img = new Image()
-        img.src = image.url ?? ""
+        img.src = image.url
+
         img.onload = () => {
             if (ref) {
                 ref.src = img.src
-                ref.alt = image.title
                 ref.classList.remove("hidden")
             }
             loading = false
@@ -33,14 +31,21 @@
     }
 
     $effect(() => {
-        loadImage()
+        loadImage(image)
     })
 
 </script>
 
-<div class="grid size-full place-items-center">
+<div class="size-full">
     {#if loading}
         <p>Loading image...</p>
     {/if}
-    <img bind:this={ref} class="h-full w-auto object-contain" alt="" loading="lazy" />
+    <div class="flex h-auto w-full items-center justify-center">
+        <img
+            bind:this={ref}
+            class="hidden size-min object-contain"
+            alt={image.title}
+            loading="lazy"
+        />
+    </div>
 </div>

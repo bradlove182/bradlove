@@ -10,7 +10,9 @@
     <link rel="icon" href={favicon} />
 </svelte:head>
 
-<main class="grid h-dvh w-full grid-rows-[auto_1fr] overflow-hidden">
+<main class="grid h-full w-full grid-rows-[auto_1fr] overflow-hidden">
     <Navigation />
-    {@render children?.()}
+    <div class="overflow-hidden">
+        {@render children?.()}
+    </div>
 </main>
