@@ -1,6 +1,7 @@
 <script lang="ts" module>
     export interface ErrorDisplayProps {
         error: unknown
+        reset?: () => void
     }
 
 </script>
@@ -8,7 +9,7 @@
 <script lang="ts">
     import { isErrorDetails } from "$lib/data"
 
-    const { error }: ErrorDisplayProps = $props()
+    const { error, reset }: ErrorDisplayProps = $props()
 
     const stack = $derived.by(() => {
         if (error instanceof Error) {
@@ -45,5 +46,13 @@
                 <pre class="text-xs text-destructive/70">{JSON.stringify(details, null, 2)}</pre>
             {/if}
         </div>
+        {#if reset}
+            <button
+                class="rounded-md bg-destructive/10 px-4 py-2 text-destructive"
+                onclick={reset}
+            >
+                Reset
+            </button>
+        {/if}
     </div>
 </div>

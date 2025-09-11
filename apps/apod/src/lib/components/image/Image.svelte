@@ -40,10 +40,10 @@
     {#if loading}
         <p>Loading image...</p>
     {/if}
-    <div class="flex h-auto w-full items-center justify-center">
+    <div class="flex size-full items-center justify-center">
         <img
             bind:this={ref}
-            class="hidden size-min object-contain"
+            class="hidden size-full object-contain"
             alt={image.title}
             loading="lazy"
         />
