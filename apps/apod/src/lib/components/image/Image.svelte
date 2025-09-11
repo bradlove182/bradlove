@@ -1,14 +1,14 @@
 <script lang="ts" module>
     import type { APODImage } from "$lib/data/image"
 
-    export interface ImageProps {
+    export interface Props {
         image: APODImage
     }
 
 </script>
 
 <script lang="ts">
-    const { image }: ImageProps = $props()
+    const { image }: Props = $props()
 
     let ref: HTMLImageElement | null = $state(null)
     let loading = $state(true)
@@ -40,10 +40,10 @@
     {#if loading}
         <p>Loading image...</p>
     {/if}
-    <div class="flex size-full items-center justify-center">
+    <div class="flex h-auto w-full items-center justify-center">
         <img
             bind:this={ref}
-            class="hidden size-full object-contain"
+            class="hidden size-min object-contain"
             alt={image.title}
             loading="lazy"
         />

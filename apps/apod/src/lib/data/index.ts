@@ -3,7 +3,10 @@ import { z } from "zod"
 export interface ErrorDetails {
     code: number
     message: string
-    details?: Record<string, string[] | undefined>
+    details?: {
+        fieldErrors?: Record<string, string[]>
+        formErrors?: string[]
+    }
 }
 
 export interface SuccessResponse<T> {
@@ -20,13 +23,23 @@ export interface ErrorResponse {
 
 export type QueryResponse<T> = SuccessResponse<T> | ErrorResponse
 
-export function isErrorResponse(error: unknown): error is ErrorResponse {
-    return typeof error === "object" && error !== null && "status" in error && error.status === "error"
+/* eslint-disable ts/no-unsafe-member-access */
+export function isErrorResponse(val: unknown): val is ErrorResponse {
+    return typeof val === "object"
+        && val !== null
+        && (val as any).status === "error"
+        && "error" in (val as any)
+        && isErrorDetails((val as any).error)
+        && (val as any).data === undefined
 }
 
-export function isErrorDetails(error: unknown): error is ErrorDetails {
-    return typeof error === "object" && error !== null && "code" in error && "message" in error
+export function isErrorDetails(val: unknown): val is ErrorDetails {
+    return typeof val === "object"
+        && val !== null
+        && typeof (val as any).code === "number"
+        && typeof (val as any).message === "string"
 }
+/* eslint-enable ts/no-unsafe-member-access */
 
 export async function queryRequest<T>(url: string, options?: RequestInit): Promise<QueryResponse<T>> {
     try {

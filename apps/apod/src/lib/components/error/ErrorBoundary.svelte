@@ -2,13 +2,13 @@
     import type { Snippet } from "svelte"
     import { ErrorDisplay } from "."
 
-    export interface ErrorBoundaryProps {
+    export interface Props {
         children: Snippet<[]>
     }
 </script>
 
 <script lang="ts">
-    const { children }: ErrorBoundaryProps = $props()
+    const { children }: Props = $props()
 </script>
 
 <svelte:boundary>

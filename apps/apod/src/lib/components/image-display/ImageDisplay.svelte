@@ -4,26 +4,28 @@
     import { getImageWithFallback } from "$lib/data/image/methods.remote"
     import { ErrorBoundary, ErrorDisplay } from "../error"
 
-    export interface ImageDisplayProps {
+    export interface Props {
         date: DateString
     }
 </script>
 
 <script lang="ts">
-    const { date }: ImageDisplayProps = $props()
+    const { date }: Props = $props()
 </script>
 
 <ErrorBoundary>
     {#await getImageWithFallback({ date })}
-        <p>Loading...</p>
+        <p aria-live="polite">Loading...</p>
     {:then { data, error }}
         {#if error}
             <ErrorDisplay
                 error={error}
                 reset={() => getImageWithFallback({ date }).refresh()}
             />
-        {:else}
+        {:else if data}
             <Image image={data} />
+        {:else}
+            <p>No image found for {date}.</p>
         {/if}
     {/await}
 </ErrorBoundary>

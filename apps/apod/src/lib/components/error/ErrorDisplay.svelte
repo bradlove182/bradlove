@@ -1,5 +1,5 @@
 <script lang="ts" module>
-    export interface ErrorDisplayProps {
+    export interface Props {
         error: unknown
         reset?: () => void
     }
@@ -7,9 +7,11 @@
 </script>
 
 <script lang="ts">
+    import { dev } from "$app/environment"
+
     import { isErrorDetails } from "$lib/data"
 
-    const { error, reset }: ErrorDisplayProps = $props()
+    const { error, reset }: Props = $props()
 
     const stack = $derived.by(() => {
         if (error instanceof Error) {
@@ -20,6 +22,10 @@
     const message = $derived.by(() => {
         if (isErrorDetails(error) || error instanceof Error) {
             return error.message
+        }
+
+        if (typeof error === "string") {
+            return error
         }
 
         return "Unknown error"
@@ -33,21 +39,28 @@
 </script>
 
 <div class="grid size-full place-items-center p-4">
-    <div class="
+    <div role="alert" aria-live="polite" class="
         grid size-full place-items-center rounded border border-destructive
         bg-destructive/10 p-4 shadow
     ">
         <div class="grid grid-cols-1 gap-2">
             <p class="text-sm font-semibold text-destructive">Error: {message}</p>
-            {#if stack}
-                <pre class="text-xs text-destructive/70">{stack}</pre>
+            {#if dev && stack}
+                <pre class="
+                    max-h-64 overflow-auto text-xs break-words
+                    whitespace-pre-wrap text-destructive/70
+                ">{stack}</pre>
             {/if}
-            {#if details}
-                <pre class="text-xs text-destructive/70">{JSON.stringify(details, null, 2)}</pre>
+            {#if dev && details}
+                <pre class="
+                    max-h-64 overflow-auto text-xs break-words
+                    whitespace-pre-wrap text-destructive/70
+                ">{JSON.stringify(details, null, 2)}</pre>
             {/if}
         </div>
         {#if reset}
             <button
+                type="button"
                 class="rounded-md bg-destructive/10 px-4 py-2 text-destructive"
                 onclick={reset}
             >
