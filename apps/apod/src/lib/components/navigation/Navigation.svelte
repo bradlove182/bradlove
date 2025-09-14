@@ -1,19 +1,22 @@
 <script lang="ts">
-    import { Button, IconSun } from "@repo/ui"
+    import { Button, IconMoon } from "@repo/ui"
 </script>
 
-<header class="@container border-b border-border bg-background py-2">
-    <div class="flex items-center justify-between gap-2 px-4">
-        <span>APOD</span>
-        <nav>
-            <Button href="/">
+<header class="@container pointer-events-none fixed bottom-0 left-0 z-50 w-full border-b border-border py-2">
+    <div class="flex place-content-center">
+        <nav class="
+            pointer-events-auto flex items-center justify-center gap-1 rounded-md border border-border bg-background p-1
+            shadow-2xl
+        ">
+            <Button variant="secondary" size="icon">
+                <IconMoon />
+            </Button>
+            <Button variant="secondary" href="/">
                 Today
             </Button>
-        </nav>
-        <div class="flex items-center gap-2">
-            <Button variant="secondary" size="icon" href="/">
-                <IconSun />
+            <Button variant="secondary" size="icon">
+                <IconMoon />
             </Button>
-        </div>
+        </nav>
     </div>
 </header>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/state"
-    import ImageDisplay from "$lib/components/image-display/ImageDisplay.svelte"
+    import { ImageDisplay } from "$lib/components/image-display"
     import { createDateString } from "$lib/data/image"
 
     const { params } = $derived(page)

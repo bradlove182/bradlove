@@ -40,22 +40,15 @@
 
 <div class="grid size-full place-items-center p-4">
     <div role="alert" aria-live="polite" class="
-        grid size-full place-items-center rounded border border-destructive
-        bg-destructive/10 p-4 shadow
+        grid size-full place-items-center rounded border border-destructive bg-destructive/10 p-4 shadow
     ">
         <div class="grid grid-cols-1 gap-2">
             <p class="text-sm font-semibold text-destructive">Error: {message}</p>
             {#if dev && stack}
-                <pre class="
-                    max-h-64 overflow-auto text-xs break-words
-                    whitespace-pre-wrap text-destructive/70
-                ">{stack}</pre>
+                <pre class="max-h-64 overflow-auto text-xs break-words whitespace-pre-wrap text-destructive/70">{stack}</pre>
             {/if}
             {#if dev && details}
-                <pre class="
-                    max-h-64 overflow-auto text-xs break-words
-                    whitespace-pre-wrap text-destructive/70
-                ">{JSON.stringify(details, null, 2)}</pre>
+                <pre class="max-h-64 overflow-auto text-xs break-words whitespace-pre-wrap text-destructive/70">{JSON.stringify(details, null, 2)}</pre>
             {/if}
         </div>
         {#if reset}

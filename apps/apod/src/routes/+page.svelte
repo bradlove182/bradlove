@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ImageDisplay from "$lib/components/image-display/ImageDisplay.svelte"
+    import { ImageDisplay } from "$lib/components/image-display"
     import { createDateString } from "$lib/data/image"
 </script>
 
