@@ -23,7 +23,19 @@
                 reset={() => getImageWithFallback({ date }).refresh()}
             />
         {:else if data}
-            <Image image={data} />
+            <div class="relative size-full">
+                <div
+                    class="
+                        pointer-events-none absolute
+                        inset-0 -z-10
+                        bg-background/50 bg-cover
+                        bg-center bg-no-repeat
+                        blur-md
+                    "
+                    style="background-image: url({data.url})"
+                ></div>
+                <Image image={data} />
+            </div>
         {:else}
             <p>No image found for {date}.</p>
         {/if}
