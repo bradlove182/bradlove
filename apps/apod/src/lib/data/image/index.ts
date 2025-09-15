@@ -47,11 +47,11 @@ export const ImageSchema = z.object({
     copyright: z.string().optional(),
 })
 
-export type Image = z.infer<typeof ImageSchema>
+export type APODImage = z.infer<typeof ImageSchema>
 
 export const ImagesSchema = z.array(ImageSchema)
 
-export type Images = z.infer<typeof ImagesSchema>
+export type APODImages = z.infer<typeof ImagesSchema>
 
 export const ImageBaseQueryParamsSchema = z.object({
     thumbs: z.boolean().default(false),

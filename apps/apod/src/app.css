@@ -4,3 +4,7 @@
 @source "../node_modules/@repo/ui";
 
 @plugin "@tailwindcss/typography";
+
+body {
+    @apply h-dvh w-full max-h-dvh min-h-dvh;
+}

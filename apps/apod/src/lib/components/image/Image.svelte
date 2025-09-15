@@ -1,34 +1,56 @@
 <script lang="ts" module>
-    import { createDateString } from "$lib/data/image/index"
-    import { getImageWithFallback } from "$lib/data/image/methods.remote"
+    import type { APODImage } from "$lib/data/image"
+    import { ErrorDisplay } from "../error"
 
-    export interface ImageProps {
-        date: Date
+    export interface Props {
+        image: APODImage
     }
 
 </script>
 
 <script lang="ts">
-    const { date }: ImageProps = $props()
+    const { image }: Props = $props()
 
     let ref: HTMLImageElement | null = $state(null)
+    let status = $state<("loading" | "error" | "success")>("loading")
+
+    const loadImage = async (image: APODImage) => {
+        const img = new Image()
+        img.src = image.url
+
+        img.onload = () => {
+            if (ref) {
+                ref.src = img.src
+                ref.classList.remove("hidden")
+            }
+            status = "success"
+        }
+
+        img.onerror = () => {
+            status = "error"
+            ref?.classList.add("hidden")
+        }
+    }
+
+    $effect(() => {
+        loadImage(image)
+    })
 
 </script>
 
-<div class="grid size-full place-items-center">
-    {#await getImageWithFallback({ date: createDateString(date) })}
-        <p>Loading...</p>
-    {:then { data: image, error }}
-        {#if error}
-            <p>Error: {error.message}</p>
-        {:else}
-            <img
-                bind:this={ref}
-                src={image?.url}
-                class="h-full w-auto object-contain"
-                alt={image?.title}
-                loading="lazy"
-            />
-        {/if}
-    {/await}
+<div class="size-full">
+    {#if status === "loading"}
+        <p>Loading image...</p>
+    {/if}
+    {#if status === "error"}
+        <ErrorDisplay error="Error loading image" />
+    {/if}
+    <div class="flex h-full w-auto items-center justify-center">
+        <img
+            bind:this={ref}
+            class="hidden h-full w-auto object-contain"
+            alt={image.title}
+            loading="lazy"
+        />
+    </div>
 </div>

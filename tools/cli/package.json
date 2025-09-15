@@ -1,0 +1,26 @@
+{
+    "name": "cli",
+    "type": "module",
+    "version": "1.0.0",
+    "packageManager": "pnpm@10.16.1",
+    "description": "CLI tool for managing workspace dependencies",
+    "author": "",
+    "license": "ISC",
+    "keywords": [],
+    "main": "dist/index.js",
+    "bin": {
+        "workspace-update": "./dist/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "update-deps": "node dist/index.js --non-interactive"
+    },
+    "dependencies": {
+        "chalk": "^5.6.2"
+    },
+    "devDependencies": {
+        "@types/node": "^24.5.0",
+        "typescript": "^5.9.2"
+    }
+}

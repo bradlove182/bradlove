@@ -24,7 +24,14 @@ export default antfu(
             // enable all recommended rules to report an error
             ...eslintPluginBetterTailwindcss.configs["recommended-error"].rules,
             // Overides
-            "better-tailwindcss/enforce-consistent-line-wrapping": ["error", { indent: 4 }],
+            "better-tailwindcss/enforce-consistent-line-wrapping": [
+                "error",
+                {
+                    indent: 4,
+                    printWidth: 120,
+                    classesPerLine: 0,
+                },
+            ],
         },
     },
 )

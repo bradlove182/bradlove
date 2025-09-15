@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { Image } from "$lib/components/image"
+    import { ImageDisplay } from "$lib/components/image-display"
+    import { createDateString } from "$lib/data/image"
 </script>
 
-<Image date={new Date()} />
+<ImageDisplay date={createDateString(new Date())} />
