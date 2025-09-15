@@ -10,6 +10,7 @@
     import { dev } from "$app/environment"
 
     import { isErrorDetails } from "$lib/data"
+    import { Button } from "@repo/ui"
 
     const { error, reset }: Props = $props()
 
@@ -36,6 +37,12 @@
             return error.details
         }
     })
+
+    const code = $derived.by(() => {
+        if (isErrorDetails(error)) {
+            return error.code
+        }
+    })
 </script>
 
 <div class="grid size-full place-items-center p-4">
@@ -43,6 +50,9 @@
         grid size-full place-items-center rounded border border-destructive bg-destructive/10 p-4 shadow
     ">
         <div class="grid grid-cols-1 gap-2">
+            {#if code}
+                <p class="text-sm font-semibold text-destructive">Code: {code}</p>
+            {/if}
             <p class="text-sm font-semibold text-destructive">Error: {message}</p>
             {#if dev && stack}
                 <pre class="max-h-64 overflow-auto text-xs break-words whitespace-pre-wrap text-destructive/70">{stack}</pre>
@@ -50,15 +60,14 @@
             {#if dev && details}
                 <pre class="max-h-64 overflow-auto text-xs break-words whitespace-pre-wrap text-destructive/70">{JSON.stringify(details, null, 2)}</pre>
             {/if}
+            {#if reset}
+                <Button
+                    variant="destructive"
+                    onclick={reset}
+                >
+                    Retry
+                </Button>
+            {/if}
         </div>
-        {#if reset}
-            <button
-                type="button"
-                class="rounded-md bg-destructive/10 px-4 py-2 text-destructive"
-                onclick={reset}
-            >
-                Reset
-            </button>
-        {/if}
     </div>
 </div>
