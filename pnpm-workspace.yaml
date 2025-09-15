@@ -1,11 +1,12 @@
 packages:
-  - apps/*
-  - packages/*
+    -   apps/*
+    -   packages/*
+    -   tools/*
 
 ignoredBuiltDependencies:
-  - '@tailwindcss/oxide'
+    -   '@tailwindcss/oxide'
 
 onlyBuiltDependencies:
-  - '@sveltejs/kit'
-  - esbuild
-  - unrs-resolver
+    -   '@sveltejs/kit'
+    -   esbuild
+    -   unrs-resolver
