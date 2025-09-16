@@ -1,28 +1,39 @@
 <script lang="ts" module>
-    import type { DateString } from "$lib/data/image"
+    import type { APODImage, DateString } from "$lib/data/image"
     import { ErrorBoundary, ErrorDisplay } from "$lib/components/error"
     import { Image } from "$lib/components/image"
     import { Placeholder } from "$lib/components/placeholder"
     import { getImageWithFallback } from "$lib/data/image/methods.remote"
-    import ImageInfo from "./ImageInfo.svelte"
 
     export interface Props {
         date: DateString
+        onLoad?: (image: APODImage) => void
+        onError?: (error: unknown) => void
     }
 </script>
 
 <script lang="ts">
-    const { date }: Props = $props()
+    const { date, onLoad, onError }: Props = $props()
+
+    const getImageForDisplay = async (date: DateString) => {
+        const { data, error } = await getImageWithFallback({ date })
+        if (error) {
+            onError?.(error)
+            return { data: undefined, error }
+        }
+        onLoad?.(data)
+        return { data, error: undefined }
+    }
 </script>
 
 <ErrorBoundary>
-    {#await getImageWithFallback({ date })}
+    {#await getImageForDisplay(date)}
         <Placeholder class="size-full" />
     {:then { data, error }}
         {#if error}
             <ErrorDisplay
                 error={error}
-                reset={() => getImageWithFallback({ date }).refresh()}
+                reset={() => getImageForDisplay(date)}
             />
         {:else if data}
             <div class="relative size-full">
@@ -34,7 +45,6 @@
                     style="background-image: url({data.url})"
                 ></div>
                 <Image image={data} />
-                <ImageInfo image={data} />
             </div>
         {:else}
             <p>No image found for {date}.</p>

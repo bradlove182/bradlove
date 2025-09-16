@@ -1,9 +1,12 @@
 <script lang="ts">
     import favicon from "$lib/assets/favicon.svg"
     import { Navigation } from "$lib/components/navigation"
+    import { useImage } from "$lib/hooks/data"
     import "../app.css"
 
     const { children } = $props()
+
+    useImage()
 </script>
 
 <svelte:head>
