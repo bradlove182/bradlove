@@ -3,6 +3,7 @@
 import { spawn } from "node:child_process"
 import { access, readdir } from "node:fs/promises"
 import { dirname, join } from "node:path"
+import process from "node:process"
 import { fileURLToPath } from "node:url"
 import chalk from "chalk"
 
@@ -53,7 +54,7 @@ async function getWorkspaceFolders(): Promise<WorkspaceFolder[]> {
                 }
             }
         }
-        catch (error) {
+        catch {
             console.warn(chalk.yellow(`Warning: Could not read ${category} directory`))
         }
     }
@@ -76,15 +77,15 @@ function runNcu(folder: WorkspaceFolder, interactive: boolean = true): Promise<v
 
         if (!interactive) {
             // Capture output for non-interactive mode
-            let stdout = ""
-            let stderr = ""
+            let _stdout = ""
+            let _stderr = ""
 
             child.stdout?.on("data", (data) => {
-                stdout += data.toString()
+                _stdout += data.toString()
             })
 
             child.stderr?.on("data", (data) => {
-                stderr += data.toString()
+                _stderr += data.toString()
             })
         }
 
@@ -164,7 +165,7 @@ async function main() {
             try {
                 await runNcu(folder, interactive)
             }
-            catch (error) {
+            catch {
                 console.log(chalk.yellow(`⚠️  Continuing with next workspace...`))
             }
         }
