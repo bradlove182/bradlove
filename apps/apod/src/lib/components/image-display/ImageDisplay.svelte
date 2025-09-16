@@ -1,8 +1,9 @@
 <script lang="ts" module>
     import type { DateString } from "$lib/data/image"
+    import { ErrorBoundary, ErrorDisplay } from "$lib/components/error"
     import { Image } from "$lib/components/image"
+    import { Placeholder } from "$lib/components/placeholder"
     import { getImageWithFallback } from "$lib/data/image/methods.remote"
-    import { ErrorBoundary, ErrorDisplay } from "../error"
     import ImageInfo from "./ImageInfo.svelte"
 
     export interface Props {
@@ -16,7 +17,7 @@
 
 <ErrorBoundary>
     {#await getImageWithFallback({ date })}
-        <p aria-live="polite">Loading...</p>
+        <Placeholder class="size-full" />
     {:then { data, error }}
         {#if error}
             <ErrorDisplay

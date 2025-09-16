@@ -1,6 +1,6 @@
 <script lang="ts" module>
     import type { APODImage } from "$lib/data/image"
-    import { ErrorDisplay } from "../error"
+    import { ErrorDisplay } from "$lib/components/error"
 
     export interface Props {
         image: APODImage
@@ -16,19 +16,25 @@
 
     const loadImage = async (image: APODImage) => {
         const img = new Image()
+
+        if (!image.url) {
+            status = "error"
+            return
+        }
+
         img.src = image.url
 
         img.onload = () => {
             if (ref) {
                 ref.src = img.src
-                ref.classList.remove("hidden")
+                ref.classList.remove("invisible", "opacity-0")
             }
             status = "success"
         }
 
         img.onerror = () => {
             status = "error"
-            ref?.classList.add("hidden")
+            ref?.classList.add("invisible", "opacity-0")
         }
     }
 
@@ -39,16 +45,13 @@
 </script>
 
 <div class="size-full">
-    {#if status === "loading"}
-        <p>Loading image...</p>
-    {/if}
     {#if status === "error"}
-        <ErrorDisplay error="Error loading image" />
+        <ErrorDisplay error="Error loading image" reset={() => loadImage(image)} />
     {/if}
     <div class="flex h-full w-auto items-center justify-center">
         <img
             bind:this={ref}
-            class="hidden h-full w-auto object-contain"
+            class="invisible h-full w-auto object-contain opacity-0 transition-opacity duration-300"
             alt={image.title}
             loading="lazy"
         />
