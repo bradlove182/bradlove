@@ -2,7 +2,7 @@
     "name": "cli",
     "type": "module",
     "version": "1.0.0",
-    "packageManager": "pnpm@10.16.1",
+    "packageManager": "pnpm@10.17.1",
     "description": "CLI tool for managing workspace dependencies",
     "author": "",
     "license": "ISC",
@@ -20,7 +20,7 @@
         "chalk": "^5.6.2"
     },
     "devDependencies": {
-        "@types/node": "^24.5.0",
+        "@types/node": "^24.5.2",
         "typescript": "^5.9.2"
     }
 }
