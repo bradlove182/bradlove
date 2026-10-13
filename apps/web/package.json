@@ -19,7 +19,7 @@
         "@bradlove/ui": "workspace:*"
     },
     "devDependencies": {
-        "@sveltejs/adapter-auto": "catalog:",
+        "@sveltejs/adapter-cloudflare": "catalog:",
         "@sveltejs/kit": "catalog:",
         "@sveltejs/vite-plugin-svelte": "catalog:",
         "@tailwindcss/typography": "catalog:",
