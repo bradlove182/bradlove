@@ -1,5 +1,19 @@
 {
     "lsp": {
+        "vscode-css-language-server": {
+            "settings": {
+                "css": {
+                    "lint": {
+                        "unknownAtRules": "ignore"
+                    }
+                }
+            }
+        },
+        "tailwindcss-language-server": {
+            "settings": {
+                "classFunctions": ["tv", "cn"]
+            }
+        },
         "oxlint": {
             "initialization_options": {
                 "settings": {
@@ -46,6 +60,7 @@
             ]
         },
         "CSS": {
+            "language_servers": ["tailwindcss-language-server", "..."],
             "format_on_save": "on",
             "prettier": {
                 "allowed": false
@@ -142,6 +157,7 @@
                 "effect-tsgo",
                 "oxfmt",
                 "oxlint",
+                "tailwindcss-language-server",
                 "!vtsls",
                 "!typescript-language-server",
                 "!eslint",
@@ -163,6 +179,7 @@
             "language_servers": [
                 "effect-tsgo",
                 "oxlint",
+                "tailwindcss-language-server",
                 "!vtsls",
                 "!typescript-language-server",
                 "!eslint",

@@ -2,20 +2,15 @@
     "name": "@bradlove/core",
     "type": "module",
     "exports": {
-        "./ui/*": {
-            "import": "./src/ui/*"
-        },
-        "./schemes/*": {
+        "./schemas/*": {
             "import": "./src/schemas/*"
         }
-    },
-    "dependencies": {
-        "effect": "catalog:"
     },
     "devDependencies": {
         "@types/bun": "catalog:"
     },
     "peerDependencies": {
+        "effect": "catalog:",
         "typescript": "catalog:"
     }
 }

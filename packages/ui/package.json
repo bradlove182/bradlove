@@ -1,0 +1,31 @@
+{
+    "name": "@bradlove/ui",
+    "type": "module",
+    "imports": {
+        "#ui": "./src/index.ts",
+        "#ui/*": "./src/*"
+    },
+    "exports": {
+        "./*": {
+            "import": "./src/*"
+        }
+    },
+    "scripts": {
+        "check": "svelte-check --tsconfig ./tsconfig.json"
+    },
+    "devDependencies": {
+        "@fontsource-variable/geist-mono": "^5.3.0",
+        "@types/bun": "catalog:",
+        "cn": "^0.3.3",
+        "remixicon-svelte": "^0.0.5",
+        "shadcn-svelte": "^1.7.0",
+        "svelte-check": "catalog:",
+        "tailwind-variants": "^3.3.1",
+        "tw-animate-css": "^1.4.0",
+        "typescript": "catalog:ts6"
+    },
+    "peerDependencies": {
+        "svelte": "catalog:",
+        "tailwindcss": "catalog:"
+    }
+}
