@@ -50,7 +50,7 @@
 
 <header
     bind:this={header}
-    class="bg-background/10 sticky top-0 left-0 z-10 flex items-center justify-between border-b px-8 py-3 backdrop-blur"
+    class="bg-background/10 sticky top-0 left-0 z-10 flex h-(--header-height) items-center justify-between border-b px-8 backdrop-blur"
 >
     <a href="/" title="Home" class="bg-foreground size-4 rounded-full"></a>
     <NavigationMenu.Root class="hidden md:flex">
