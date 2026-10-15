@@ -8,19 +8,22 @@
 <script lang="ts">
     interface Props {
         word: string
+        /** `scramble` cycles random characters before settling; `slide` slides each letter up into place. */
+        variant?: "scramble" | "slide"
         /** Delay before the first letter starts, in ms. */
         delay?: number
         /** Gap between each letter starting, in ms. */
         stagger?: number
-        /** How long each letter scrambles before settling, in ms. */
+        /** How long each letter takes to reveal, in ms. */
         duration?: number
-        /** How often a scrambling letter swaps character, in ms. */
+        /** How often a scrambling letter swaps character, in ms. Only used by `scramble`. */
         interval?: number
         class?: string
     }
 
     const {
         word,
+        variant = "scramble",
         delay = 0,
         stagger = 60,
         duration = 600,
@@ -49,7 +52,7 @@
     $effect(() => {
         const end = total
         const step = interval
-        if (letters.length === 0) return
+        if (variant !== "scramble" || letters.length === 0) return
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             elapsed = Number.POSITIVE_INFINITY
@@ -77,6 +80,18 @@
 
 <span class={className}>
     <span class="sr-only">{word}</span>
+    {#if variant === "slide"}
+        <span aria-hidden="true"
+            >{#each letters as letter, index (index)}{#if letter.trim() === ""}{letter}{:else}<span
+                        class="-mb-[0.15em] inline-block overflow-x-visible overflow-y-clip pb-[0.15em] align-bottom"
+                        ><span
+                            class="slide inline-block"
+                            style:animation-delay="{delay + index * stagger}ms"
+                            style:animation-duration="{duration}ms">{letter}</span
+                        ></span
+                    >{/if}{/each}</span
+        >
+    {:else}
     <span aria-hidden="true"
         >{#each letters as letter, index (index)}{@const current =
                 shown[index]}{#if letter.trim() === ""}{letter}{:else}<span class="inline-grid"
@@ -88,4 +103,25 @@
                     ></span
                 >{/if}{/each}</span
     >
+    {/if}
 </span>
+
+<style>
+    .slide {
+        animation-name: slide-up;
+        animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        animation-fill-mode: both;
+    }
+
+    @keyframes slide-up {
+        from {
+            transform: translateY(110%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .slide {
+            animation: none;
+        }
+    }
+</style>

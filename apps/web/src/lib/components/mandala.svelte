@@ -10,6 +10,10 @@
         intensity?: number
         /** Element the mandala radiates from. Defaults to the canvas center. */
         center?: HTMLElement | null
+        /** Gap between each ring starting to fade in on load, in ms. */
+        introStagger?: number
+        /** How long each ring takes to fade in on load, in ms. */
+        introDuration?: number
         class?: string
     }
 
@@ -18,6 +22,8 @@
         speed = 0.0125,
         intensity = 1,
         center = null,
+        introStagger = 180,
+        introDuration = 900,
         class: className,
     }: Props = $props()
 
@@ -90,6 +96,14 @@
             }
         }
 
+        const intro = (ring: number) => {
+            if (motion.matches) return 1
+
+            const t = (time * 1000 - ring * introStagger) / introDuration
+            const clamped = Math.min(Math.max(t, 0), 1)
+            return 1 - (1 - clamped) ** 3
+        }
+
         const draw = () => {
             ctx.clearRect(0, 0, width, height)
 
@@ -104,7 +118,7 @@
 
             for (let ring = 0; ring < count; ring++) {
                 const progress = (ring / count + phase) % 1
-                const alpha = 0.32 * intensity * Math.sin(progress * Math.PI) ** 1.2
+                const alpha = 0.32 * intensity * Math.sin(progress * Math.PI) ** 1.2 * intro(ring)
                 if (alpha < 0.01) continue
 
                 ctx.globalAlpha = alpha * 0.8
@@ -114,7 +128,7 @@
                 )
             }
 
-            ctx.globalAlpha = 0.55 * intensity
+            ctx.globalAlpha = 0.55 * intensity * intro(0)
             ctx.beginPath()
             ctx.arc(cx, cy, 1.8, 0, TAU)
             ctx.fill()
