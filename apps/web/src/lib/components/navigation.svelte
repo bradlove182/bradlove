@@ -5,7 +5,14 @@
     import { RiMenu3Line } from "@bradlove/ui/icons/index.ts"
     import { cn } from "@bradlove/ui/utils.ts"
 
+    import { beforeNavigate } from "$app/navigation"
+
     let header = $state<HTMLElement | null>(null)
+    let open = $state(false)
+
+    beforeNavigate(() => {
+        open = false
+    })
 
     const items: { title: string; link: string; cta?: boolean }[] = [
         {
@@ -73,7 +80,7 @@
             {/each}
         </NavigationMenu.List>
     </NavigationMenu.Root>
-    <Popover.Root>
+    <Popover.Root bind:open>
         <Popover.Trigger
             class={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),

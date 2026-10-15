@@ -5,5 +5,9 @@
     const services = ["Design", "Build", "Scale", "Svelte", "Wordpress", "Figma", "Saas"]
 </script>
 
+<svelte:head>
+    <title>Bradley Love - Creative Developer</title>
+</svelte:head>
+
 <Hero />
 <Marquee items={services} />

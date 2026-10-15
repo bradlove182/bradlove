@@ -5,3 +5,37 @@
 :root {
     --header-height: calc(var(--spacing) * 13);
 }
+
+header {
+    view-transition-name: header;
+}
+
+::view-transition-old(root) {
+    animation: 400ms cubic-bezier(0.16, 1, 0.3, 1) both page-out;
+}
+
+::view-transition-new(root) {
+    animation: 800ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both page-in;
+}
+
+@keyframes page-out {
+    to {
+        opacity: 0;
+        filter: blur(0.5rem);
+    }
+}
+
+@keyframes page-in {
+    from {
+        opacity: 0;
+        filter: blur(0.5rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none;
+    }
+}
