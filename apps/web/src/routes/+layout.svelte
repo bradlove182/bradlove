@@ -1,23 +1,22 @@
+<script lang="ts" module>
+    export const prerender = true
+</script>
+
 <script lang="ts">
     import "./layout.css"
-    import { onNavigate } from "$app/navigation"
     import favicon from "#lib/assets/favicon.svg"
     import Navigation from "#lib/components/navigation.svelte"
+    import PageTransition from "#lib/features/page-transition/page-transition.svelte"
+    import {
+        PageTransitionContext,
+        setPageTransition,
+    } from "#lib/features/page-transition/page-transition.svelte.ts"
 
     import type { LayoutProps } from "./$types"
 
     let { children }: LayoutProps = $props()
 
-    onNavigate((navigation) => {
-        if (!document.startViewTransition || navigation.shallow) return
-
-        return new Promise((resolve) => {
-            document.startViewTransition(async () => {
-                resolve()
-                await navigation.complete
-            })
-        })
-    })
+    const transition = setPageTransition(new PageTransitionContext())
 </script>
 
 <svelte:head>
@@ -26,3 +25,4 @@
 
 <Navigation />
 {@render children()}
+<PageTransition />

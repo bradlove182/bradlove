@@ -128,10 +128,6 @@
                 )
             }
 
-            ctx.globalAlpha = 0.55 * intensity * intro(0)
-            ctx.beginPath()
-            ctx.arc(cx, cy, 1.8, 0, TAU)
-            ctx.fill()
             ctx.globalAlpha = 1
         }
 

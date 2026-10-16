@@ -12,7 +12,7 @@
 </script>
 
 <section
-    class="flex min-h-[calc(100svh-var(--header-height))] flex-col justify-end gap-8 px-8 pt-24 pb-8"
+    class="flex min-h-[calc(100svh-var(--header-height))] flex-col justify-start gap-8 px-8 pt-24 pb-8"
 >
     <p
         class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both text-muted-foreground text-xs tracking-wider uppercase duration-800"

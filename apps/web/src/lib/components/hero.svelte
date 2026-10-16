@@ -4,9 +4,9 @@
     import Mandala from "./mandala.svelte"
     import WordReveal from "./word-reveal.svelte"
 
-    let mark = $state<HTMLElement | null>(null)
-
     const currentYear = new Date(Date.now()).getUTCFullYear()
+
+    let mark = $state<HTMLElement | null>(null)
 </script>
 
 <section
@@ -16,7 +16,8 @@
     <div class="mx-auto flex w-full flex-1 flex-col justify-center gap-24 px-8 pt-24 pb-8">
         <div
             bind:this={mark}
-            class="border-border bg-background/10 absolute top-1/2 left-1/2 -z-10 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center self-center rounded-full border text-sm font-medium backdrop-blur-xs"
+            class="border-border animate-in fade-in fill-mode-both bg-background/10 absolute left-1/2 -z-10 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center self-center rounded-full border text-sm font-medium backdrop-blur-xs duration-500"
+            style:top="calc(50% - var(--header-height) / 2)"
         ></div>
         <div
             class="text-muted-foreground grid grid-cols-[1fr_auto_1fr] gap-4 text-xs tracking-wider uppercase"

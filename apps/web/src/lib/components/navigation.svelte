@@ -1,11 +1,12 @@
 <script lang="ts">
+    import { beforeNavigate } from "$app/navigation"
     import { buttonVariants } from "@bradlove/ui/base/button/variants.ts"
     import * as NavigationMenu from "@bradlove/ui/base/navigation-menu/index.ts"
     import * as Popover from "@bradlove/ui/base/popover/index.ts"
     import { RiMenu3Line } from "@bradlove/ui/icons/index.ts"
     import { cn } from "@bradlove/ui/utils.ts"
 
-    import { beforeNavigate } from "$app/navigation"
+    import Logo from "./logo.svelte"
 
     let header = $state<HTMLElement | null>(null)
     let open = $state(false)
@@ -59,7 +60,10 @@
     bind:this={header}
     class="bg-background/10 sticky top-0 left-0 z-10 flex h-(--header-height) items-center justify-between border-b px-8 backdrop-blur"
 >
-    <a href="/" title="Home" class="bg-foreground size-4 rounded-full"></a>
+    <a href="/" title="Home" class="text-foreground">
+        <Logo class="size-8" />
+        <span class="sr-only">Home</span>
+    </a>
     <NavigationMenu.Root class="hidden md:flex">
         <NavigationMenu.List class="gap-4">
             {#each items as item (item.link)}
