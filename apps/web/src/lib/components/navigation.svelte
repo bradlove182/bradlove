@@ -58,7 +58,7 @@
 
 <header
     bind:this={header}
-    class="bg-background/10 sticky top-0 left-0 z-10 flex h-(--header-height) items-center justify-between border-b px-8 backdrop-blur"
+    class="bg-background/80 sticky top-0 left-0 z-10 flex h-(--header-height) items-center justify-between border-b px-8 backdrop-blur-2xl"
 >
     <a href="/" title="Home" class="text-foreground">
         <Logo class="size-8" />

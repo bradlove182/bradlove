@@ -1,3 +1,5 @@
 export { default as RiArrowDownSLine } from "remixicon-svelte/icons/arrow-down-s-line"
+export { default as RiArrowRightLine } from "remixicon-svelte/icons/arrow-right-line"
+export { default as RiArrowUpLine } from "remixicon-svelte/icons/arrow-up-line"
 export { default as RiMenu3Line } from "remixicon-svelte/icons/menu-3-line"
 export { default as RiAsterisk } from "remixicon-svelte/icons/asterisk"
