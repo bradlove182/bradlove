@@ -1,0 +1,24 @@
+{
+    "name": "@bradlove/motion",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./src/index.ts",
+            "svelte": "./src/index.ts",
+            "default": "./src/index.ts"
+        },
+        "./motion.css": "./src/motion.css"
+    },
+    "scripts": {
+        "check": "svelte-check --tsconfig ./tsconfig.json"
+    },
+    "devDependencies": {
+        "svelte-check": "catalog:",
+        "typescript": "catalog:ts6"
+    },
+    "peerDependencies": {
+        "svelte": "catalog:",
+        "tailwindcss": "catalog:",
+        "tw-animate-css": "catalog:"
+    }
+}

@@ -4,16 +4,11 @@
     import Footer from "#lib/components/footer.svelte"
     import Navigation from "#lib/components/navigation.svelte"
     import PageTransition from "#lib/components/page-transition/page-transition.svelte"
-    import {
-        PageTransitionContext,
-        setPageTransition,
-    } from "#lib/components/page-transition/page-transition.svelte.ts"
+    import { MotionProvider } from "@bradlove/motion"
 
     import type { LayoutProps } from "./$types"
 
     let { children }: LayoutProps = $props()
-
-    setPageTransition(new PageTransitionContext())
 </script>
 
 <svelte:head>
@@ -21,7 +16,9 @@
     <title>Web Design and Development Projects | Bradley Love</title>
 </svelte:head>
 
-<Navigation />
-{@render children()}
-<Footer />
-<PageTransition />
+<MotionProvider>
+    <Navigation />
+    {@render children()}
+    <Footer />
+    <PageTransition />
+</MotionProvider>

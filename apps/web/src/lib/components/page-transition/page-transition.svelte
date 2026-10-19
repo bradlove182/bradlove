@@ -5,14 +5,11 @@
     import WordReveal from "#lib/components/word-reveal.svelte"
 
     import { lotus } from "./lotus.ts"
-    import { getPageTransition } from "./page-transition.svelte.ts"
 
     const EASE = "cubic-bezier(0.65, 0, 0.35, 1)"
     const BLOOM = "cubic-bezier(0.22, 1, 0.36, 1)"
     const STAGGER = 80
     const HOLD = 250
-
-    const transition = getPageTransition()
 
     let active = $state(false)
     let destination = $state<App.PageData | null>(null)
@@ -80,7 +77,6 @@
         ])
 
     const reveal = async () => {
-        transition.ready = true
         await uncover()
 
         destination = null
@@ -105,7 +101,6 @@
         await covered
         await wait(HOLD)
 
-        transition.ready = false
         navigation.complete.then(reveal, reveal)
     })
 </script>

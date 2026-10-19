@@ -1,56 +1,82 @@
-# sv
+# @bradlove/web
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The SvelteKit site behind [bradlove.dev](https://bradlove.dev). Svelte 5 with runes, Tailwind CSS 4, every page prerendered, and served from a Cloudflare Worker.
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+From this directory:
 
 ```sh
-# recreate this project
-bun x sv@1.1.1 create --template minimal --types ts --add prettier tailwindcss="plugins:typography" --install bun ./web
+bun run dev       # Vite dev server, opens the browser
+bun run check     # svelte-kit sync + svelte-check
+bun run build     # production build to .svelte-kit/cloudflare
+bun run preview   # preview the production build
 ```
 
-## Adding features
+From the repo root, `bun run dev` runs this same dev server through the Alchemy dev stack.
 
-Add features to your project with `sv add`:
+## Structure
 
-```sh
-npx sv add
+```
+src/
+  app.d.ts                  App.PageData: every page returns { title, description }
+  lib/
+    assets/                 favicon
+    components/
+      page-transition/      Lotus route transition (overlay, lotus.ts geometry)
+      hero.svelte           Home hero with the logo mark
+      logo.svelte           12-petal rosette logo
+      mandala.svelte        Animated mandala drawing
+      marquee.svelte        Scrolling keyword marquee
+      navigation.svelte     Header and mobile menu
+      page-header.svelte    Shared page heading
+      word-reveal.svelte    Per-letter text reveal
+      footer.svelte
+  routes/
+    +layout.svelte          Navigation, MotionProvider, page transition, footer
+    +layout.ts              prerender = true
+    layout.css              Tailwind, @bradlove/ui theme, @bradlove/motion presets
+    +page.svelte            Home
+    about/  work/  services/  contact/
 ```
 
-For example, to add Tailwind CSS:
+Imports use the `#lib/*` alias, mapped to `src/lib/*` in `package.json` under `imports`.
 
-```sh
-npx sv add tailwindcss
+## Pages
+
+Each route has a `+page.ts` that returns `title` and `description`. The page transition preloads this data for the destination and shows it on the overlay while the next page loads.
+
+To add a page, create `src/routes/<name>/+page.svelte` and a `+page.ts`:
+
+```ts
+import type { PageLoad } from "./$types"
+
+export const load: PageLoad = () => ({
+    title: "Name",
+    description: "Short tagline",
+})
 ```
 
-## Developing
+Then add it to the links in `navigation.svelte`.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Page transition
 
-```sh
-npm run dev
+`page-transition.svelte` hooks into `onNavigate`. On each navigation it:
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+1. Blooms lotus petal rings over the page.
+2. Preloads the destination's data and shows its title.
+3. Swaps the route while the page is covered.
+4. Uncovers the new page.
 
-## Building
+The transition is skipped for shallow routing, same-path links and `prefers-reduced-motion`.
 
-To create a production version of your app:
+## Shared packages
 
-```sh
-npm run build
-```
+| Package            | Used for                                                                    |
+| ------------------ | --------------------------------------------------------------------------- |
+| `@bradlove/ui`     | Theme (`theme.css`), base components (button, navigation menu, popover, sheet), icons, `cn` |
+| `@bradlove/motion` | Scroll-triggered animations: `M.*` components and presets; see [its README](../../packages/motion/README.md) |
 
-You can preview the production build with `npm run preview`.
+## Deployment
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Built with `@sveltejs/adapter-cloudflare` and deployed as a Cloudflare Worker by the Alchemy stack at the repo root. See the [root README](../../README.md#deployment).

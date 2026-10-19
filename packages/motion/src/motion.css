@@ -1,0 +1,55 @@
+/*
+ * Presets for elements with [data-motion]. Built on tw-animate-css, which must be imported first.
+ * Per-element overrides: --motion-duration, --motion-ease, --motion-delay, or any tw-animate utility class.
+ */
+@layer components {
+    [data-motion] {
+        --tw-animation-duration: var(--motion-duration, 600ms);
+        --tw-ease: var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+        @apply fill-mode-both;
+    }
+
+    /* Delay applies to entering only, so elements leave promptly. */
+    [data-motion][data-animation-state="show"] {
+        --tw-animation-delay: var(--motion-delay, 0ms);
+        @apply animate-in;
+    }
+
+    [data-motion][data-animation-state="hide"] {
+        @apply animate-out;
+    }
+
+    /* Hidden until the observer reports, so content does not flash before animating in. */
+    @media (scripting: enabled) {
+        [data-motion]:not([data-animation-state]) {
+            opacity: 0;
+        }
+    }
+
+    [data-motion="fade"] {
+        @apply fade-in fade-out;
+    }
+
+    [data-motion="rise"] {
+        @apply fade-in fade-out slide-in-from-bottom-8 slide-out-to-bottom-8;
+    }
+
+    [data-motion="blur"] {
+        @apply fade-in fade-out blur-in-8 blur-out-8;
+    }
+
+    [data-motion="scale"] {
+        @apply fade-in fade-out zoom-in-95 zoom-out-95;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        [data-motion] {
+            --tw-enter-translate-y: 0;
+            --tw-exit-translate-y: 0;
+            --tw-enter-scale: 1;
+            --tw-exit-scale: 1;
+            --tw-enter-blur: 0;
+            --tw-exit-blur: 0;
+        }
+    }
+}
