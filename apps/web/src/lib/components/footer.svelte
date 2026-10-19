@@ -1,11 +1,16 @@
 <script lang="ts">
     import { M } from "@bradlove/motion"
-    import { Button } from "@bradlove/ui/components/base/button/index.js"
-    import { RiArrowRightLine, RiArrowUpLine } from "@bradlove/ui/icons/index.js"
+    import { RiArrowUpLine } from "@bradlove/ui/icons/index.js"
 </script>
 
 <footer class="mt-10 flex flex-col border-t px-8 pt-32 pb-8">
-    <p class="text-muted-foreground text-xs tracking-wider uppercase">Got something in mind?</p>
+    <M.p
+        animation="rise"
+        duration={800}
+        class="text-muted-foreground text-xs tracking-wider uppercase"
+    >
+        Got something in mind?
+    </M.p>
     <a href="/contact" class="inline-flex w-fit items-center gap-8 text-[clamp(1rem,10vw,14rem)]">
         <M.span
             letters="focus"

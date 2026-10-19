@@ -21,7 +21,7 @@ export class MotionContext {
     // Created on first use so construction is safe during SSR, where attachments never run.
     add = (element: Element) => {
         this.observer ??= new IntersectionObserver(this.handler, {
-            threshold: 0.1,
+            threshold: 0.5,
             ...this.options,
         })
         this.observer.observe(element)
