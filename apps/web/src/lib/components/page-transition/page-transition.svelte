@@ -2,7 +2,7 @@
     import { onNavigate, preloadData } from "$app/navigation"
     import { tick } from "svelte"
 
-    import WordReveal from "#lib/components/word-reveal.svelte"
+    import { M } from "@bradlove/motion"
 
     import { lotus } from "./lotus.ts"
 
@@ -143,17 +143,15 @@
                 >
                     (Next)
                 </p>
-                <p
+                <M.p
+                    letters="focus"
+                    delay={200}
+                    duration={650}
+                    stagger={16}
                     class="text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
                 >
-                    <WordReveal
-                        variant="focus"
-                        delay={200}
-                        duration={650}
-                        stagger={16}
-                        word={destination.title}
-                    />
-                </p>
+                    {destination.title}
+                </M.p>
                 <p
                     class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both text-muted-foreground max-w-96 text-xs tracking-wider uppercase delay-100 duration-500"
                 >

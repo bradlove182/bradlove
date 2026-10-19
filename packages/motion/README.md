@@ -62,17 +62,19 @@ This registers one shared observer for every descendant. The provider is optiona
 
 <M.h2 animation="rise">Selected work</M.h2>
 <M.div animation="fade" delay={200} class="grid gap-4">...</M.div>
-<M.span animation="blur" duration={900} once>(Hello)</M.span>
+<M.span animation="blur" duration={900} repeat>(Hello)</M.span>
 ```
 
-Supported tags: `div`, `span`, `h1`, `h2`, `h3`. To add one, extend `supportedTags` in `src/types.ts`.
+Supported tags: `div`, `span`, `p`, `h1`, `h2`, `h3`. To add one, extend `supportedTags` in `src/types.ts`. Tags with very large attribute types, such as `a`, make the props type too complex for TypeScript.
 
-| Prop        | Type                                     | Default | Description                                                                     |
-| ----------- | ---------------------------------------- | ------- | ------------------------------------------------------------------------------- |
-| `animation` | `"fade" \| "rise" \| "blur" \| "scale"` | none    | Preset from `motion.css`. Omit it to style the state yourself (see below).      |
-| `delay`     | `number` (ms)                            | `0`     | Delay before entering. Leaving is never delayed.                                |
-| `duration`  | `number` (ms)                            | `600`   | Animation duration.                                                             |
-| `once`      | `boolean`                                | `false` | Animate in the first time only; the element stays visible after that.           |
+| Prop        | Type                                         | Default                 | Description                                                                |
+| ----------- | -------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
+| `animation` | `"fade" \| "rise" \| "blur" \| "scale"`     | none                    | Element preset. Omit it to style the state yourself (see below).           |
+| `letters`   | `"bloom" \| "grow" \| "focus" \| "wave"`    | none                    | Per-letter animation of the element's text. Combines with `animation`.     |
+| `delay`     | `number` (ms)                                | `0`                     | Delay before entering; for `letters`, before the first letter. Leaving is never delayed. |
+| `duration`  | `number` (ms)                                | `600`, or `1800` per letter | Animation duration.                                                    |
+| `stagger`   | `number` (ms)                                | `110`                   | Gap between letters starting. Only used with `letters`.                    |
+| `repeat`    | `boolean`                                    | `false`                 | Animate out on leaving the viewport and in again on return. Without it, elements animate in once and stay visible. |
 
 ### Presets
 
@@ -87,6 +89,44 @@ Presets live in the components CSS layer, so any Tailwind or `tw-animate-css` cl
 
 ```svelte
 <M.div animation="rise" class="slide-in-from-bottom-24 ease-out">...</M.div>
+```
+
+### Letter animations
+
+`letters` splits the element's text into letters and staggers them in. Write the text as normal children; no `text` prop is needed.
+
+```svelte
+<M.h1 letters="bloom">Bradley</M.h1>
+<M.p letters="grow" stagger={40}>I design and build websites.</M.p>
+<M.h2 animation="rise" letters="focus" delay={200}>{title}</M.h2>
+```
+
+| Variant | Effect                                                         |
+| ------- | -------------------------------------------------------------- |
+| `bloom` | Letters scale out of a blur, radiating from the middle letter  |
+| `grow`  | Font weight swells from hairline to its final weight           |
+| `focus` | Letters drift together out of a wide, blurred spread           |
+| `wave`  | Letters spring up on a sine-wave stagger                       |
+
+How it works:
+
+- The server renders plain text, which is good for SEO and avoids a hydration mismatch. The `splitLetters` attachment splits it in the browser before the element is revealed.
+- Each original text node moves into a visually hidden label, so screen readers read whole words. The letters are `aria-hidden`.
+- Words never break across lines mid-word.
+- When the text changes, for example `{title}`, the letters rebuild automatically.
+- Text inside nested elements is split too, and the elements are kept.
+- `grow` animates `font-weight`, so it needs a variable font.
+
+To use letters on an element `M` doesn't cover:
+
+```svelte
+<script lang="ts">
+    import { splitLetters, useMotion } from "@bradlove/motion"
+
+    const [motion] = useMotion()
+</script>
+
+<blockquote {@attach motion} {@attach splitLetters({ variant: "wave" })} data-letters="wave">...</blockquote>
 ```
 
 ### Custom animations
@@ -150,5 +190,5 @@ Set these on an element, or on an ancestor, to tune presets:
 
 - **SSR:** elements render on the server with no state. Elements using a preset stay hidden until the observer first reports, then animate in. This only happens when JavaScript is enabled, so content is never lost without it.
 - **Reduced motion:** with `prefers-reduced-motion: reduce`, presets drop slide, scale and blur and keep only the fade.
-- **Repeat:** elements animate out when they leave the viewport and in again when they return, unless `once` is set.
+- **Once by default:** elements animate in the first time they enter the viewport and then stop being observed. Set `repeat` (or `data-motion-repeat` when using `useMotion` directly) to animate out on leaving and in again on return.
 - **Cleanup:** elements stop being observed when they unmount, and the observer disconnects when its provider is destroyed.

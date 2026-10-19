@@ -12,7 +12,7 @@ export class MotionContext {
                 "data-animation-state",
                 entry.isIntersecting ? "show" : "hide",
             )
-            if (entry.isIntersecting && entry.target.hasAttribute("data-motion-once")) {
+            if (entry.isIntersecting && !entry.target.hasAttribute("data-motion-repeat")) {
                 this.remove(entry.target)
             }
         })

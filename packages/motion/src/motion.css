@@ -21,7 +21,7 @@
 
     /* Hidden until the observer reports, so content does not flash before animating in. */
     @media (scripting: enabled) {
-        [data-motion]:not([data-animation-state]) {
+        :is([data-motion], [data-letters]):not([data-animation-state]) {
             opacity: 0;
         }
     }
@@ -42,6 +42,79 @@
         @apply fade-in fade-out zoom-in-95 zoom-out-95;
     }
 
+    /*
+     * Letter animations for [data-letters], split into spans by splitLetters.
+     * Per-letter delays are set inline; duration comes from --motion-duration.
+     */
+    .motion-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .motion-word {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .motion-letter {
+        display: inline-block;
+        animation-duration: var(--motion-duration, 1800ms);
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        animation-fill-mode: both;
+    }
+
+    [data-letters][data-animation-state="hide"] .motion-letter {
+        opacity: 0;
+    }
+
+    [data-letters="bloom"][data-animation-state="show"] .motion-letter {
+        animation-name: motion-bloom;
+    }
+
+    [data-letters="grow"][data-animation-state="show"] .motion-letter {
+        animation-name: motion-grow;
+    }
+
+    [data-letters="focus"][data-animation-state="show"] .motion-letter {
+        animation-name: motion-focus;
+    }
+
+    [data-letters="wave"][data-animation-state="show"] .motion-letter {
+        animation-name: motion-wave;
+        animation-timing-function: linear(
+            0,
+            0.009,
+            0.035 2.1%,
+            0.141,
+            0.281 6.7%,
+            0.723 12.9%,
+            0.938 16.7%,
+            1.017,
+            1.077 20.4%,
+            1.121,
+            1.149 24.3%,
+            1.159,
+            1.163,
+            1.161,
+            1.154 29.9%,
+            1.129 32.8%,
+            1.051 39.6%,
+            1.017 43.1%,
+            0.991,
+            0.977 51%,
+            0.974 53.8%,
+            0.975 57.1%,
+            0.997 69.8%,
+            1.003 76.9%,
+            1.004 83.8%,
+            1
+        );
+    }
+
     @media (prefers-reduced-motion: reduce) {
         [data-motion] {
             --tw-enter-translate-y: 0;
@@ -51,5 +124,43 @@
             --tw-enter-blur: 0;
             --tw-exit-blur: 0;
         }
+
+        [data-letters][data-animation-state] .motion-letter {
+            opacity: 1;
+            animation: none;
+        }
+    }
+}
+
+@keyframes motion-bloom {
+    from {
+        opacity: 0;
+        filter: blur(0.12em);
+        transform: scale(0.3);
+    }
+}
+
+@keyframes motion-grow {
+    from {
+        opacity: 0;
+        font-weight: 100;
+    }
+    25% {
+        opacity: 1;
+    }
+}
+
+@keyframes motion-focus {
+    from {
+        opacity: 0;
+        filter: blur(0.2em);
+        transform: translateX(calc(var(--spread) * 0.45em));
+    }
+}
+
+@keyframes motion-wave {
+    from {
+        opacity: 0;
+        transform: translateY(0.7em) rotate(calc(var(--tilt) * 1deg));
     }
 }

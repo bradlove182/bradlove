@@ -30,7 +30,6 @@ src/
       marquee.svelte        Scrolling keyword marquee
       navigation.svelte     Header and mobile menu
       page-header.svelte    Shared page heading
-      word-reveal.svelte    Per-letter text reveal
       footer.svelte
   routes/
     +layout.svelte          Navigation, MotionProvider, page transition, footer
@@ -75,7 +74,7 @@ The transition is skipped for shallow routing, same-path links and `prefers-redu
 | Package            | Used for                                                                    |
 | ------------------ | --------------------------------------------------------------------------- |
 | `@bradlove/ui`     | Theme (`theme.css`), base components (button, navigation menu, popover, sheet), icons, `cn` |
-| `@bradlove/motion` | Scroll-triggered animations: `M.*` components and presets; see [its README](../../packages/motion/README.md) |
+| `@bradlove/motion` | Scroll-triggered animations: `M.*` components, element presets and per-letter text reveals; see [its README](../../packages/motion/README.md) |
 
 ## Deployment
 

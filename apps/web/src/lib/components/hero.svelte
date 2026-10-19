@@ -1,8 +1,8 @@
 <script lang="ts">
+    import { M } from "@bradlove/motion"
     import { Button } from "@bradlove/ui/base/button/index.ts"
 
     import Mandala from "./mandala.svelte"
-    import WordReveal from "./word-reveal.svelte"
 
     const currentYear = new Date(Date.now()).getUTCFullYear()
 
@@ -41,8 +41,8 @@
         <h1
             class="flex flex-col text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter text-balance uppercase"
         >
-            <WordReveal variant="bloom" word="Bradley" />
-            <WordReveal delay={600} variant="bloom" class="text-right" word="Love" />
+            <M.span letters="bloom">Bradley</M.span>
+            <M.span letters="bloom" delay={600} class="text-right">Love</M.span>
         </h1>
         <div class="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
             <p
