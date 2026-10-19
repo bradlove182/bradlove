@@ -10,6 +10,7 @@
     const BLOOM = "cubic-bezier(0.22, 1, 0.36, 1)"
     const STAGGER = 80
     const HOLD = 250
+    const PRELOAD_TIMEOUT = 3000
 
     let active = $state(false)
     let destination = $state<App.PageData | null>(null)
@@ -21,10 +22,25 @@
     let rings: SVGGElement[] = []
     let label = $state<HTMLElement>()
 
+    let phase: "idle" | "covering" | "uncovering" = "idle"
+    /** Incremented per navigation; only the latest one may reveal. */
+    let run = 0
+    let covered: Promise<unknown> = Promise.resolve()
+    let leaving: Animation[] = []
+
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
     const finished = (animations: (Animation | undefined)[]) =>
         Promise.all(animations.map((animation) => animation?.finished))
+
+    /** Destination title and description, or null if slow or unavailable. */
+    const preload = async (href: string): Promise<App.PageData | null> => {
+        const result = await Promise.race([
+            preloadData(href).catch(() => null),
+            wait(PRELOAD_TIMEOUT).then(() => null),
+        ])
+        return result?.type === "loaded" && result.data.title ? (result.data as App.PageData) : null
+    }
 
     const cover = () =>
         finished([
@@ -47,18 +63,19 @@
             }),
         ])
 
+    // fill "both" so a reversed uncover holds the covered frame instead of snapping to scale(0).
     const uncover = () =>
-        finished([
+        [
             label?.animate([{ opacity: 1 }, { opacity: 0, filter: "blur(0.5rem)" }], {
                 duration: 400,
                 easing: EASE,
-                fill: "forwards",
+                fill: "both",
             }),
             disc?.animate([{ transform: "scale(1)" }, { transform: "scale(0)" }], {
                 duration: 600,
                 delay: STAGGER,
                 easing: EASE,
-                fill: "forwards",
+                fill: "both",
             }),
             ...rings.map((ring, index) =>
                 ring.animate(
@@ -70,38 +87,64 @@
                         duration: 600,
                         delay: STAGGER + index * STAGGER,
                         easing: EASE,
-                        fill: "forwards",
+                        fill: "both",
                     },
                 ),
             ),
-        ])
+        ].filter((animation) => animation !== undefined)
 
-    const reveal = async () => {
-        await uncover()
+    const open = async () => {
+        active = true
+        viewport = { width: window.innerWidth, height: window.innerHeight }
+        await tick()
+        return cover()
+    }
 
+    /**
+     * Plays an in-progress uncover backwards until the page is covered again. The reversed
+     * animations are kept: the browser has already auto-removed the cover animations they replaced,
+     * so they are what holds the covered frame.
+     */
+    const recover = () => {
+        leaving.forEach((animation) => animation.reverse())
+        return finished(leaving)
+    }
+
+    const reveal = async (id: number) => {
+        if (id !== run) return
+        phase = "uncovering"
+        leaving = uncover()
+        await finished(leaving)
+        if (id !== run) return
+
+        phase = "idle"
+        leaving = []
         destination = null
         active = false
     }
 
     onNavigate(async (navigation) => {
         const to = navigation.to?.url
-        if (active || navigation.shallow || !to || to.pathname === navigation.from?.url.pathname)
-            return
+        if (navigation.shallow || !to || to.pathname === navigation.from?.url.pathname) return
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-        active = true
-        viewport = { width: window.innerWidth, height: window.innerHeight }
-        await tick()
+        const id = ++run
+        if (phase === "idle") covered = open()
+        else if (phase === "uncovering") covered = recover()
+        phase = "covering"
 
-        const covered = cover()
-        const result = await preloadData(to.href)
-        if (result.type === "loaded" && result.data.title) {
-            destination = result.data as App.PageData
-        }
+        const data = await preload(to.href)
+        if (id !== run) return
+        destination = data
+
         await covered
         await wait(HOLD)
+        if (id !== run) return
 
-        navigation.complete.then(reveal, reveal)
+        navigation.complete.then(
+            () => reveal(id),
+            () => reveal(id),
+        )
     })
 </script>
 
@@ -138,11 +181,13 @@
                 bind:this={label}
                 class="absolute inset-0 flex flex-col justify-end gap-8 px-8 pt-24 pb-8"
             >
-                <p
-                    class="text-muted-foreground animate-in fade-in slide-in-from-bottom-8 fill-mode-both text-xs tracking-wider uppercase duration-500"
+                <M.p
+                    animation="rise"
+                    duration={500}
+                    class="text-muted-foreground text-xs tracking-wider uppercase"
                 >
                     (Next)
-                </p>
+                </M.p>
                 <M.p
                     letters="focus"
                     delay={200}
@@ -152,11 +197,14 @@
                 >
                     {destination.title}
                 </M.p>
-                <p
-                    class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both text-muted-foreground max-w-96 text-xs tracking-wider uppercase delay-100 duration-500"
+                <M.p
+                    animation="rise"
+                    delay={100}
+                    duration={500}
+                    class="text-muted-foreground max-w-96 text-xs tracking-wider uppercase"
                 >
                     {destination.description}
-                </p>
+                </M.p>
             </div>
         {/if}
     </div>

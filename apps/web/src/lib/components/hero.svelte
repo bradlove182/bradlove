@@ -22,21 +22,25 @@
         <div
             class="text-muted-foreground grid grid-cols-[1fr_auto_1fr] gap-4 text-xs tracking-wider uppercase"
         >
-            <span
-                class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both col-start-1 justify-self-start delay-200 duration-800"
+            <M.span
+                animation="rise"
+                delay={200}
+                duration={800}
+                class="col-start-1 justify-self-start"
             >
                 (Portfolio / ©{currentYear})
-            </span>
-            <span
-                class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both col-start-2 hidden delay-400 duration-800 sm:block"
-            >
+            </M.span>
+            <M.span animation="rise" delay={400} duration={800} class="col-start-2 hidden sm:block">
                 Creative Developer
-            </span>
-            <span
-                class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both col-start-3 justify-self-end delay-600 duration-800"
+            </M.span>
+            <M.span
+                animation="rise"
+                delay={600}
+                duration={800}
+                class="col-start-3 justify-self-end"
             >
                 Cape Town, South Africa
-            </span>
+            </M.span>
         </div>
         <h1
             class="flex flex-col text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter text-balance uppercase"
@@ -45,17 +49,22 @@
             <M.span letters="bloom" delay={600} class="text-right">Love</M.span>
         </h1>
         <div class="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
-            <p
-                class="animate-in fade-in slide-in-from-bottom-8 fill-mode-both text-muted-foreground col-start-1 max-w-96 text-xs font-normal tracking-wider uppercase delay-400 duration-800"
+            <M.p
+                animation="rise"
+                delay={400}
+                duration={800}
+                class="text-muted-foreground col-start-1 max-w-96 text-xs font-normal tracking-wider uppercase"
             >
                 I design and build websites and SaaS apps that convert, simplify and scale.
-            </p>
+            </M.p>
             <Button
                 size="lg"
                 variant="outline"
                 class="col-start-1 w-fit tracking-wider uppercase md:col-start-2 md:justify-self-end"
-                href="/work">See the Work</Button
+                href="/work"
             >
+                See the Work
+            </Button>
         </div>
     </div>
 </section>
