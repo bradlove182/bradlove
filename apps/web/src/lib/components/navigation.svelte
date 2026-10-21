@@ -76,6 +76,7 @@
                                 size: "sm",
                             }),
                             "text-xs font-normal tracking-wider uppercase",
+                            item.cta && "bg-accent text-accent-foreground hover:bg-accent/80",
                         )}
                     >
                         {item.title}
@@ -111,11 +112,11 @@
                         <NavigationMenu.Item class="h-fit w-full">
                             <NavigationMenu.Link
                                 href={item.link}
-                                class="animate-in fade-in slide-in-from-bottom-4 fill-mode-both group-has-[a:is(:hover,:focus-visible)]/menu:[&:not(:hover,:focus-visible)]:text-muted-foreground flex w-full justify-between border-b px-0 py-4 text-5xl font-bold tracking-wider uppercase transition-colors duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-transparent focus:bg-transparent"
+                                class="animate-in fade-in slide-in-from-bottom-4 fill-mode-both group-has-[a:is(:hover,:focus-visible)]/menu:[&:not(:hover,:focus-visible)]:text-muted-foreground flex w-full justify-between border-b px-0 py-4 font-heading text-5xl font-bold tracking-wider uppercase transition-colors duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-transparent focus:bg-transparent"
                                 style="--tw-animation-delay: {index * 100}ms"
                             >
                                 <span>{item.title}</span>
-                                <span class="text-muted-foreground self-end text-xs font-normal">
+                                <span class="text-muted-foreground self-end font-mono text-xs font-normal">
                                     {(index + 1).toString().padStart(2, "0")}
                                 </span>
                             </NavigationMenu.Link>
@@ -123,7 +124,7 @@
                     {/each}
                     <NavigationMenu.Item class="mt-auto">
                         <NavigationMenu.Link
-                            class="animate-in fade-in slide-in-from-bottom-2 fill-mode-both group-has-[a:is(:hover,:focus-visible)]/menu:[&:not(:hover,:focus-visible)]:text-muted-foreground p-0 py-4 text-sm tracking-wider uppercase duration-700 hover:bg-transparent focus:bg-transparent"
+                            class="animate-in fade-in slide-in-from-bottom-2 fill-mode-both group-has-[a:is(:hover,:focus-visible)]/menu:[&:not(:hover,:focus-visible)]:text-muted-foreground p-0 py-4 font-mono text-sm tracking-wider uppercase duration-700 hover:bg-transparent focus:bg-transparent"
                             href="mailto:brad@bradlove.co.za"
                             style="--tw-animation-delay: {mobileItems.length * 100}ms"
                         >

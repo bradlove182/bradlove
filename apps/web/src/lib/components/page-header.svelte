@@ -14,12 +14,16 @@
 <section
     class="flex min-h-[calc(100svh-var(--header-height))] flex-col justify-start gap-8 px-8 pt-24 pb-8"
 >
-    <M.p animation="rise" duration={800} class="text-muted-foreground text-xs tracking-wider uppercase">
+    <M.p
+        animation="rise"
+        duration={800}
+        class="text-accent font-mono text-xs tracking-wider uppercase"
+    >
         ({index})
     </M.p>
     <M.h1
         letters="focus"
-        class="text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
+        class="font-heading text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
     >
         {title}
     </M.h1>
@@ -27,7 +31,7 @@
         animation="rise"
         delay={300}
         duration={800}
-        class="text-muted-foreground max-w-96 text-xs tracking-wider uppercase"
+        class="text-muted-foreground max-w-96 font-mono text-xs tracking-wider uppercase"
     >
         {description}
     </M.p>

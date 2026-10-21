@@ -184,7 +184,7 @@
                 <M.p
                     animation="rise"
                     duration={500}
-                    class="text-muted-foreground text-xs tracking-wider uppercase"
+                    class="text-accent font-mono text-xs tracking-wider uppercase"
                 >
                     (Next)
                 </M.p>
@@ -193,7 +193,7 @@
                     delay={200}
                     duration={650}
                     stagger={16}
-                    class="text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
+                    class="font-heading text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
                 >
                     {destination.title}
                 </M.p>
@@ -201,7 +201,7 @@
                     animation="rise"
                     delay={100}
                     duration={500}
-                    class="text-muted-foreground max-w-96 text-xs tracking-wider uppercase"
+                    class="text-muted-foreground max-w-96 font-mono text-xs tracking-wider uppercase"
                 >
                     {destination.description}
                 </M.p>
