@@ -161,6 +161,45 @@ For elements that `M` doesn't cover, attach the observer directly:
 
 `useMotion()` must be called while a component is being set up (top level of `<script>`). It returns `[attachment, context]`, where the context is the shared `MotionContext`.
 
+### Cursor follower: `CursorFollow`
+
+Eases an element after the cursor, such as a hover preview image. It sits beside the cursor on whichever side has more room, springs across when that changes, and tilts with its speed. Motion is time-based, so it moves at the same speed on 60Hz and high-refresh screens. With `prefers-reduced-motion: reduce` it snaps to the cursor with no easing or tilt.
+
+```svelte
+<script lang="ts">
+    import { CursorFollow } from "@bradlove/motion"
+
+    const preview = new CursorFollow({ gap: 32 })
+    let visible = $state(false)
+</script>
+
+<ul
+    onpointerenter={(event) => {
+        preview.jump(event)
+        visible = true
+    }}
+    onpointermove={preview.move}
+    onpointerleave={() => (visible = false)}>
+    ...
+</ul>
+
+<div {@attach preview.attach} class="pointer-events-none fixed top-0 left-0" style:opacity={visible ? 1 : 0}>
+    <img src="..." alt="" />
+</div>
+```
+
+The element must be `position: fixed` at the top left; `CursorFollow` sets its `translate` and `rotate`, so animate other properties (opacity, scale) yourself. Call `jump` while the element is hidden so it appears at the cursor instead of flying in from its last position.
+
+| Option          | Default | Description                                                                 |
+| --------------- | ------- | --------------------------------------------------------------------------- |
+| `follow`        | `0.1`   | Fraction of the remaining distance covered per 60fps frame. Lower trails further behind. |
+| `tilt`          | `0.4`   | Degrees of tilt per pixel of movement per frame.                            |
+| `maxTilt`       | `12`    | Largest tilt, in degrees.                                                   |
+| `gap`           | `32`    | Pixels between the cursor and the element's nearest edge.                   |
+| `swapStiffness` | `0.008` | How hard the element is pulled across when it swaps sides. Lower is slower. |
+| `swapDamping`   | `0.86`  | Fraction of swap speed kept each frame (0 to 1). Higher overshoots more.    |
+| `deadZone`      | `0.08`  | Fraction of the viewport width either side of centre the cursor must cross before swapping sides. |
+
 ## Configuration
 
 ### Observer options

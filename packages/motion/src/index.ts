@@ -1,6 +1,8 @@
 export { M } from "./proxy.ts"
 export { default as MotionProvider } from "./motion-provider.svelte"
 export { MotionContext, useMotion } from "./context.svelte.ts"
+export { CursorFollow } from "./follow.ts"
+export type { FollowOptions } from "./follow.ts"
 export { splitLetters } from "./letters.ts"
 export type { LettersOptions, MotionLetters } from "./letters.ts"
 export type { MotionAnimation, MotionElementProps, MotionProps, MotionTag } from "./types.ts"
