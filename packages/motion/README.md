@@ -26,7 +26,8 @@ Import `motion.css` in the app's main stylesheet, **after** `tw-animate-css`:
 ```css
 /* src/routes/layout.css */
 @import "tailwindcss";
-@import "@bradlove/ui/theme.css"; /* brings in tw-animate-css */
+@import "@bradlove/ui/themes/base.css"; /* brings in tw-animate-css */
+@import "@bradlove/ui/themes/lime.css";
 @import "@bradlove/motion/motion.css";
 ```
 

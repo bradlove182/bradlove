@@ -5,9 +5,9 @@
 </script>
 
 <svelte:head>
-    <title>Creative Web Developer in Cape Town | Bradley Love</title>
+    <title>Frontend / AI Engineer in Cape Town | Bradley Love</title>
 </svelte:head>
 
 <Hero />
-<Marquee items={["Design", "Build", "Scale", "UI/UX", "CMS", "E-Commerce", "Svelte", "Saas"]} />
+<Marquee items={["Build", "Scale", "Motion", "CMS", "E-Commerce", "Svelte", "Saas", "AI"]} />
 <Statement />

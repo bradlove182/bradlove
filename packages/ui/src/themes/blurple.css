@@ -1,0 +1,10 @@
+/* Import after base.css. */
+
+:root,
+.dark {
+    --accent: oklch(0.68 0.19 265);
+    --accent-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.68 0.19 265);
+    --sidebar-primary-foreground: oklch(0.145 0 0);
+    --chart-1: oklch(0.68 0.19 265);
+}

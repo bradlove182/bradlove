@@ -4,20 +4,11 @@
     }
 
     let { class: className }: Props = $props()
-
-    const ROSETTE =
-        "M37.52 28.38C27.92 11.76 40.56 14.76 50 2M62.48 28.38C72.08 11.76 59.44 14.76 50 2M50 25.04C50 5.84 59.44 14.76 74 8.43M71.62 37.52C88.24 27.92 75.8 24.2 74 8.43M62.48 28.38C72.08 11.76 75.8 24.2 91.57 26M74.96 50C94.16 50 85.24 40.56 91.57 26M71.62 37.52C88.24 27.92 85.24 40.56 98 50M71.62 62.48C88.24 72.08 85.24 59.44 98 50M74.96 50C94.16 50 85.24 59.44 91.57 74M62.48 71.62C72.08 88.24 75.8 75.8 91.57 74M71.62 62.48C88.24 72.08 75.8 75.8 74 91.57M50 74.96C50 94.16 59.44 85.24 74 91.57M62.48 71.62C72.08 88.24 59.44 85.24 50 98M37.52 71.62C27.92 88.24 40.56 85.24 50 98M50 74.96C50 94.16 40.56 85.24 26 91.57M28.38 62.48C11.76 72.08 24.2 75.8 26 91.57M37.52 71.62C27.92 88.24 24.2 75.8 8.43 74M25.04 50C5.84 50 14.76 59.44 8.43 74M28.38 62.48C11.76 72.08 14.76 59.44 2 50M28.38 37.52C11.76 27.92 14.76 40.56 2 50M25.04 50C5.84 50 14.76 40.56 8.43 26M37.52 28.38C27.92 11.76 24.2 24.2 8.43 26M28.38 37.52C11.76 27.92 24.2 24.2 26 8.43M50 25.04C50 5.84 40.56 14.76 26 8.43"
 </script>
 
-<svg
-    viewBox="0 0 100 100"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-    class={className}
->
-    <path d={ROSETTE} vector-effect="non-scaling-stroke" />
+<!-- Units are thousandths of an em; the squares echo the b's tail at x 17–170, y 0–150. -->
+<svg viewBox="-70 -710 706 800" fill="currentColor" aria-hidden="true" class={className}>
+    <rect x="-63" y="-70" width="153" height="150" class="fill-accent opacity-50" />
+    <rect x="-23" y="-110" width="153" height="150" class="fill-accent" />
+    <text font-size="1000" font-weight="800" style:font-family="var(--font-heading)">b</text>
 </svg>

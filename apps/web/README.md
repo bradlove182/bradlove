@@ -34,7 +34,7 @@ src/
   routes/
     +layout.svelte          Navigation, MotionProvider, page transition, footer
     +layout.ts              prerender = true
-    layout.css              Tailwind, @bradlove/ui theme, @bradlove/motion presets
+    layout.css              Tailwind, @bradlove/ui base and lime themes, @bradlove/motion presets
     +page.svelte            Home
     about/  work/  services/  contact/
 ```
@@ -73,7 +73,7 @@ The transition is skipped for shallow routing, same-path links and `prefers-redu
 
 | Package            | Used for                                                                    |
 | ------------------ | --------------------------------------------------------------------------- |
-| `@bradlove/ui`     | Theme (`theme.css`), base components (button, navigation menu, popover, sheet), icons, `cn` |
+| `@bradlove/ui`     | Themes (`themes/base.css` plus one accent theme: `lime.css`, `indigo.css`, `blurple.css` or `rose.css`), base components (button, navigation menu, popover, sheet), icons, `cn` |
 | `@bradlove/motion` | Scroll-triggered animations: `M.*` components, element presets and per-letter text reveals; see [its README](../../packages/motion/README.md) |
 
 ## Deployment

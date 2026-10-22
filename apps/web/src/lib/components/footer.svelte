@@ -2,7 +2,6 @@
     import { M } from "@bradlove/motion"
     import { RiArrowUpLine } from "@bradlove/ui/icons/index.js"
 
-    import Logo from "./logo.svelte"
     import Mandala from "./mandala.svelte"
 
     let talk = $state<HTMLElement | null>(null)
@@ -43,7 +42,6 @@
             href="mailto:brad@bradlove.co.za"
             class="text-accent hover:text-accent inline-flex items-center gap-2 transition-colors"
         >
-            <Logo class="size-3.5 shrink-0" />
             brad@bradlove.co.za
         </a>
         <div class="flex items-center gap-4">

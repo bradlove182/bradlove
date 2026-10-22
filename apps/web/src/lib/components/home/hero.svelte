@@ -8,13 +8,19 @@
     const currentYear = new Date(Date.now()).getUTCFullYear()
 
     let mark = $state<HTMLElement | null>(null)
+
+    /** Below 700px each word fills the width: `--ems` is the word's width in ems, so re-measure it if the text or font changes. */
+    const line =
+        "py-[0.04em] text-[min(19vw,53.1915cqh)] leading-[0.86] whitespace-nowrap max-[700px]:text-[length:calc(100cqw/var(--ems))]"
 </script>
 
 <section
-    class="bg-background text-foreground relative isolate flex min-h-[calc(100svh-var(--header-height))] flex-col overflow-hidden"
+    class="bg-background text-foreground relative isolate flex h-[calc(100svh-var(--header-height))] flex-col overflow-hidden max-[700px]:h-auto max-[700px]:min-h-[calc(100svh-var(--header-height))]"
 >
     <Mandala center={mark} class="pointer-events-none absolute inset-0 -z-20 size-full" />
-    <div class="mx-auto flex w-full flex-1 flex-col justify-center gap-24 px-8 pt-24 pb-8">
+    <div
+        class="mx-auto flex w-full flex-1 flex-col justify-between gap-[clamp(24px,5vh,56px)] px-8 pt-[calc(clamp(100px,15vh,150px)-var(--header-height))] pb-10"
+    >
         <div
             bind:this={mark}
             class="border-border animate-in fade-in fill-mode-both bg-background/10 absolute left-1/2 -z-10 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center self-center rounded-full border text-sm font-medium backdrop-blur-xs duration-500"
@@ -44,10 +50,12 @@
             </M.span>
         </div>
         <h1
-            class="font-heading flex flex-col text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tight text-balance uppercase"
+            class="font-heading @container-size flex min-h-0 flex-1 flex-col justify-center font-bold tracking-tighter max-[700px]:@container max-[700px]:flex-none"
         >
-            <M.span letters="bloom">Bradley</M.span>
-            <M.span letters="bloom" delay={600} class="text-right">Love</M.span>
+            <M.span letters="bloom" style="--ems: 2.8374" class={line}>brad</M.span>
+            <M.span letters="bloom" delay={600} style="--ems: 2.6602" class="{line} text-right">
+                love
+            </M.span>
         </h1>
         <div class="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
             <div class="col-start-1 flex flex-col items-start gap-4">
@@ -57,8 +65,8 @@
                     duration={800}
                     class="text-muted-foreground max-w-96 text-xl"
                 >
-                    I design and build websites and web apps that load fast, look sharp and keep up
-                    as your business grows.
+                    I build websites and web apps that load fast, look sharp and keep up as your
+                    business grows.
                 </M.p>
                 <M.div animation="rise" delay={600} duration={800}>
                     <Badge variant="outline" class="gap-2 font-mono tracking-wider uppercase">

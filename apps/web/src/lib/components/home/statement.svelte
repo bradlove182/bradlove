@@ -13,10 +13,10 @@
     <M.p
         letters="grow"
         stagger={20}
-        class="max-w-5xl text-[clamp(28px,3.8vw,72px)] leading-[1.05] tracking-tight"
+        class="font-heading max-w-5xl text-[clamp(28px,3.8vw,72px)] leading-[1.05] tracking-tight"
     >
-        I'm Brad, a designer and developer in <span class="text-accent">Cape Town.</span> I build
-        websites and web apps that <em>load fast,</em> make the case for your business and are easy for
-        your team to run.
+        I'm Brad, a developer in <span class="text-accent">Cape Town.</span> I build websites and
+        web apps that <em>load fast,</em> make the case for your business and are easy for your team to
+        run.
     </M.p>
 </section>

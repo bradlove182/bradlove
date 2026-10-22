@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import "@bradlove/ui/theme.css";
+@import "@bradlove/ui/themes/base.css";
+@import "@bradlove/ui/themes/blurple.css";
 @import "@bradlove/motion/motion.css";
 @plugin "@tailwindcss/typography";
 
