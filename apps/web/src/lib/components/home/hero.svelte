@@ -32,18 +32,16 @@
             <M.span
                 animation="rise"
                 delay={200}
-                duration={800}
                 class="col-start-1 justify-self-start"
             >
                 (Portfolio / ©{currentYear})
             </M.span>
-            <M.span animation="rise" delay={400} duration={800} class="col-start-2 hidden sm:block">
+            <M.span animation="rise" delay={400} class="col-start-2 hidden sm:block">
                 Frontend / AI Engineer
             </M.span>
             <M.span
                 animation="rise"
                 delay={600}
-                duration={800}
                 class="col-start-3 justify-self-end"
             >
                 Cape Town, ZA
@@ -52,8 +50,8 @@
         <h1
             class="font-heading @container-size flex min-h-0 flex-1 flex-col justify-center font-bold tracking-tighter max-[700px]:@container max-[700px]:flex-none"
         >
-            <M.span letters="bloom" style="--ems: 2.8374" class={line}>brad</M.span>
-            <M.span letters="bloom" delay={600} style="--ems: 2.6602" class="{line} text-right">
+            <M.span animation="bloom" style="--ems: 2.8374" class={line}>brad</M.span>
+            <M.span animation="bloom" delay={600} style="--ems: 2.6602" class="{line} text-right">
                 love
             </M.span>
         </h1>
@@ -62,13 +60,12 @@
                 <M.p
                     animation="rise"
                     delay={400}
-                    duration={800}
                     class="text-muted-foreground max-w-96 text-xl"
                 >
                     I build websites and web apps that load fast, look sharp and keep up as your
                     business grows.
                 </M.p>
-                <M.div animation="rise" delay={600} duration={800}>
+                <M.div animation="rise" delay={600}>
                     <Badge variant="outline" class="gap-2 font-mono tracking-wider uppercase">
                         <span class="bg-accent size-1.5 rounded-full"></span>
                         Available for work

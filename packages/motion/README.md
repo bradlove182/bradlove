@@ -54,7 +54,7 @@ This registers one shared observer for every descendant. The provider is optiona
 
 ### `M` components
 
-`M.<tag>` renders that element and animates it when it scrolls into view. Each tag accepts that element's normal HTML attributes.
+`M.<tag>` renders that element and animates it. Each tag accepts that element's normal HTML attributes. One `animation` prop picks the effect, from three kinds:
 
 ```svelte
 <script lang="ts">
@@ -62,22 +62,29 @@ This registers one shared observer for every descendant. The provider is optiona
 </script>
 
 <M.h2 animation="rise">Selected work</M.h2>
-<M.div animation="fade" delay={200} class="grid gap-4">...</M.div>
-<M.span animation="blur" duration={900} repeat>(Hello)</M.span>
+<M.h1 animation="bloom" delay={200}>Bradley</M.h1>
+<M.p animation="reveal">A solution that goes above touch and imagination...</M.p>
 ```
+
+| Kind    | Animations                             | Plays                                                |
+| ------- | -------------------------------------- | ---------------------------------------------------- |
+| Element | `fade`, `rise`, `blur`, `scale`        | On the whole element, when it enters the viewport    |
+| Letters | `bloom`, `grow`, `focus`, `wave`       | Letter by letter, when it enters the viewport        |
+| Reveal  | `reveal`                               | Word by word, following the scroll position          |
 
 Supported tags: `div`, `span`, `p`, `h1`, `h2`, `h3`. To add one, extend `supportedTags` in `src/types.ts`. Tags with very large attribute types, such as `a`, make the props type too complex for TypeScript.
 
-| Prop        | Type                                         | Default                 | Description                                                                |
-| ----------- | -------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
-| `animation` | `"fade" \| "rise" \| "blur" \| "scale"`     | none                    | Element preset. Omit it to style the state yourself (see below).           |
-| `letters`   | `"bloom" \| "grow" \| "focus" \| "wave"`    | none                    | Per-letter animation of the element's text. Combines with `animation`.     |
-| `delay`     | `number` (ms)                                | `0`                     | Delay before entering; for `letters`, before the first letter. Leaving is never delayed. |
-| `duration`  | `number` (ms)                                | `600`, or `1800` per letter | Animation duration.                                                    |
-| `stagger`   | `number` (ms)                                | `110`                   | Gap between letters starting. Only used with `letters`.                    |
-| `repeat`    | `boolean`                                    | `false`                 | Animate out on leaving the viewport and in again on return. Without it, elements animate in once and stay visible. |
+| Prop        | Type            | Default                         | Applies to         | Description                                                    |
+| ----------- | --------------- | ------------------------------- | ------------------ | -------------------------------------------------------------- |
+| `animation` | see above       | none                            | all                | The effect. Omit it to style the state yourself (see below).   |
+| `delay`     | `number` (ms)   | `0`                             | element, letters   | Delay before entering; for letters, before the first letter. Leaving is never delayed. |
+| `duration`  | `number` (ms)   | `800`, or `1800` per letter     | element, letters   | Animation duration.                                            |
+| `stagger`   | `number` (ms)   | `110`                           | letters            | Gap between letters starting.                                  |
+| `repeat`    | `boolean`       | `false`                         | element, letters   | Animate out on leaving the viewport and in again on return. Without it, elements animate in once and stay visible. |
 
-### Presets
+Props that don't apply to the chosen animation are type errors, for example `stagger` with `rise` or `delay` with `reveal`.
+
+### Element animations
 
 | Preset  | Effect                     |
 | ------- | -------------------------- |
@@ -94,12 +101,12 @@ Presets live in the components CSS layer, so any Tailwind or `tw-animate-css` cl
 
 ### Letter animations
 
-`letters` splits the element's text into letters and staggers them in. Write the text as normal children; no `text` prop is needed.
+Letter animations split the element's text into letters and stagger them in. Write the text as normal children; no `text` prop is needed.
 
 ```svelte
-<M.h1 letters="bloom">Bradley</M.h1>
-<M.p letters="grow" stagger={40}>I design and build websites.</M.p>
-<M.h2 animation="rise" letters="focus" delay={200}>{title}</M.h2>
+<M.h1 animation="bloom">Bradley</M.h1>
+<M.p animation="grow" stagger={40}>I design and build websites.</M.p>
+<M.h2 animation="focus" delay={200}>{title}</M.h2>
 ```
 
 | Variant | Effect                                                         |
@@ -127,8 +134,43 @@ To use letters on an element `M` doesn't cover:
     const [motion] = useMotion()
 </script>
 
-<blockquote {@attach motion} {@attach splitLetters({ variant: "wave" })} data-letters="wave">...</blockquote>
+<blockquote {@attach motion} {@attach splitLetters({ variant: "wave" })} data-motion="wave">...</blockquote>
 ```
+
+### Scroll reveal
+
+`reveal` splits the element's text into masked words that drop in from above their line, line by line, as the element scrolls through the viewport. Progress follows the scroll position rather than playing once, so scrolling back reverses it. Within a line, each word starts a little after the previous one, left to right, and each line starts partway through the one before.
+
+```svelte
+<M.h2 animation="reveal" class="text-center text-7xl leading-none">A solution that goes above touch and imagination...</M.h2>
+```
+
+The timing props don't apply. To tune one, use the `scrollReveal` attachment directly:
+
+```svelte
+<script lang="ts">
+    import { scrollReveal } from "@bradlove/motion"
+</script>
+
+<blockquote {@attach scrollReveal({ stagger: 0.15, length: 400 })}>...</blockquote>
+```
+
+| Option       | Default  | Description                                                                          |
+| ------------ | -------- | ------------------------------------------------------------------------------------ |
+| `stagger`    | `0.1`    | Fraction of one word's reveal between words in a line starting.                       |
+| `lineOffset` | `0.2`    | Fraction of a line's reveal before the next line starts.                              |
+| `offset`     | `100`    | Pixels above the bottom of the viewport the element's top must reach before starting. |
+| `length`     | `250`    | Pixels of scrolling, beyond the element's own height, that the whole reveal takes.    |
+| `context`    | shared   | `MotionContext` that watches the element so scroll tracking pauses off screen. `M` passes its own. |
+
+Words are positioned from scroll events, but a `MotionContext` watcher attaches the scroll listener only while the element is on screen, and runs one final update as it leaves so a fast scroll never strands words midway.
+
+Notes:
+
+- Text is split the same way as letter animations: screen readers get whole words, nested elements are kept, and changing text rebuilds the words.
+- Lines are worked out from where words wrap, and re-measured when the element resizes or fonts finish loading.
+- Words are clipped to their line, so the reveal works at any `line-height`, including `leading-none`.
+- With `prefers-reduced-motion: reduce`, words are shown in place.
 
 ### Custom animations
 
@@ -160,6 +202,27 @@ For elements that `M` doesn't cover, attach the observer directly:
 ```
 
 `useMotion()` must be called while a component is being set up (top level of `<script>`). It returns `[attachment, context]`, where the context is the shared `MotionContext`.
+
+### Visibility callbacks: `context.watch`
+
+For behaviour that should only run while an element is on screen, such as scroll listeners, use `watch` instead of the attachment. It calls back whenever any part of the element enters or leaves the viewport (widened by the provider's `rootMargin`), for as long as it's watched, and returns a function that stops watching. It uses its own observer with a threshold of 0, so even elements taller than the viewport are reported.
+
+```svelte
+<script lang="ts">
+    import { useMotion } from "@bradlove/motion"
+    import type { Attachment } from "svelte/attachments"
+
+    const [, motion] = useMotion()
+
+    const track: Attachment<HTMLElement> = (element) =>
+        motion.watch(element, (visible) => {
+            if (visible) startListening()
+            else stopListening()
+        })
+</script>
+
+<section {@attach track}>...</section>
+```
 
 ### Cursor follower: `CursorFollow`
 
@@ -200,6 +263,16 @@ The element must be `position: fixed` at the top left; `CursorFollow` sets its `
 | `swapDamping`   | `0.86`  | Fraction of swap speed kept each frame (0 to 1). Higher overshoots more.    |
 | `deadZone`      | `0.08`  | Fraction of the viewport width either side of centre the cursor must cross before swapping sides. |
 
+### Frame rate meter: `FrameRate`
+
+A debug overlay showing frames per second, the worst frame time in the last half second, and a graph of the last 120 frame times. The white line marks 60fps; bars are green up to 20ms, yellow up to 34ms and red beyond. It only renders in development (`import.meta.env.DEV`), and is dropped from production builds, so it's safe to leave in a layout.
+
+```svelte
+<FrameRate position="bottom-right" />
+```
+
+`position` is `"top-left"`, `"top-right"`, `"bottom-left"` (default) or `"bottom-right"`. It ignores the pointer, so it never blocks clicks.
+
 ## Configuration
 
 ### Observer options
@@ -218,7 +291,7 @@ Set these on an element, or on an ancestor, to tune presets:
 
 | Variable            | Default                          |
 | ------------------- | -------------------------------- |
-| `--motion-duration` | `600ms`                          |
+| `--motion-duration` | `800ms`, or `1800ms` per letter  |
 | `--motion-ease`     | `cubic-bezier(0.22, 1, 0.36, 1)` |
 | `--motion-delay`    | `0ms` (entering only)            |
 

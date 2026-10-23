@@ -1,12 +1,12 @@
 <script lang="ts" generics="T extends MotionTag">
     import { useMotion } from "./context.svelte.ts"
-    import { splitLetters } from "./letters.ts"
+    import { isLetters, splitLetters } from "./letters.ts"
+    import { scrollReveal } from "./reveal.ts"
     import type { MotionBaseProps, MotionProps, MotionTag } from "./types.ts"
 
     const props: MotionProps<T> = $props()
     const {
         animation,
-        letters,
         delay,
         duration,
         stagger,
@@ -17,17 +17,20 @@
         ...rest
     } = $derived(props as MotionBaseProps)
 
-    const [motion] = useMotion()
+    const letters = $derived(animation && isLetters(animation) ? animation : undefined)
+    const reveal = $derived(animation === "reveal")
+
+    const [motion, context] = useMotion()
 </script>
 
 <svelte:element
     this={tag}
-    {@attach motion}
+    {@attach !reveal && motion}
     {@attach letters && splitLetters({ variant: letters, delay, stagger })}
+    {@attach reveal && scrollReveal({ context })}
     {...rest}
     class={className}
     data-motion={animation}
-    data-letters={letters}
     data-motion-repeat={repeat || undefined}
     style:--motion-delay={delay === undefined ? undefined : `${delay}ms`}
     style:--motion-duration={duration === undefined ? undefined : `${duration}ms`}>

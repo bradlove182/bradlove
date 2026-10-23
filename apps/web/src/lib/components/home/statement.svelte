@@ -5,14 +5,12 @@
 <section class="flex flex-col gap-4 px-8 py-40">
     <M.span
         animation="rise"
-        duration={800}
         class="text-accent font-mono text-xs tracking-wider uppercase"
     >
         (Hello)
     </M.span>
     <M.p
-        letters="grow"
-        stagger={20}
+        animation="reveal"
         class="font-heading max-w-5xl text-[clamp(28px,3.8vw,72px)] leading-[1.05] tracking-tight"
     >
         I'm Brad, a developer in <span class="text-accent">Cape Town.</span> I build websites and

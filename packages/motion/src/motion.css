@@ -1,27 +1,27 @@
 /*
- * Presets for elements with [data-motion]. Built on tw-animate-css, which must be imported first.
+ * Animations for [data-motion]. Element presets are built on tw-animate-css, which must be imported first.
  * Per-element overrides: --motion-duration, --motion-ease, --motion-delay, or any tw-animate utility class.
  */
 @layer components {
-    [data-motion] {
-        --tw-animation-duration: var(--motion-duration, 600ms);
+    :is([data-motion="fade"], [data-motion="rise"], [data-motion="blur"], [data-motion="scale"]) {
+        --tw-animation-duration: var(--motion-duration, 800ms);
         --tw-ease: var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
         @apply fill-mode-both;
+
+        /* Delay applies to entering only, so elements leave promptly. */
+        &[data-animation-state="show"] {
+            --tw-animation-delay: var(--motion-delay, 0ms);
+            @apply animate-in;
+        }
+
+        &[data-animation-state="hide"] {
+            @apply animate-out;
+        }
     }
 
-    /* Delay applies to entering only, so elements leave promptly. */
-    [data-motion][data-animation-state="show"] {
-        --tw-animation-delay: var(--motion-delay, 0ms);
-        @apply animate-in;
-    }
-
-    [data-motion][data-animation-state="hide"] {
-        @apply animate-out;
-    }
-
-    /* Hidden until the observer reports, so content does not flash before animating in. */
+    /* Hidden until the observer reports, so content does not flash before animating in. Reveals aren't observed. */
     @media (scripting: enabled) {
-        :is([data-motion], [data-letters]):not([data-animation-state]) {
+        [data-motion]:not([data-motion="reveal"], [data-animation-state]) {
             opacity: 0;
         }
     }
@@ -43,7 +43,7 @@
     }
 
     /*
-     * Letter animations for [data-letters], split into spans by splitLetters.
+     * Letter animations, split into spans by splitLetters.
      * Per-letter delays are set inline; duration comes from --motion-duration.
      */
     .motion-label {
@@ -67,23 +67,23 @@
         animation-fill-mode: both;
     }
 
-    [data-letters][data-animation-state="hide"] .motion-letter {
+    [data-animation-state="hide"] .motion-letter {
         opacity: 0;
     }
 
-    [data-letters="bloom"][data-animation-state="show"] .motion-letter {
+    [data-motion="bloom"][data-animation-state="show"] .motion-letter {
         animation-name: motion-bloom;
     }
 
-    [data-letters="grow"][data-animation-state="show"] .motion-letter {
+    [data-motion="grow"][data-animation-state="show"] .motion-letter {
         animation-name: motion-grow;
     }
 
-    [data-letters="focus"][data-animation-state="show"] .motion-letter {
+    [data-motion="focus"][data-animation-state="show"] .motion-letter {
         animation-name: motion-focus;
     }
 
-    [data-letters="wave"][data-animation-state="show"] .motion-letter {
+    [data-motion="wave"][data-animation-state="show"] .motion-letter {
         animation-name: motion-wave;
         animation-timing-function: linear(
             0,
@@ -115,7 +115,28 @@
         );
     }
 
+    /*
+     * Scroll-linked word reveal, split by scrollReveal, which sets --reveal (0 to 1) per word.
+     * The mask is padded so descenders aren't clipped, and only clips vertically so italics can overhang.
+     * The extra 0.4em of travel clears glyphs that overhang the line box with tight leading.
+     */
+    .motion-reveal-mask {
+        display: inline-block;
+        padding-block: 0.1em;
+        margin-block: -0.1em;
+        clip-path: inset(0 -0.25em);
+    }
+
+    .motion-reveal-word {
+        display: inline-block;
+        translate: 0 calc((1 - var(--reveal, 0)) * (-100% - 0.4em));
+    }
+
     @media (prefers-reduced-motion: reduce) {
+        .motion-reveal-word {
+            translate: none;
+        }
+
         [data-motion] {
             --tw-enter-translate-y: 0;
             --tw-exit-translate-y: 0;
@@ -125,7 +146,7 @@
             --tw-exit-blur: 0;
         }
 
-        [data-letters][data-animation-state] .motion-letter {
+        [data-animation-state] .motion-letter {
             opacity: 1;
             animation: none;
         }

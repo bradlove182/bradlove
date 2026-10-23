@@ -189,7 +189,7 @@
                     (Next)
                 </M.p>
                 <M.p
-                    letters="focus"
+                    animation="focus"
                     delay={200}
                     duration={650}
                     stagger={16}

@@ -16,14 +16,14 @@
 
 <section class="flex flex-col gap-8 px-8 py-40">
     <div class="flex flex-col gap-4">
-        <M.span animation="rise" duration={800} class="text-accent font-mono text-xs uppercase">
+        <M.span animation="rise" class="text-accent font-mono text-xs uppercase">
             Selected Work (04)
         </M.span>
     </div>
     <ul class="border-t" onpointermove={preview.move} onpointerleave={() => (active = null)}>
         {#each projects as project, index (project.slug)}
             <li class="border-b">
-                <M.div animation="rise" duration={800}>
+                <M.div animation="rise">
                     <a
                         href="/work"
                         class="group grid min-h-[40vh] grid-cols-[auto_1fr_auto] items-center gap-8 py-8 md:grid-cols-[4rem_1fr_6rem_auto]"

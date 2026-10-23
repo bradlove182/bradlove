@@ -16,13 +16,12 @@
 >
     <M.p
         animation="rise"
-        duration={800}
         class="text-accent font-mono text-xs tracking-wider uppercase"
     >
         ({index})
     </M.p>
     <M.h1
-        letters="focus"
+        animation="focus"
         class="font-heading text-[clamp(1rem,10vw,14rem)] leading-none font-bold tracking-tighter uppercase"
     >
         {title}
@@ -30,7 +29,6 @@
     <M.p
         animation="rise"
         delay={300}
-        duration={800}
         class="text-muted-foreground max-w-96 font-mono text-xs tracking-wider uppercase"
     >
         {description}

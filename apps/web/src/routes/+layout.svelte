@@ -4,7 +4,7 @@
     import Footer from "#lib/components/footer.svelte"
     import Navigation from "#lib/components/navigation.svelte"
     import PageTransition from "#lib/components/page-transition/page-transition.svelte"
-    import { MotionProvider } from "@bradlove/motion"
+    import { FrameRate, MotionProvider } from "@bradlove/motion"
 
     import type { LayoutProps } from "./$types"
 
@@ -22,3 +22,4 @@
     <Footer />
     <PageTransition />
 </MotionProvider>
+<FrameRate />

@@ -13,6 +13,8 @@ export const web = Effect.gen(function* () {
         return yield* Command.Dev("WebDev", {
             command: "bun run dev",
             cwd: "apps/web",
+            // The alchemy CLI sets NODE_ENV=production for itself; inherited, Vite would treat dev as production.
+            env: { NODE_ENV: "development" },
         })
     }
 

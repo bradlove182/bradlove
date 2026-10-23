@@ -18,7 +18,6 @@
     />
     <M.p
         animation="rise"
-        duration={800}
         class="text-muted-foreground font-mono text-xs tracking-wider uppercase"
     >
         Got something in mind?
@@ -29,7 +28,7 @@
         class="inline-flex w-fit items-center gap-8 text-[clamp(1rem,10vw,14rem)]"
     >
         <M.span
-            letters="focus"
+            animation="focus"
             class="hover:text-accent font-heading leading-relaxed font-bold tracking-tight uppercase transition-colors"
         >
             Let's Talk

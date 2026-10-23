@@ -1,10 +1,19 @@
 import { getContext, hasContext, onDestroy, setContext } from "svelte"
 import type { Attachment } from "svelte/attachments"
 
+export type Watcher = (visible: boolean) => void
+
 export class MotionContext {
     private observer: IntersectionObserver | undefined
+    /** Separate from `observer`: watchers need to hear about any overlap, and keep hearing after the first. */
+    private watchObserver: IntersectionObserver | undefined
+    private watchers = new Map<Element, Watcher>()
 
     constructor(private options?: IntersectionObserverInit) {}
+
+    private watchHandler: IntersectionObserverCallback = (entries) => {
+        entries.forEach((entry) => this.watchers.get(entry.target)?.(entry.isIntersecting))
+    }
 
     private handler: IntersectionObserverCallback = (entries) => {
         entries.forEach((entry) => {
@@ -29,9 +38,30 @@ export class MotionContext {
 
     remove = (element: Element) => this.observer?.unobserve(element)
 
+    /**
+     * Calls `watcher` whenever any part of the element enters or leaves the viewport (widened by the
+     * context's `rootMargin`), for as long as it's watched. Returns a function that stops watching.
+     */
+    watch = (element: Element, watcher: Watcher) => {
+        this.watchObserver ??= new IntersectionObserver(this.watchHandler, {
+            root: this.options?.root,
+            rootMargin: this.options?.rootMargin,
+            threshold: 0,
+        })
+        this.watchers.set(element, watcher)
+        this.watchObserver.observe(element)
+        return () => {
+            this.watchers.delete(element)
+            this.watchObserver?.unobserve(element)
+        }
+    }
+
     disconnect = () => {
         this.observer?.disconnect()
         this.observer = undefined
+        this.watchObserver?.disconnect()
+        this.watchObserver = undefined
+        this.watchers.clear()
     }
 }
 
