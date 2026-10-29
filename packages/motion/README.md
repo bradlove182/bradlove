@@ -70,7 +70,7 @@ This registers one shared observer for every descendant. The provider is optiona
 | ------- | -------------------------------------- | ---------------------------------------------------- |
 | Element | `fade`, `rise`, `blur`, `scale`        | On the whole element, when it enters the viewport    |
 | Letters | `bloom`, `grow`, `focus`, `wave`       | Letter by letter, when it enters the viewport        |
-| Reveal  | `reveal`                               | Word by word, following the scroll position          |
+| Scroll  | `reveal`, `highlight`                  | Word by word, following the scroll position          |
 
 Supported tags: `div`, `span`, `p`, `h1`, `h2`, `h3`. To add one, extend `supportedTags` in `src/types.ts`. Tags with very large attribute types, such as `a`, make the props type too complex for TypeScript.
 
@@ -171,6 +171,34 @@ Notes:
 - Lines are worked out from where words wrap, and re-measured when the element resizes or fonts finish loading.
 - Words are clipped to their line, so the reveal works at any `line-height`, including `leading-none`.
 - With `prefers-reduced-motion: reduce`, words are shown in place.
+
+### Scroll highlight
+
+`highlight` splits the element's text into words that start dim and brighten to full opacity one after another, in reading order, as the element scrolls through the viewport. Like `reveal`, it follows the scroll position, so scrolling back dims them again. Each word fades over an equal share of the scroll, with no overlap.
+
+```svelte
+<M.p animation="highlight" class="text-6xl">I'm Brad, a developer in <span class="text-accent">Cape Town.</span></M.p>
+```
+
+Set `--motion-dim` on the element or an ancestor to change the starting opacity (default `0.15`). For other options use the `scrollHighlight` attachment directly; it takes `offset`, `length` and `context`, with the same meaning as for `scrollReveal`.
+
+### Pinning scroll animations
+
+Both `reveal` and `highlight` can hold their content in place while they play. Attach `pin` to a tall wrapper and make its direct child sticky. The animation then runs exactly while that child is stuck: it starts when the child sticks and finishes as it's released. `offset` and `length` are ignored, and the wrapper's height sets how much scrolling the animation takes.
+
+```svelte
+<script lang="ts">
+    import { M, pin } from "@bradlove/motion"
+</script>
+
+<section {@attach pin} class="h-[150svh]">
+    <div class="sticky top-0 flex h-svh flex-col justify-center">
+        <M.p animation="highlight">...</M.p>
+    </div>
+</section>
+```
+
+Progress is measured from where the sticky child sits inside the wrapper, so any sticky `top` (for example, below a fixed header) is accounted for. Scroll tracking runs while the wrapper is on screen. `pin` sets `data-motion-pin` on the wrapper, so adding that attribute yourself works too.
 
 ### Custom animations
 

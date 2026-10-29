@@ -29,21 +29,13 @@
         <div
             class="text-muted-foreground grid grid-cols-[1fr_auto_1fr] gap-4 font-mono text-xs tracking-wider uppercase"
         >
-            <M.span
-                animation="rise"
-                delay={200}
-                class="col-start-1 justify-self-start"
-            >
+            <M.span animation="rise" delay={200} class="col-start-1 justify-self-start">
                 (Portfolio / ©{currentYear})
             </M.span>
             <M.span animation="rise" delay={400} class="col-start-2 hidden sm:block">
-                Frontend / AI Engineer
+                Creative Developer
             </M.span>
-            <M.span
-                animation="rise"
-                delay={600}
-                class="col-start-3 justify-self-end"
-            >
+            <M.span animation="rise" delay={600} class="col-start-3 justify-self-end">
                 Cape Town, ZA
             </M.span>
         </div>
@@ -57,11 +49,7 @@
         </h1>
         <div class="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
             <div class="col-start-1 flex flex-col items-start gap-4">
-                <M.p
-                    animation="rise"
-                    delay={400}
-                    class="text-muted-foreground max-w-96 text-xl"
-                >
+                <M.p animation="rise" delay={400} class="text-muted-foreground max-w-96 text-xl">
                     I build websites and web apps that load fast, look sharp and keep up as your
                     business grows.
                 </M.p>

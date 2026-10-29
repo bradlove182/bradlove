@@ -19,9 +19,9 @@
         }
     }
 
-    /* Hidden until the observer reports, so content does not flash before animating in. Reveals aren't observed. */
+    /* Hidden until the observer reports, so content does not flash before animating in. Scroll-linked animations aren't observed. */
     @media (scripting: enabled) {
-        [data-motion]:not([data-motion="reveal"], [data-animation-state]) {
+        [data-motion]:not([data-motion="reveal"], [data-motion="highlight"], [data-animation-state]) {
             opacity: 0;
         }
     }
@@ -130,6 +130,11 @@
     .motion-reveal-word {
         display: inline-block;
         translate: 0 calc((1 - var(--reveal, 0)) * (-100% - 0.4em));
+    }
+
+    /* Scroll-linked word highlight, split by scrollHighlight, which sets --highlight (0 to 1) per word. */
+    .motion-highlight-word {
+        opacity: calc(var(--motion-dim, 0.15) + (1 - var(--motion-dim, 0.15)) * var(--highlight, 0));
     }
 
     @media (prefers-reduced-motion: reduce) {

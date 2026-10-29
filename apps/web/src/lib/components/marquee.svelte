@@ -12,7 +12,7 @@
 
 <div
     class={cn([
-        "font-heading flex overflow-hidden border-y py-4 text-4xl tracking-wider uppercase italic",
+        "font-heading flex overflow-hidden border-y py-4 text-[clamp(36px,5vw,72px)] leading-none font-extralight italic",
         className,
     ])}
 >

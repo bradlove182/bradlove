@@ -10,7 +10,10 @@ export type MotionTag = (typeof supportedTags)[number]
 /** Animates the whole element when it enters the viewport. */
 export type MotionElementAnimation = "fade" | "rise" | "blur" | "scale"
 
-export type MotionAnimation = MotionElementAnimation | MotionLetters | "reveal"
+/** Follows the scroll position, word by word. */
+export type MotionScrollAnimation = "reveal" | "highlight"
+
+export type MotionAnimation = MotionElementAnimation | MotionLetters | MotionScrollAnimation
 
 type ElementOwnProps = {
     /** Omit to style `data-animation-state` yourself. */
@@ -36,9 +39,12 @@ type LettersOwnProps = {
     repeat?: boolean
 }
 
-type RevealOwnProps = {
-    /** Scroll-linked word reveal, line by line. Follows the scroll position, so timing props don't apply. */
-    animation: "reveal"
+type ScrollOwnProps = {
+    /**
+     * Scroll-linked, word by word: `reveal` drops words in line by line, `highlight` brightens them one after another.
+     * Follows the scroll position, so timing props don't apply.
+     */
+    animation: MotionScrollAnimation
     delay?: never
     duration?: never
     stagger?: never
@@ -48,7 +54,7 @@ type RevealOwnProps = {
 type MotionOwnProps = {
     class?: string
     children?: Snippet
-} & (ElementOwnProps | LettersOwnProps | RevealOwnProps)
+} & (ElementOwnProps | LettersOwnProps | ScrollOwnProps)
 
 export type MotionElementProps<T extends MotionTag> = SvelteHTMLElements[T] & MotionOwnProps
 
