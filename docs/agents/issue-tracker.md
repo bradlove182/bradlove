@@ -14,6 +14,19 @@ Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all o
 
 Infer the repo from `git remote -v`; `gh` does this automatically when run inside a clone.
 
+## Implementation ticket verification gate
+
+Every implementation ticket must include user-observable acceptance criteria and a verification gate. Tests exercise behavior through public interfaces rather than implementation internals.
+
+Before closing a ticket or starting any ticket blocked by it:
+
+- Pass its acceptance tests at every affected public seam.
+- Pass `bun run test`, affected package `check` scripts, and `bun run lint`.
+- Run any browser, integration, or preview suite not covered by those commands explicitly.
+- Record the commands and results in the ticket or its closing comment.
+
+Unrun or failing checks never count as success. Dependent work remains blocked until the full gate passes.
+
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_

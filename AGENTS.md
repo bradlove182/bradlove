@@ -7,6 +7,13 @@
 - `bun install` runs `effect-tsgo patch --typescript --oxlint` through `prepare`. Avoid `--ignore-scripts` when setting up the toolchain.
 - Dependency versions are centralized in the root Bun catalogs. Svelte workspaces intentionally use `catalog:ts6`; do not silently align them with the root TypeScript 7 catalog.
 
+## Ticket verification gate
+
+- Before closing an implementation ticket or starting any ticket blocked by it, pass its acceptance tests at every affected public seam, `bun run test`, affected package `check` scripts, and `bun run lint`.
+- Run any browser, integration, or preview suite not covered by those commands explicitly. Record the commands and results in the ticket or its closing comment.
+- Never treat unrun or failing checks as passing. Dependent work remains blocked until the gate passes.
+- New implementation tickets must include user-observable acceptance criteria and this verification gate.
+
 ## Commands
 
 | Command | Purpose |
