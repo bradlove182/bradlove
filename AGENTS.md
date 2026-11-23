@@ -52,3 +52,17 @@ bun --filter @bradlove/motion check
 
 - Use oxfmt, not Prettier: four-space indentation, no semicolons, sorted imports, and sorted Tailwind classes.
 - The root TypeScript config enables strict checks including `noUncheckedIndexedAccess`. Effect language-service diagnostics are warnings; address them rather than disabling the plugin.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs are tracked in GitHub Issues for `bradlove182/bradlove`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use the five default canonical triage labels. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: use the root `GLOSSARY.md` and `docs/adr/`. See `docs/agents/domain.md`.
