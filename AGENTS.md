@@ -18,32 +18,37 @@
 
 | Command | Purpose |
 | --- | --- |
-| `bun run dev` | Start Alchemy dev, which launches the `apps/web` Vite server. |
+| `bun run dev` | Start Alchemy dev, which launches the `apps/web` and `apps/studio` Vite servers. |
 | `bun --filter @bradlove/web dev` | Run only the web app. |
-| `bun run build` | Run every workspace build; currently this builds the web app. |
+| `bun --filter @bradlove/studio dev` | Run only the Studio app. |
+| `bun run build` | Run every workspace build; currently this builds the web and Studio apps. |
 | `bun --filter @bradlove/web build` | Build only the web app. |
+| `bun --filter @bradlove/studio build` | Build only the Studio app. |
 | `bun run lint` | Run type-aware oxlint with the Effect TSGo preset. |
 | `bun run fmt` | Format with oxfmt, including import and Tailwind-class sorting. |
 | `bun run fmt:check` | Check formatting without writing. |
 | `bun run test` | Run Bun tests. |
 | `bun test path/to/file.test.ts` | Run one test file. |
+| `bun --filter @bradlove/studio test:deployed` | Smoke-test the deployed Studio in Chromium. |
 
 There is no root typecheck script. Run checks for affected packages:
 
 ```sh
 bun --filter @bradlove/web check
+bun --filter @bradlove/studio check
 bun --filter @bradlove/ui check
 bun --filter @bradlove/motion check
 ```
 
-`@bradlove/core` has no `check` script. No test files currently exist.
+`@bradlove/core` has no `check` script. No Bun test files currently exist. The Studio browser smoke test targets `https://proto.bradlove.dev` by default; set `STUDIO_URL` to override it.
 
 ## Architecture
 
-- `apps/web` is the SvelteKit/Cloudflare application. Routes and the global layout live under `src/routes`; app-specific components and data live under `src/lib`.
+- `apps/web` is the portfolio SvelteKit/Cloudflare application. Routes and the global layout live under `src/routes`; app-specific components and data live under `src/lib`.
+- `apps/studio` is the separate prototype Studio SvelteKit/Cloudflare application. Its deployed Chromium smoke test lives in `tests/deployed.browser.ts` and runs through Playwright, not Bun.
 - Packages under `packages/` are consumed directly from TypeScript/Svelte source through `workspace:*` and package export maps. Do not add `dist` imports or package build steps.
-- Svelte runes mode is forced for project files in `apps/web/vite.config.ts`. Use Svelte 5 runes rather than legacy reactive statements.
-- `apps/web/src/routes/+layout.ts` sets `prerender = true`; new routes inherit this unless they override it.
+- Svelte runes mode is forced for project files in `apps/web/vite.config.ts` and `apps/studio/vite.config.ts`. Use Svelte 5 runes rather than legacy reactive statements.
+- `apps/web/src/routes/+layout.ts` and `apps/studio/src/routes/+layout.ts` set `prerender = true`; new routes inherit this unless they override it.
 - Tailwind 4 uses the Vite plugin and CSS-first imports/plugins in `src/routes/layout.css`, not a separate Tailwind config.
 - Use the existing aliases: `#lib/*` inside `apps/web` and `#ui/*` inside `packages/ui`.
 - Read `packages/motion/README.md` before changing motion behavior. CSS import order matters, and `M` intentionally supports only the tags in `packages/motion/src/types.ts`; use attachments for other elements.
@@ -51,9 +56,9 @@ bun --filter @bradlove/motion check
 ## Infrastructure and deployment
 
 - `alchemy.run.ts` is the stack entry point; resources belong in `infra/`. Extend the existing stack rather than creating an isolated one.
-- `infra/web.ts` builds `apps/web`, deploys `.svelte-kit/cloudflare/_worker.js`, and serves the remaining build output as Worker assets.
+- `infra/web.ts` builds `apps/web`, deploys `.svelte-kit/cloudflare/_worker.js`, and serves the remaining build output as Worker assets. `infra/studio.ts` does the same for `apps/studio` through a separate Worker.
 - Keep `NODE_ENV=development` in the Alchemy dev command: the Alchemy CLI otherwise passes `NODE_ENV=production` to Vite.
-- Stage domains are resolved in `infra/dns.ts`: production uses `bradlove.dev`, dev uses `dev.bradlove.dev`, and other stages use `<stage>.dev.bradlove.dev`. Use its helpers for subdomains instead of hardcoding preview-domain rules.
+- Stage domains are resolved in `infra/dns.ts`: production uses `bradlove.dev`, dev uses `dev.bradlove.dev`, and other stages use `<stage>.dev.bradlove.dev`. Studio uses `getSubdomain("proto")`. Use its helpers for subdomains instead of hardcoding preview-domain rules.
 
 ## Style
 

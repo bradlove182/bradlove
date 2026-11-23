@@ -2,13 +2,14 @@
 
 Source for [bradlove.dev](https://bradlove.dev), the portfolio of Bradley Love, a creative web developer in Cape Town.
 
-A Bun workspace monorepo: a SvelteKit site deployed to Cloudflare Workers with [Alchemy](https://alchemy.run), plus shared packages.
+A Bun workspace monorepo: SvelteKit sites deployed to Cloudflare Workers with [Alchemy](https://alchemy.run), plus shared packages.
 
 ## Structure
 
 ```
 apps/
-  web/          SvelteKit site (Svelte 5, Tailwind CSS 4)
+  web/          Portfolio SvelteKit site (Svelte 5, Tailwind CSS 4)
+  studio/       Prototype Studio SvelteKit app and deployed-browser smoke test
 packages/
   ui/           Shared components, theme and icons (shadcn-svelte, bits-ui)
   motion/       Scroll-triggered animations (M components, presets, MotionProvider)
@@ -38,11 +39,11 @@ bun install
 bun run dev
 ```
 
-`bun run dev` starts the Alchemy dev stack, which runs the SvelteKit dev server for `apps/web`. To run only the site:
+`bun run dev` starts the Alchemy dev stack, which runs the SvelteKit dev servers for `apps/web` and `apps/studio`. To run only one app:
 
 ```sh
-cd apps/web
-bun run dev
+bun --filter @bradlove/web dev
+bun --filter @bradlove/studio dev
 ```
 
 ## Scripts
@@ -56,18 +57,27 @@ Run from the repo root:
 | `bun run lint`     | Lint with oxlint (`lint:fix` to apply fixes)   |
 | `bun run fmt`      | Format with oxfmt (`fmt:check` to verify only) |
 | `bun run test`     | Run tests with Bun                             |
+| `bun --filter @bradlove/studio test:deployed` | Smoke-test the deployed Studio in Chromium |
 
-Type check a workspace with `bun run check` inside `apps/web`, `packages/ui` or `packages/motion`.
+Type check a workspace with `bun run check` inside `apps/web`, `apps/studio`, `packages/ui` or `packages/motion`.
 
 ## Deployment
 
-The stack in `alchemy.run.ts` builds `apps/web` with the Cloudflare adapter and deploys it as a Cloudflare Worker. The domain depends on the stage:
+The stack in `alchemy.run.ts` builds `apps/web` and `apps/studio` with the Cloudflare adapter and deploys them as separate Cloudflare Workers. Their domains depend on the stage:
 
-| Stage        | Domain                       |
-| ------------ | ---------------------------- |
-| `production` | `bradlove.dev`               |
-| `dev`        | `dev.bradlove.dev`           |
-| other        | `<stage>.dev.bradlove.dev`   |
+| Stage        | Portfolio domain             | Studio domain                     |
+| ------------ | ---------------------------- | --------------------------------- |
+| `production` | `bradlove.dev`               | `proto.bradlove.dev`              |
+| `dev`        | `dev.bradlove.dev`           | `proto.dev.bradlove.dev`          |
+| other        | `<stage>.dev.bradlove.dev`   | `proto-<stage>.dev.bradlove.dev`  |
+
+After installing Chromium with `bunx playwright install chromium`, run the deployed Studio smoke test with:
+
+```sh
+bun --filter @bradlove/studio test:deployed
+```
+
+The test targets production by default. Set `STUDIO_URL` to test another deployed stage.
 
 ## License
 
