@@ -15,7 +15,7 @@ export default Alchemy.Stack(
     Effect.gen(function* () {
         const website = yield* web
         const controlPlaneApi = yield* controlPlane
-        const studioSite = yield* studio
+        const studioSite = yield* studio(controlPlaneApi.url)
 
         return {
             website: website.url,
