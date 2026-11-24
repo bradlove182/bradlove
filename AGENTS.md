@@ -3,7 +3,7 @@
 ## Working in this repo
 
 - Use Bun, not npm, pnpm, or yarn. Install from the root with `bun install`.
-- Work directly on `main`; do not create feature or integration branches unless explicitly requested.
+- Create a dedicated branch and pull request for each issue. Do not commit directly to `main`.
 - `bun install` runs `effect-tsgo patch --typescript --oxlint` through `prepare`. Avoid `--ignore-scripts` when setting up the toolchain.
 - Dependency versions are centralized in the root Bun catalogs. Svelte workspaces intentionally use `catalog:ts6`; do not silently align them with the root TypeScript 7 catalog.
 
@@ -40,7 +40,7 @@ bun --filter @bradlove/ui check
 bun --filter @bradlove/motion check
 ```
 
-`@bradlove/core` has no `check` script. No Bun test files currently exist. The Studio browser smoke test targets `https://proto.bradlove.dev` by default; set `STUDIO_URL` to override it.
+`@bradlove/core` has no `check` script. No Bun test files currently exist. The Studio browser smoke test targets `https://proto.dev.bradlove.dev` by default; set `STUDIO_URL` to override it.
 
 ## Architecture
 
@@ -59,6 +59,7 @@ bun --filter @bradlove/motion check
 - `infra/web.ts` builds `apps/web`, deploys `.svelte-kit/cloudflare/_worker.js`, and serves the remaining build output as Worker assets. `infra/studio.ts` does the same for `apps/studio` through a separate Worker.
 - Keep `NODE_ENV=development` in the Alchemy dev command: the Alchemy CLI otherwise passes `NODE_ENV=production` to Vite.
 - Stage domains are resolved in `infra/dns.ts`: production uses `bradlove.dev`, dev uses `dev.bradlove.dev`, and other stages use `<stage>.dev.bradlove.dev`. Studio uses `getSubdomain("proto")`. Use its helpers for subdomains instead of hardcoding preview-domain rules.
+- Deploy only to the `dev` stage for issue verification until release. The dev stage must mirror the production infrastructure; do not deploy to production for testing.
 
 ## Style
 
