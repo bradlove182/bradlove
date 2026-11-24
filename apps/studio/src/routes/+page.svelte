@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { CONTROL_PLANE_URL } from "$app/env/public"
-    import { Effect, Exit } from "effect"
     import { onMount } from "svelte"
 
-    import { getControlPlaneHealth } from "../lib/control-plane"
+    import { getControlPlaneHealth } from "../lib/control-plane.remote"
 
     type HealthState = "checking" | "healthy" | "unavailable"
 
@@ -11,17 +9,18 @@
 
     onMount(() => {
         let active = true
-        const interrupt = Effect.runCallback(getControlPlaneHealth(CONTROL_PLANE_URL), {
-            onExit: (exit) => {
-                if (!active) return
 
-                health = Exit.isSuccess(exit) ? "healthy" : "unavailable"
+        void getControlPlaneHealth().then(
+            (result) => {
+                if (active) health = result.status
             },
-        })
+            () => {
+                if (active) health = "unavailable"
+            },
+        )
 
         return () => {
             active = false
-            interrupt()
         }
     })
 </script>

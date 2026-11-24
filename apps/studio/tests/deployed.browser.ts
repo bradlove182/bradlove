@@ -18,13 +18,10 @@ test("a visitor can see that the control plane is healthy", async ({ page }) => 
 test("a visitor sees a generic status when the control plane is unavailable", async ({ page }) => {
     const internalDetail = "postgres://admin:secret@internal-database:5432/control-plane"
 
-    await page.route("**/health", (route) =>
+    await page.route("**/_app/remote/**", (route) =>
         route.fulfill({
             status: 503,
             contentType: "application/json",
-            headers: {
-                "access-control-allow-origin": "*",
-            },
             body: JSON.stringify({ error: internalDetail }),
         }),
     )
