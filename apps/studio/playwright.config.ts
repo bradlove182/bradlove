@@ -1,8 +1,6 @@
 import { defineConfig } from "@playwright/test"
 
-const baseURL = process.env.STUDIO_URL ?? "https://proto.bradlove.dev"
-// Bypass a local negative DNS cache without bypassing the deployed hostname or TLS.
-const resolveIP = process.env.STUDIO_RESOLVE_IP
+const baseURL = process.env.STUDIO_URL ?? "https://proto.dev.bradlove.dev"
 
 export default defineConfig({
     testDir: "./tests",
@@ -12,11 +10,5 @@ export default defineConfig({
         baseURL,
         browserName: "chromium",
         headless: true,
-        launchOptions:
-            resolveIP === undefined
-                ? undefined
-                : {
-                      args: [`--host-resolver-rules=MAP ${new URL(baseURL).hostname} ${resolveIP}`],
-                  },
     },
 })

@@ -63,6 +63,8 @@ Type check a workspace with `bun run check` inside `apps/web`, `apps/studio`, `p
 
 ## Deployment
 
+Use a dedicated branch and pull request for each issue; do not commit directly to `main`. Issue verification deploys only to the `dev` stage until release. The dev stage mirrors the production infrastructure.
+
 The stack in `alchemy.run.ts` builds `apps/web` and `apps/studio` with the Cloudflare adapter and deploys them as separate Cloudflare Workers. Their domains depend on the stage:
 
 | Stage        | Portfolio domain             | Studio domain                     |
@@ -77,7 +79,7 @@ After installing Chromium with `bunx playwright install chromium`, run the deplo
 bun --filter @bradlove/studio test:deployed
 ```
 
-The test targets production by default. Set `STUDIO_URL` to test another deployed stage.
+The test targets `https://proto.dev.bradlove.dev` by default. Set `STUDIO_URL` to test another deployed stage. Production deployment is reserved for release.
 
 ## License
 
