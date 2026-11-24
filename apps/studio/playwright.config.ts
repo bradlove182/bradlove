@@ -21,6 +21,9 @@ export default defineConfig({
               {
                   command: "bun run dev",
                   cwd: resolve(import.meta.dirname, "../control-plane"),
+                  env: {
+                      PORT: "3001",
+                  },
                   url: "http://127.0.0.1:3001/health",
                   reuseExistingServer: !process.env.CI,
               },
