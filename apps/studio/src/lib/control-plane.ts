@@ -6,5 +6,6 @@ export const getControlPlaneHealth = (baseUrl: string) =>
     HttpClient.get(new URL("/health", baseUrl)).pipe(
         Effect.flatMap(HttpClientResponse.filterStatusOk),
         Effect.flatMap(HttpClientResponse.schemaBodyJson(ControlPlaneHealth)),
+        Effect.timeout("5 seconds"),
         Effect.provide(FetchHttpClient.layer),
     )
