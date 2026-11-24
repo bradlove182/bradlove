@@ -19,11 +19,8 @@ export default defineConfig({
     webServer: local
         ? [
               {
-                  command: "bun run dev",
-                  cwd: resolve(import.meta.dirname, "../control-plane"),
-                  env: {
-                      PORT: "3001",
-                  },
+                  command: "bun alchemy dev --include ControlPlane",
+                  cwd: resolve(import.meta.dirname, "../.."),
                   url: "http://127.0.0.1:3001/health",
                   reuseExistingServer: !process.env.CI,
               },

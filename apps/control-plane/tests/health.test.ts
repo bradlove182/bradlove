@@ -1,21 +1,30 @@
-import { afterEach, beforeEach, expect, test } from "bun:test"
+import { afterAll, afterEach, beforeEach, expect, test } from "bun:test"
 
 import { ControlPlaneHealth } from "@bradlove/core/schemas/health"
-import { Schema } from "effect"
+import { Context, Schema } from "effect"
+import { HttpRouter } from "effect/http"
 
-import controlPlane from "../src/worker"
+import { ControlPlaneApp } from "../src/worker"
+
+const app = HttpRouter.toWebHandler(ControlPlaneApp, {
+    disableLogger: true,
+})
 
 let server: Bun.Server<undefined>
 
 beforeEach(() => {
     server = Bun.serve({
         port: 0,
-        fetch: controlPlane.fetch,
+        fetch: (request) => app.handler(request, Context.empty()),
     })
 })
 
 afterEach(async () => {
     await server.stop(true)
+})
+
+afterAll(async () => {
+    await app.dispose()
 })
 
 test("the control plane reports healthy through its public HTTP interface", async () => {

@@ -1,31 +1,35 @@
-import * as Alchemy from "alchemy"
 import * as Cloudflare from "alchemy/Cloudflare"
-import * as Command from "alchemy/Command"
+import "alchemy/Phase"
 import * as Effect from "effect/Effect"
 
+import { controlPlaneWorker } from "../apps/control-plane/src/worker"
 import { getSubdomain } from "./dns"
 
-export const controlPlane = Effect.gen(function* () {
-    const { dev } = yield* Alchemy.AlchemyContext
-
-    if (dev) {
-        return yield* Command.Dev("ControlPlaneDev", {
-            command: "bun run dev",
-            cwd: "apps/control-plane",
-            env: {
-                NODE_ENV: "development",
-                PORT: "3001",
+export class ControlPlane extends Cloudflare.Worker<ControlPlane>()(
+    "ControlPlane",
+    Effect.gen(function* () {
+        const props = {
+            main: import.meta.url,
+            dev: {
+                host: "127.0.0.1",
+                port: 3001,
+                strictPort: true,
             },
-        })
-    }
+            compatibility: {
+                flags: ["nodejs_compat"],
+            },
+        }
 
-    const domain = yield* getSubdomain("api.proto")
+        if (globalThis.__ALCHEMY_RUNTIME__) {
+            return props
+        }
 
-    return yield* Cloudflare.Worker("ControlPlane", {
-        main: "apps/control-plane/src/worker.ts",
-        domain,
-        compatibility: {
-            flags: ["nodejs_compat"],
-        },
-    })
-})
+        const domain = yield* getSubdomain("api.proto")
+        return { ...props, domain }
+    }),
+    controlPlaneWorker,
+) {}
+
+export const controlPlane = ControlPlane
+
+export default ControlPlane

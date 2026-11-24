@@ -1,6 +1,6 @@
 import { ControlPlaneHealth } from "@bradlove/core/schemas/health"
-import { Context, Effect, Layer } from "effect"
-import { HttpRouter, HttpServer } from "effect/http"
+import { Effect, Layer } from "effect"
+import { HttpRouter, HttpServer, HttpServerResponse } from "effect/http"
 import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
 
 export class SystemApi extends HttpApiGroup.make("system", { topLevel: true }).add(
@@ -22,44 +22,41 @@ const SystemApiHandlers = HttpApiBuilder.group(ControlPlaneApi, "system", (handl
     ),
 )
 
-const ApiRoutes = HttpApiBuilder.layer(ControlPlaneApi).pipe(Layer.provide(SystemApiHandlers))
+const PublicHealthHeaders = HttpRouter.middleware((httpEffect) =>
+    httpEffect.pipe(
+        Effect.map(
+            HttpServerResponse.setHeaders({
+                "access-control-allow-origin": "*",
+                "cache-control": "no-store",
+            }),
+        ),
+    ),
+).layer
 
-const app = HttpRouter.toWebHandler(ApiRoutes.pipe(Layer.provide(HttpServer.layerServices)), {
-    disableLogger: true,
+const HealthPreflight = HttpRouter.add(
+    "OPTIONS",
+    "/health",
+    Effect.succeed(
+        HttpServerResponse.empty({
+            headers: {
+                "access-control-allow-methods": "GET, OPTIONS",
+                "access-control-allow-headers": "*",
+            },
+        }),
+    ),
+)
+
+export const ControlPlaneApp = Layer.mergeAll(
+    HttpApiBuilder.layer(ControlPlaneApi),
+    HealthPreflight,
+).pipe(
+    Layer.provide(SystemApiHandlers),
+    Layer.provide(PublicHealthHeaders),
+    Layer.provide(HttpServer.layerServices),
+)
+
+export const controlPlaneWorker = Effect.gen(function* () {
+    return {
+        fetch: yield* HttpRouter.toHttpEffect(ControlPlaneApp),
+    }
 })
-
-const publicHealthHeaders = (init?: ConstructorParameters<typeof Headers>[0]): Headers => {
-    const headers = new Headers(init)
-    headers.set("access-control-allow-origin", "*")
-    headers.set("cache-control", "no-store")
-    return headers
-}
-
-const withPublicHealthHeaders = (response: Response): Response =>
-    new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: publicHealthHeaders(response.headers),
-    })
-
-export default {
-    fetch: (request: Request) => {
-        if (new URL(request.url).pathname === "/health" && request.method === "OPTIONS") {
-            return new Response(null, {
-                status: 204,
-                headers: publicHealthHeaders({
-                    "access-control-allow-methods": "GET, OPTIONS",
-                    "access-control-allow-headers": "*",
-                }),
-            })
-        }
-
-        return app
-            .handler(request, Context.empty())
-            .then((response) =>
-                new URL(request.url).pathname === "/health"
-                    ? withPublicHealthHeaders(response)
-                    : response,
-            )
-    },
-}
