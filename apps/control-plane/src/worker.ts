@@ -28,29 +28,29 @@ const app = HttpRouter.toWebHandler(ApiRoutes.pipe(Layer.provide(HttpServer.laye
     disableLogger: true,
 })
 
-const withPublicHealthHeaders = (response: Response): Response => {
-    const headers = new Headers(response.headers)
+const publicHealthHeaders = (init?: ConstructorParameters<typeof Headers>[0]): Headers => {
+    const headers = new Headers(init)
     headers.set("access-control-allow-origin", "*")
     headers.set("cache-control", "no-store")
+    return headers
+}
 
-    return new Response(response.body, {
+const withPublicHealthHeaders = (response: Response): Response =>
+    new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers,
+        headers: publicHealthHeaders(response.headers),
     })
-}
 
 export default {
     fetch: (request: Request) => {
         if (new URL(request.url).pathname === "/health" && request.method === "OPTIONS") {
             return new Response(null, {
                 status: 204,
-                headers: {
-                    "access-control-allow-origin": "*",
+                headers: publicHealthHeaders({
                     "access-control-allow-methods": "GET, OPTIONS",
                     "access-control-allow-headers": "*",
-                    "cache-control": "no-store",
-                },
+                }),
             })
         }
 

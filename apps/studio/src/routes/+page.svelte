@@ -58,9 +58,7 @@
                     Control plane is unavailable
                 {/if}
             </p>
-            {#if health === "healthy"}
-                <p class="health-detail">Publishing services are available.</p>
-            {:else if health === "unavailable"}
+            {#if health === "unavailable"}
                 <p class="health-detail">Try again shortly.</p>
             {/if}
         </aside>
