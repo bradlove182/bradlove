@@ -1,28 +1,11 @@
 <script lang="ts">
-    import { onMount } from "svelte"
+    import { browser } from "$app/env"
 
     import { getControlPlaneHealth } from "../lib/control-plane.remote"
 
-    type HealthState = "checking" | "healthy" | "unavailable"
-
-    let health = $state<HealthState>("checking")
-
-    onMount(() => {
-        let active = true
-
-        void getControlPlaneHealth().then(
-            (result) => {
-                if (active) health = result.status
-            },
-            () => {
-                if (active) health = "unavailable"
-            },
-        )
-
-        return () => {
-            active = false
-        }
-    })
+    const health = browser
+        ? await getControlPlaneHealth().catch(() => ({ status: "unavailable" as const }))
+        : { status: "checking" as const }
 </script>
 
 <svelte:head>
@@ -42,22 +25,22 @@
         <aside class="health" aria-labelledby="health-title">
             <div class="health-heading">
                 <span
-                    class:healthy={health === "healthy"}
-                    class:unavailable={health === "unavailable"}
+                    class:healthy={health.status === "healthy"}
+                    class:unavailable={health.status === "unavailable"}
                     aria-hidden="true"
                 ></span>
                 <h2 id="health-title">Control plane</h2>
             </div>
             <p class="health-status" role="status">
-                {#if health === "checking"}
+                {#if health.status === "checking"}
                     Checking control plane health
-                {:else if health === "healthy"}
+                {:else if health.status === "healthy"}
                     Control plane is healthy
                 {:else}
                     Control plane is unavailable
                 {/if}
             </p>
-            {#if health === "unavailable"}
+            {#if health.status === "unavailable"}
                 <p class="health-detail">Try again shortly.</p>
             {/if}
         </aside>
