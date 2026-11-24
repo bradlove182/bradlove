@@ -3,7 +3,8 @@
     "type": "module",
     "exports": {
         "./schemas/*": {
-            "import": "./src/schemas/*"
+            "types": "./src/schemas/*.ts",
+            "import": "./src/schemas/*.ts"
         }
     },
     "devDependencies": {

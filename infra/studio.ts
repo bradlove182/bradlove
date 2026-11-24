@@ -8,13 +8,19 @@ import { getSubdomain } from "./dns"
 
 export const studio = Effect.gen(function* () {
     const { dev } = yield* Alchemy.AlchemyContext
+    const controlPlaneUrl = dev
+        ? "http://127.0.0.1:3001"
+        : `https://${yield* getSubdomain("api.proto")}`
 
     if (dev) {
         return yield* Command.Dev("StudioDev", {
             command: "bun run dev",
             cwd: "apps/studio",
             // The alchemy CLI sets NODE_ENV=production for itself; inherited, Vite would treat dev as production.
-            env: { NODE_ENV: "development" },
+            env: {
+                NODE_ENV: "development",
+                CONTROL_PLANE_URL: controlPlaneUrl,
+            },
         })
     }
 
@@ -24,6 +30,9 @@ export const studio = Effect.gen(function* () {
         command: "bun run build",
         cwd: "apps/studio",
         outdir: ".svelte-kit/cloudflare",
+        env: {
+            CONTROL_PLANE_URL: controlPlaneUrl,
+        },
     })
 
     return yield* Cloudflare.Worker("Studio", {
