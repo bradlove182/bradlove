@@ -18,6 +18,12 @@ export class ControlPlane extends Cloudflare.Worker<ControlPlane>()(
             compatibility: {
                 flags: ["nodejs_compat"],
             },
+            build: {
+                output: {
+                    // The Effect runtime's source maps dwarf the executable and stall Cloudflare uploads.
+                    sourcemap: false,
+                },
+            },
         }
 
         if (globalThis.__ALCHEMY_RUNTIME__) {
