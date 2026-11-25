@@ -28,6 +28,10 @@ export function studio(controlPlaneUrl: Output.Output<string | undefined>) {
             command: "bun run build",
             cwd: "apps/studio",
             outdir: ".svelte-kit/cloudflare",
+            memo: {
+                include: ["**/*", "../../packages/core/**"],
+                lockfile: true,
+            },
             env: {
                 CONTROL_PLANE_URL: controlPlaneUrl,
             },
