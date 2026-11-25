@@ -1,15 +1,7 @@
-import { ControlPlaneHealth } from "@bradlove/core/schemas/health"
+import { ControlPlaneApi, ControlPlaneHealth } from "@bradlove/core/control-plane"
 import { Effect, Layer } from "effect"
 import { HttpRouter, HttpServer, HttpServerResponse } from "effect/http"
-import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
-
-export class SystemApi extends HttpApiGroup.make("system", { topLevel: true }).add(
-    HttpApiEndpoint.get("health", "/health", {
-        success: ControlPlaneHealth,
-    }),
-) {}
-
-export class ControlPlaneApi extends HttpApi.make("control-plane").add(SystemApi) {}
+import { HttpApiBuilder } from "effect/http-api"
 
 const SystemApiHandlers = HttpApiBuilder.group(ControlPlaneApi, "system", (handlers) =>
     handlers.handle("health", () =>
