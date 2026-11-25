@@ -1,4 +1,5 @@
-import { HttpClient, HttpClientRequest } from "effect/http"
+import { Effect } from "effect"
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/http"
 import { HttpApi, HttpApiClient, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
 
 import { ControlPlaneHealth } from "../schemas/health"
@@ -17,4 +18,4 @@ export const makeControlPlaneClient = (baseUrl: string) =>
     HttpApiClient.make(ControlPlaneApi, {
         transformClient: (client) =>
             client.pipe(HttpClient.mapRequest(HttpClientRequest.prependUrl(baseUrl))),
-    })
+    }).pipe(Effect.provide(FetchHttpClient.layer))

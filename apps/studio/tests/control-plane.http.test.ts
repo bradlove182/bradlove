@@ -2,14 +2,12 @@ import { expect, test } from "bun:test"
 
 import { makeControlPlaneClient } from "@bradlove/core/control-plane"
 import { Effect, Exit, Fiber } from "effect"
-import { FetchHttpClient } from "effect/http"
 import { TestClock } from "effect/testing"
 
 const getControlPlaneHealth = (baseUrl: string) =>
     makeControlPlaneClient(baseUrl).pipe(
         Effect.flatMap((client) => client.health()),
         Effect.timeout("5 seconds"),
-        Effect.provide(FetchHttpClient.layer),
     )
 
 test("the Studio health client rejects an unavailable control-plane response", async () => {
