@@ -1,13 +1,13 @@
 import { expect, test } from "bun:test"
 
-import { makeControlPlaneClient } from "@bradlove/core/control-plane"
+import { ControlPlaneClient } from "@bradlove/core/control-plane"
 import { Effect, Exit, Fiber } from "effect"
 import { TestClock } from "effect/testing"
 
 const getControlPlaneHealth = (baseUrl: string) =>
-    makeControlPlaneClient(baseUrl).pipe(
-        Effect.flatMap((client) => client.health()),
+    ControlPlaneClient.use((client) => client.health()).pipe(
         Effect.timeout("5 seconds"),
+        Effect.provide(ControlPlaneClient.layer(baseUrl)),
     )
 
 test("the Studio health client rejects an unavailable control-plane response", async () => {
@@ -16,6 +16,26 @@ test("the Studio health client rejects an unavailable control-plane response", a
         fetch: () =>
             new Response(JSON.stringify({ error: "internal health detail" }), {
                 status: 503,
+                headers: {
+                    "content-type": "application/json",
+                },
+            }),
+    })
+
+    try {
+        const exit = await Effect.runPromiseExit(getControlPlaneHealth(server.url.origin))
+
+        expect(Exit.isFailure(exit)).toBe(true)
+    } finally {
+        await server.stop(true)
+    }
+})
+
+test("the Studio health client rejects a schema-invalid healthy response", async () => {
+    const server = Bun.serve({
+        port: 0,
+        fetch: () =>
+            new Response(JSON.stringify({ service: "control-plane", status: "degraded" }), {
                 headers: {
                     "content-type": "application/json",
                 },

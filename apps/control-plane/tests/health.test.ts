@@ -1,10 +1,11 @@
 import { afterAll, afterEach, beforeEach, expect, test } from "bun:test"
 
-import { ControlPlaneHealth } from "@bradlove/core/schemas/health"
-import { Context, Schema } from "effect"
-import { HttpRouter } from "effect/http"
+import { ControlPlaneApi, ControlPlaneHealth } from "@bradlove/core/control-plane"
+import { Context, Effect, Layer, Schema } from "effect"
+import { HttpRouter, HttpServer } from "effect/http"
+import { HttpApiTest } from "effect/http-api"
 
-import { ControlPlaneApp } from "../src/worker"
+import { ControlPlaneApp, SystemApiHandlers } from "../src/worker"
 
 const app = HttpRouter.toWebHandler(ControlPlaneApp, {
     disableLogger: true,
@@ -25,6 +26,26 @@ afterEach(async () => {
 
 afterAll(async () => {
     await app.dispose()
+})
+
+test("the generated client and handlers share the health contract in memory", async () => {
+    const health = await Effect.runPromise(
+        Effect.gen(function* () {
+            const client = yield* HttpApiTest.groups(ControlPlaneApi, ["system"])
+
+            return yield* client.health()
+        }).pipe(
+            Effect.provide(Layer.mergeAll(SystemApiHandlers, HttpServer.layerServices)),
+            Effect.scoped,
+        ),
+    )
+
+    expect(health).toEqual(
+        new ControlPlaneHealth({
+            service: "control-plane",
+            status: "healthy",
+        }),
+    )
 })
 
 test("the control plane reports healthy through its public HTTP interface", async () => {

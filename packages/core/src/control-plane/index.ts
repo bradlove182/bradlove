@@ -1,4 +1,4 @@
-import { Effect } from "effect"
+import { Context, Layer } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/http"
 import { HttpApi, HttpApiClient, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
 
@@ -14,8 +14,16 @@ export class SystemApi extends HttpApiGroup.make("system", { topLevel: true }).a
 
 export class ControlPlaneApi extends HttpApi.make("control-plane").add(SystemApi) {}
 
-export const makeControlPlaneClient = (baseUrl: string) =>
-    HttpApiClient.make(ControlPlaneApi, {
-        transformClient: (client) =>
-            client.pipe(HttpClient.mapRequest(HttpClientRequest.prependUrl(baseUrl))),
-    }).pipe(Effect.provide(FetchHttpClient.layer))
+export class ControlPlaneClient extends Context.Service<
+    ControlPlaneClient,
+    HttpApiClient.ForApi<typeof ControlPlaneApi>
+>()("@bradlove/core/control-plane/ControlPlaneClient") {
+    static readonly layer = (baseUrl: string): Layer.Layer<ControlPlaneClient> =>
+        Layer.effect(
+            ControlPlaneClient,
+            HttpApiClient.make(ControlPlaneApi, {
+                transformClient: (client) =>
+                    client.pipe(HttpClient.mapRequest(HttpClientRequest.prependUrl(baseUrl))),
+            }),
+        ).pipe(Layer.provide(FetchHttpClient.layer))
+}

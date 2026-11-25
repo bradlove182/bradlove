@@ -3,7 +3,7 @@ import { Effect, Layer } from "effect"
 import { HttpRouter, HttpServer, HttpServerResponse } from "effect/http"
 import { HttpApiBuilder } from "effect/http-api"
 
-const SystemApiHandlers = HttpApiBuilder.group(ControlPlaneApi, "system", (handlers) =>
+export const SystemApiHandlers = HttpApiBuilder.group(ControlPlaneApi, "system", (handlers) =>
     handlers.handle("health", () =>
         Effect.succeed(
             new ControlPlaneHealth({
