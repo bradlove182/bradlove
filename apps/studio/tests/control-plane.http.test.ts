@@ -1,14 +1,12 @@
 import { expect, test } from "bun:test"
 
 import { ControlPlaneClient, ControlPlaneHealth } from "@bradlove/core/control-plane"
-import { Effect, Fiber } from "effect"
+import { Effect, Fiber, ManagedRuntime } from "effect"
 import { TestClock } from "effect/testing"
 
-const getControlPlaneHealth = (baseUrl: string) =>
-    ControlPlaneClient.use((client) => client.health()).pipe(
-        Effect.timeout("5 seconds"),
-        Effect.provide(ControlPlaneClient.layer(baseUrl)),
-    )
+const getControlPlaneHealth = ControlPlaneClient.use((client) => client.health()).pipe(
+    Effect.timeout("5 seconds"),
+)
 
 test("the Studio health client rejects an unavailable control-plane response", async () => {
     const server = Bun.serve({
@@ -21,14 +19,14 @@ test("the Studio health client rejects an unavailable control-plane response", a
                 },
             }),
     })
+    const runtime = ManagedRuntime.make(ControlPlaneClient.layer(server.url.origin))
 
     try {
-        const error = await Effect.runPromise(
-            getControlPlaneHealth(server.url.origin).pipe(Effect.flip),
-        )
+        const error = await runtime.runPromise(getControlPlaneHealth.pipe(Effect.flip))
 
         expect(error._tag).toBe("HttpClientError")
     } finally {
+        await runtime.dispose()
         await server.stop(true)
     }
 })
@@ -43,14 +41,14 @@ test("the Studio health client rejects a schema-invalid healthy response", async
                 },
             }),
     })
+    const runtime = ManagedRuntime.make(ControlPlaneClient.layer(server.url.origin))
 
     try {
-        const error = await Effect.runPromise(
-            getControlPlaneHealth(server.url.origin).pipe(Effect.flip),
-        )
+        const error = await runtime.runPromise(getControlPlaneHealth.pipe(Effect.flip))
 
         expect(error._tag).toBe("SchemaError")
     } finally {
+        await runtime.dispose()
         await server.stop(true)
     }
 })
@@ -60,11 +58,12 @@ test("the Studio health client times out a stalled health check", async () => {
         port: 0,
         fetch: () => new Promise<Response>(() => {}),
     })
+    const runtime = ManagedRuntime.make(ControlPlaneClient.layer(server.url.origin))
 
     try {
-        const result = await Effect.runPromise(
+        const result = await runtime.runPromise(
             Effect.gen(function* () {
-                const fiber = yield* getControlPlaneHealth(server.url.origin).pipe(Effect.forkChild)
+                const fiber = yield* getControlPlaneHealth.pipe(Effect.forkChild)
                 yield* TestClock.adjust(6_000)
                 const error = yield* Fiber.join(fiber).pipe(
                     Effect.flip,
@@ -80,6 +79,7 @@ test("the Studio health client times out a stalled health check", async () => {
         }
         expect(result?._tag).toBe("TimeoutError")
     } finally {
+        await runtime.dispose()
         await server.stop(true)
     }
 })
@@ -94,9 +94,10 @@ test("the Studio health client accepts a healthy response before the deadline", 
                 },
             }),
     })
+    const runtime = ManagedRuntime.make(ControlPlaneClient.layer(server.url.origin))
 
     try {
-        const health = await Effect.runPromise(getControlPlaneHealth(server.url.origin))
+        const health = await runtime.runPromise(getControlPlaneHealth)
 
         expect(health).toEqual(
             new ControlPlaneHealth({
@@ -105,6 +106,7 @@ test("the Studio health client accepts a healthy response before the deadline", 
             }),
         )
     } finally {
+        await runtime.dispose()
         await server.stop(true)
     }
 })
