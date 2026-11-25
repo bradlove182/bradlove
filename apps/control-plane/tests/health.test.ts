@@ -5,11 +5,13 @@ import { Context, Effect, Layer, Schema } from "effect"
 import { HttpRouter, HttpServer } from "effect/http"
 import { HttpApiTest } from "effect/http-api"
 
-import { ControlPlaneApp, SystemApiHandlers } from "../src/worker"
+import { ControlPlaneApp, PublicHealthHeadersLayer, SystemApiHandlers } from "../src/worker"
 
 const app = HttpRouter.toWebHandler(ControlPlaneApp, {
     disableLogger: true,
 })
+
+const handlers = SystemApiHandlers.pipe(Layer.provideMerge(PublicHealthHeadersLayer))
 
 let server: Bun.Server<undefined>
 
@@ -34,10 +36,7 @@ test("the generated client and handlers share the health contract in memory", as
             const client = yield* HttpApiTest.groups(ControlPlaneApi, ["system"])
 
             return yield* client.health()
-        }).pipe(
-            Effect.provide(Layer.mergeAll(SystemApiHandlers, HttpServer.layerServices)),
-            Effect.scoped,
-        ),
+        }).pipe(Effect.provide(Layer.mergeAll(handlers, HttpServer.layerServices)), Effect.scoped),
     )
 
     expect(health).toEqual(

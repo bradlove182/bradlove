@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test"
 
-import { ControlPlaneClient } from "@bradlove/core/control-plane"
-import { Effect, Exit, Fiber } from "effect"
+import { ControlPlaneClient, ControlPlaneHealth } from "@bradlove/core/control-plane"
+import { Effect, Fiber } from "effect"
 import { TestClock } from "effect/testing"
 
 const getControlPlaneHealth = (baseUrl: string) =>
@@ -23,9 +23,11 @@ test("the Studio health client rejects an unavailable control-plane response", a
     })
 
     try {
-        const exit = await Effect.runPromiseExit(getControlPlaneHealth(server.url.origin))
+        const error = await Effect.runPromise(
+            getControlPlaneHealth(server.url.origin).pipe(Effect.flip),
+        )
 
-        expect(Exit.isFailure(exit)).toBe(true)
+        expect(error._tag).toBe("HttpClientError")
     } finally {
         await server.stop(true)
     }
@@ -43,9 +45,11 @@ test("the Studio health client rejects a schema-invalid healthy response", async
     })
 
     try {
-        const exit = await Effect.runPromiseExit(getControlPlaneHealth(server.url.origin))
+        const error = await Effect.runPromise(
+            getControlPlaneHealth(server.url.origin).pipe(Effect.flip),
+        )
 
-        expect(Exit.isFailure(exit)).toBe(true)
+        expect(error._tag).toBe("SchemaError")
     } finally {
         await server.stop(true)
     }
@@ -62,18 +66,19 @@ test("the Studio health client times out a stalled health check", async () => {
             Effect.gen(function* () {
                 const fiber = yield* getControlPlaneHealth(server.url.origin).pipe(Effect.forkChild)
                 yield* TestClock.adjust(6_000)
-                const exit = yield* Fiber.await(fiber).pipe(
+                const error = yield* Fiber.join(fiber).pipe(
+                    Effect.flip,
                     Effect.race(TestClock.withLive(Effect.sleep(100)).pipe(Effect.as(null))),
                 )
                 yield* Fiber.interrupt(fiber)
-                return exit
+                return error
             }).pipe(Effect.provide(TestClock.layer())),
         )
 
         if (result === null) {
             throw new Error("The health check did not complete after its deadline")
         }
-        expect(Exit.isFailure(result)).toBe(true)
+        expect(result?._tag).toBe("TimeoutError")
     } finally {
         await server.stop(true)
     }
@@ -91,9 +96,14 @@ test("the Studio health client accepts a healthy response before the deadline", 
     })
 
     try {
-        const exit = await Effect.runPromiseExit(getControlPlaneHealth(server.url.origin))
+        const health = await Effect.runPromise(getControlPlaneHealth(server.url.origin))
 
-        expect(Exit.isSuccess(exit)).toBe(true)
+        expect(health).toEqual(
+            new ControlPlaneHealth({
+                service: "control-plane",
+                status: "healthy",
+            }),
+        )
     } finally {
         await server.stop(true)
     }

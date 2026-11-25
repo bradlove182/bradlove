@@ -1,4 +1,8 @@
-import { ControlPlaneApi, ControlPlaneHealth } from "@bradlove/core/control-plane"
+import {
+    ControlPlaneApi,
+    ControlPlaneHealth,
+    PublicHealthHeaders,
+} from "@bradlove/core/control-plane"
 import { Effect, Layer } from "effect"
 import { HttpRouter, HttpServer, HttpServerResponse } from "effect/http"
 import { HttpApiBuilder } from "effect/http-api"
@@ -14,16 +18,14 @@ export const SystemApiHandlers = HttpApiBuilder.group(ControlPlaneApi, "system",
     ),
 )
 
-const PublicHealthHeaders = HttpRouter.middleware((httpEffect) =>
-    httpEffect.pipe(
-        Effect.map(
-            HttpServerResponse.setHeaders({
-                "access-control-allow-origin": "*",
-                "cache-control": "no-store",
-            }),
-        ),
-    ),
-).layer
+const withPublicHealthHeaders = HttpServerResponse.setHeaders({
+    "access-control-allow-origin": "*",
+    "cache-control": "no-store",
+})
+
+export const PublicHealthHeadersLayer = Layer.succeed(PublicHealthHeaders, (httpEffect) =>
+    httpEffect.pipe(Effect.map(withPublicHealthHeaders)),
+)
 
 const HealthPreflight = HttpRouter.add(
     "OPTIONS",
@@ -35,7 +37,7 @@ const HealthPreflight = HttpRouter.add(
                 "access-control-allow-headers": "*",
             },
         }),
-    ),
+    ).pipe(Effect.map(withPublicHealthHeaders)),
 )
 
 export const ControlPlaneApp = Layer.mergeAll(
@@ -43,7 +45,7 @@ export const ControlPlaneApp = Layer.mergeAll(
     HealthPreflight,
 ).pipe(
     Layer.provide(SystemApiHandlers),
-    Layer.provide(PublicHealthHeaders),
+    Layer.provide(PublicHealthHeadersLayer),
     Layer.provide(HttpServer.layerServices),
 )
 
