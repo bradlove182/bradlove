@@ -1,5 +1,5 @@
+import * as Cloudflare from "@alchemy.run/cloudflare"
 import * as Alchemy from "alchemy"
-import * as Cloudflare from "alchemy/Cloudflare"
 import * as Command from "alchemy/Command"
 import * as Output from "alchemy/Output"
 import * as Effect from "effect/Effect"
@@ -38,10 +38,10 @@ export function studio(controlPlaneUrl: Output.Output<string | undefined>) {
         })
 
         return yield* Cloudflare.Worker("Studio", {
-            main: Output.interpolate`${build.outdir}/_worker.js`,
+            main: Output.interpolate`${build.outdir}/worker/index.js`,
             domain,
             assets: {
-                directory: build.outdir,
+                directory: Output.interpolate`${build.outdir}/client`,
             },
             compatibility: {
                 flags: ["nodejs_compat"],
