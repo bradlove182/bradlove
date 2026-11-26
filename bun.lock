@@ -21,14 +21,31 @@
         "typescript": "catalog:",
       },
     },
+    "apps/control-plane": {
+      "name": "@bradlove/control-plane",
+      "version": "0.0.1",
+      "dependencies": {
+        "@bradlove/core": "workspace:*",
+        "effect": "catalog:",
+      },
+      "devDependencies": {
+        "@types/bun": "catalog:",
+        "typescript": "catalog:",
+      },
+    },
     "apps/studio": {
       "name": "@bradlove/studio",
       "version": "0.0.1",
+      "dependencies": {
+        "@bradlove/core": "workspace:*",
+        "effect": "catalog:",
+      },
       "devDependencies": {
         "@playwright/test": "catalog:",
         "@sveltejs/adapter-cloudflare": "catalog:",
         "@sveltejs/kit": "catalog:",
         "@sveltejs/vite-plugin-svelte": "catalog:",
+        "@types/bun": "catalog:",
         "svelte": "catalog:",
         "svelte-check": "catalog:",
         "typescript": "catalog:ts6",
@@ -140,6 +157,8 @@
     "@alchemy.run/node-utils": ["@alchemy.run/node-utils@2.0.0-beta.83", "", { "dependencies": { "chokidar": "^5.0.0", "rolldown": "1.2.5" } }, "sha512-UiRTmZN95URcMgQQtuatgaV2YcYZ5TDoZtRgnd7Kz7R7pCeFCUhJXM2ZYwM32j3wqnObThpiFKFDJmqDsrosIA=="],
 
     "@alchemy.run/sigil": ["@alchemy.run/sigil@0.1.0-alpha.1", "", { "peerDependencies": { "@types/react": ">=19.2.0", "react-devtools-core": ">=6.1.2" }, "optionalPeers": ["@types/react", "react-devtools-core"] }, "sha512-RtHELG2w+GluVewRsuKm66idtPzC+4STptMr/61X1Vy5uBkDzcCzjzV8G6jUa4iBv6Il0hHV7UL6wvv//9nD/Q=="],
+
+    "@bradlove/control-plane": ["@bradlove/control-plane@workspace:apps/control-plane"],
 
     "@bradlove/core": ["@bradlove/core@workspace:packages/core"],
 

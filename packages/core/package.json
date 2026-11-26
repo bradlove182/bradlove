@@ -3,7 +3,12 @@
     "type": "module",
     "exports": {
         "./schemas/*": {
-            "import": "./src/schemas/*"
+            "types": "./src/schemas/*.ts",
+            "import": "./src/schemas/*.ts"
+        },
+        "./control-plane": {
+            "types": "./src/control-plane/index.ts",
+            "import": "./src/control-plane/index.ts"
         }
     },
     "devDependencies": {

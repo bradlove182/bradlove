@@ -1,0 +1,17 @@
+{
+    "name": "@bradlove/control-plane",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "check": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@bradlove/core": "workspace:*",
+        "effect": "catalog:"
+    },
+    "devDependencies": {
+        "@types/bun": "catalog:",
+        "typescript": "catalog:"
+    }
+}
